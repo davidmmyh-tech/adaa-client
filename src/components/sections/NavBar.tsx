@@ -1,0 +1,50 @@
+import Logo from '../ui/extend/Logo';
+import { Menu } from 'lucide-react';
+import { Button } from '../ui/button';
+import { LgMenuList, MdMenuList, XlMenuList, XXlMenuList } from './MenuLists';
+import { useUserState } from '@/context/UserProvider';
+
+type Props = { onOpenSideBar: () => void };
+
+export default function NavBar({ onOpenSideBar }: Props) {
+  const { isLoading } = useUserState();
+
+  return (
+    <nav className="fixed top-4 z-30 w-screen">
+      <div className="container text-sm">
+        <div
+          className={'z-20 flex h-14 w-full items-center justify-between gap-2 rounded-2xl bg-[#B98F4B] px-4 shadow-md'}
+        >
+          <div className="flex grow items-center gap-4">
+            <Logo variant="light" isLoading={isLoading} className="inline-block h-10 w-10" />
+            <UserMenu onOpenSideBar={onOpenSideBar} />
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function UserMenu({ onOpenSideBar }: Props) {
+  return (
+    <div className="flex w-full justify-between">
+      <div className="flex items-center gap-1">
+        <ul className="text-primary-foreground hidden md:inline-flex">
+          <MdMenuList />
+        </ul>
+        <ul className="text-primary-foreground hidden lg:inline-flex">
+          <LgMenuList />
+        </ul>
+        <ul className="text-primary-foreground hidden xl:inline-flex">
+          <XlMenuList />
+        </ul>
+        <ul className="text-primary-foreground hidden 2xl:inline-flex">
+          <XXlMenuList />
+        </ul>
+      </div>
+      <Button variant="link" onClick={onOpenSideBar} className="ms-4 h-8 w-8 p-0 2xl:hidden">
+        <Menu size={20} />
+      </Button>
+    </div>
+  );
+}

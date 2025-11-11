@@ -1,0 +1,49 @@
+import { shieldImage } from '@/assets/images';
+import LinkButton from '@/components/ui/extend/LinkButton';
+
+const prizes = [
+  {
+    prizeValue: 5000,
+    shield: 'برونزي'
+  },
+  {
+    prizeValue: 5000,
+    shield: 'برونزي'
+  },
+  {
+    prizeValue: 5000,
+    shield: 'برونزي'
+  }
+];
+
+export default function PrizesSection() {
+  return (
+    <section>
+      <div className="bg-accent text-primary pb-20">
+        <div className="container flex flex-col-reverse items-center gap-8 p-8 sm:flex-row sm:items-start">
+          <div className="space-y-4">
+            <h3 className="text-2xl font-semibold"> الجوائز التي سيتم منحها</h3>
+            <p className="font-semibold">
+              نحن في جائزة درع أداء نقدم جوائز قيّمة لتمكين المنظمات غير الربحية من توسيع تأثيرها وتحقيق أهدافها. سيتم
+              منح الجوائز المالية على شكل بطاقات كريدت تُستخدم في مسرعة أثر وريادة لدعم تطوير المشاريع.
+            </p>
+            <LinkButton to="/" className="mx-auto flex w-40">
+              سجّل الآن
+            </LinkButton>
+          </div>
+          <img src={shieldImage} alt="Prizes" className="h-52 rounded-lg object-contain sm:h-64" />
+        </div>
+      </div>
+      <div className="container">
+        <div className="bg-primary text-primary-foreground mx-auto -mt-24 flex max-w-4xl flex-col justify-around gap-8 rounded-2xl p-8 sm:flex-row">
+          {prizes.map((prize) => (
+            <div key={prize.shield} className="space-y-8 text-center">
+              <div className="text-4xl font-semibold">{prize.prizeValue} ريال</div>
+              <div className="text-sm font-semibold">+ درع {prize.shield}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
