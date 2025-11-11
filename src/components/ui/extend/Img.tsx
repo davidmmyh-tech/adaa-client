@@ -1,4 +1,4 @@
-import { fallbackImage } from '@/assets/images';
+import { fallBackImage } from '@/assets/images';
 import { remote } from '@/lib/utils';
 import { useState } from 'react';
 
@@ -12,7 +12,7 @@ export default function Img({ src, alt, className, loading = 'lazy', ...props }:
   const [error, setError] = useState(false);
 
   if (!src || error)
-    return <img src={fallbackImage} alt={alt ?? ''} className={className} loading={loading} {...props} />;
+    return <img src={fallBackImage} alt={alt ?? ''} className={className} loading={loading} {...props} />;
 
   return (
     <img
