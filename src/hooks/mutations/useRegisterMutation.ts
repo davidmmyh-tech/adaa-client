@@ -18,7 +18,7 @@ export default function useRegisterMutation({
     onSuccess: (data) => {
       onSuccess?.(data);
       setSessionEmail(data.data.user.email);
-      navigate(`/تحقق-من-البريد-الالكتروني`);
+      navigate(`/تسجيل-دخول`);
     },
     onError: (error) => onError?.(error)
   });
