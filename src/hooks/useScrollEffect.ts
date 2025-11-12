@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 export default function useScrollEffect() {
-  const [isScrollingDown, setIsScrollingDown] = useState(true);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
