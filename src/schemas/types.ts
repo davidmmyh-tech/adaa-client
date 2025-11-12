@@ -5,6 +5,11 @@ export type Organization = {
   is_registered: boolean;
   is_approval_pending: boolean;
   is_approved: boolean;
+  has_shield_completed: boolean;
+  has_operational_certificate: boolean;
+  has_strategic_certificate: boolean;
+  has_human_resources_certificate: boolean;
+  is_adaa_plus: boolean;
 };
 
 export type User = {

@@ -99,6 +99,11 @@ body {
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --gilroy: 'GilroyBlackItalic';
+
+  --diamond: #70b9f8;
+  --gold: #f3d734;
+  --silver: #898889;
+  --bronse: #884108;
 }
 
 @theme inline {
@@ -147,10 +152,56 @@ body {
   }
 }
 
+@utility card {
+  @apply bg-card-secondary flex flex-col items-center space-y-2 rounded-xl border py-6 text-center shadow-md transition-transform duration-500 hover:-translate-y-1 hover:scale-101;
+}
+
 .bod-logo-split {
   background-image: url(/src/assets/images/bod-logo.webp);
   background-size: 185px;
   height: 40px;
+}
+
+@utility diamond-gradient {
+  background: #70b9f8;
+  background: linear-gradient(
+    180deg,
+    rgba(112, 185, 248, 1) 0%,
+    rgba(230, 238, 245, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+@utility gold-gradient {
+  background: #898889;
+  background: linear-gradient(
+    180deg,
+    rgba(137, 136, 137, 1) 0%,
+    rgba(186, 184, 187, 1) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+@utility silver-gradient {
+  background: #f3d734;
+  background: linear-gradient(
+    180deg,
+    rgba(243, 215, 52, 1) 0%,
+    rgba(247, 240, 193, 1) 31%,
+    rgba(255, 240, 215, 1) 66%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+@utility bronse-gradient {
+  background: #884108;
+  background: linear-gradient(
+    180deg,
+    rgba(136, 65, 8, 1) 0%,
+    rgba(234, 179, 134, 1) 30%,
+    rgba(255, 250, 245, 1) 65%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
 @utility container {

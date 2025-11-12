@@ -26,7 +26,7 @@ import AdaaShieldAssessmentPage from './pages/AdaaShieldAssessment';
 import AdaaShieldInformatics from './pages/AdaaShieldInformatics';
 import VerifiedEmailPage from './pages/VerifiedEmail';
 import VerifyYourMail from './pages/VerifyYourMail';
-import CertificatesPage from './pages/Certificate';
+import CertificatesPage from './pages/Certificates';
 import UserProvider from './context/UserProvider';
 
 const router = createBrowserRouter([
