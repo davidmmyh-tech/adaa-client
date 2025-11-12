@@ -1,6 +1,7 @@
 import LinkButton from '@/components/ui/extend/LinkButton';
 import ServiceCard from '@/components/ui/extend/ServiceCard';
 import { CreativityIcon, FinanceIcon, PeopleIcon, StratigyIcon } from '@/components/ui/icons';
+import { useUserState } from '@/context/UserProvider';
 
 const evaluationPoints = [
   {
@@ -26,6 +27,8 @@ const evaluationPoints = [
 ];
 
 export default function EvaluationSection() {
+  const { user } = useUserState();
+
   return (
     <section className="bg-muted/10">
       <div className="illustration-background py-8">
@@ -45,9 +48,15 @@ export default function EvaluationSection() {
               />
             ))}
           </div>
-          <LinkButton to="/" className="mx-auto flex h-14 w-52">
-            سجّل الآن
-          </LinkButton>
+          {user ? (
+            <LinkButton to="/درع-اداء/تقييم" className="mx-auto flex h-14 w-52">
+              ابداء الان
+            </LinkButton>
+          ) : (
+            <LinkButton to="/تسجيل-دخول" className="mx-auto flex h-14 w-52">
+              سجّل الآن
+            </LinkButton>
+          )}
         </div>
       </div>
     </section>

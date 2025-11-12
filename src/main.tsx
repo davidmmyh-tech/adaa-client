@@ -26,6 +26,7 @@ import AdaaShieldAssessmentPage from './pages/AdaaShieldAssessment';
 import AdaaShieldInformatics from './pages/AdaaShieldInformatics';
 import VerifiedEmailPage from './pages/VerifiedEmail';
 import VerifyYourMail from './pages/VerifyYourMail';
+import CertificatesPage from './pages/Certificate';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
                   { index: true, element: <AdaaShieldPage /> },
                   { path: 'المنظمات', element: <AdaaShieldInformatics /> }
                 ]
+              },
+              {
+                path: 'شهادات-اداء',
+                children: [{ index: true, element: <CertificatesPage /> }]
               }
             ]
           },

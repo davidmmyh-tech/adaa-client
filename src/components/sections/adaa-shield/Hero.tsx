@@ -1,5 +1,6 @@
 import { adaaShieldImage } from '@/assets/images';
 import LinkButton from '@/components/ui/extend/LinkButton';
+import { useUserState } from '@/context/UserProvider';
 import { Check } from 'lucide-react';
 
 const advantages = [
@@ -9,6 +10,7 @@ const advantages = [
 ];
 
 export default function AdaaShieldHeroSection() {
+  const { user } = useUserState();
   return (
     <header>
       <div className="cup-hero-background h-[920px] items-center pt-52 md:h-[850px] lg:h-[750px]">
@@ -35,6 +37,7 @@ export default function AdaaShieldHeroSection() {
                 برامج مبتكرة تُحدث فرقًا حقيقيًا في المجتمع. تهدف الجائزة إلى تسليط الضوء على المنظمات التي تعمل بجد
                 لتحقيق الأثر الاجتماعي المستدام، وتعزيز الاستدامة المالية والابتكار في العمليات.
               </p>
+
               <ul className="space-y-4">
                 {advantages.map((advantage, index) => (
                   <li key={index} className="flex gap-4">
@@ -43,10 +46,17 @@ export default function AdaaShieldHeroSection() {
                   </li>
                 ))}
               </ul>
+
               <div className="flex gap-2">
-                <LinkButton to="/درع-اداء/تقييم" variant="secondary" className="w-auto md:w-32">
-                  سجل الان
-                </LinkButton>
+                {user ? (
+                  <LinkButton to="/درع-اداء/تقييم" variant="secondary" className="w-auto md:w-32">
+                    ابداء الان
+                  </LinkButton>
+                ) : (
+                  <LinkButton to="/تسجيل-دخول" variant="secondary" className="w-auto md:w-32">
+                    سجل الان
+                  </LinkButton>
+                )}
                 <LinkButton to="#prizes" variant="outline" className="w-auto md:w-40">
                   تعرف على الجوائز
                 </LinkButton>
