@@ -1,11 +1,11 @@
-import * as motion from 'motion/react-client';
-import DefaultMotionDiv from './DefaultMotionElement';
+import Logo from '@/components/ui/extend/Logo';
 import SubmitButton from '@/components/ui/submit-button';
+import { BadgeX } from 'lucide-react';
 
 type Props = {
   isError: boolean;
   isEmpty?: boolean | null;
-  isPending: boolean;
+  isPending?: boolean;
   isRefetching?: boolean;
   children: React.ReactNode;
   LoadingFallback?: React.ComponentType;
@@ -14,34 +14,31 @@ type Props = {
 
 function ErrorFetchingResource({ retry, isRetrying }: { retry: () => void; isRetrying: boolean }) {
   return (
-    <DefaultMotionDiv className="text-muted flex h-96 flex-col items-center justify-center gap-4 text-center text-4xl font-bold">
-      خطاء في الحصول علي المحتوي !
-      <SubmitButton isLoading={isRetrying} className="block font-medium" onClick={retry}>
+    <div className="text-muted flex h-96 flex-col items-center justify-center gap-4 text-center text-4xl font-bold">
+      <BadgeX size={120} className="stroke-primary" />
+      <span>خطاء في الحصول علي المحتوي !</span>
+      <SubmitButton isLoading={isRetrying} className="mt-4 block font-medium" onClick={retry}>
         إعادة المحاولة
       </SubmitButton>
-    </DefaultMotionDiv>
+    </div>
   );
 }
 
 function NoResourceAvilable({ retry, isRetrying }: { retry: () => void; isRetrying: boolean }) {
   return (
-    <DefaultMotionDiv className="text-muted flex h-96 flex-col items-center justify-center gap-4 text-center text-4xl font-bold">
+    <div className="text-muted flex h-96 flex-col items-center justify-center gap-4 text-center text-4xl font-bold">
       لا يوجد محتوي للعرض
       <SubmitButton isLoading={isRetrying} className="block font-medium" onClick={retry}>
         إعادة المحاولة
       </SubmitButton>
-    </DefaultMotionDiv>
+    </div>
   );
 }
 
 function DefaultLoading() {
   return (
     <div className="container my-12 items-center justify-center">
-      <motion.div
-        className="h-96 rounded bg-gray-300"
-        animate={{ opacity: [0.5, 1, 0.5] }}
-        transition={{ duration: 0.8, repeat: Infinity }}
-      />
+      <Logo isLoading className="h-24 w-24" />
     </div>
   );
 }
@@ -57,6 +54,6 @@ export default function DataWrapper({
 }: Props) {
   if (isPending) return <LoadingFallback />;
   if (isError) return <ErrorFetchingResource retry={retry} isRetrying={!!isRefetching} />;
-  if (isEmpty) return <NoResourceAvilable retry={retry} isRetrying={!!isRefetching} />;
+  if (isEmpty && isEmpty !== undefined) return <NoResourceAvilable retry={retry} isRetrying={!!isRefetching} />;
   return children;
 }

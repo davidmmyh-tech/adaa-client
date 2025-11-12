@@ -11,6 +11,7 @@ import type { Id } from 'react-toastify';
 import AxisProgress from './AxisProgress';
 import useGetShieldQuestions from '@/hooks/queries/useGetShieldQuestionsQuery';
 import useSubmitAnswers from '@/hooks/mutations/useSubmitAnswersMutation';
+import DataWrapper from '@/layouts/DataWrapper';
 
 type Props = {
   onSuccess?: () => void;
@@ -32,7 +33,13 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
   };
 
   //Get Questions request ---------
-  const { data: questions, isFetching } = useGetShieldQuestions({ onSuccess: (data) => setupAnswers(data, 0) });
+  const {
+    data: questions,
+    isFetching,
+    isError,
+    refetch,
+    isFetchedAfterMount
+  } = useGetShieldQuestions({ onSuccess: (data) => setupAnswers(data, 0) });
   if (questions && !answers) setupAnswers(questions, 0);
 
   //Submit Answers request ---------
@@ -97,67 +104,69 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
 
   return (
     <div className="container">
-      {isFetching ? (
+      {!isFetchedAfterMount ? (
         <QuestionsLoading />
       ) : (
-        <div className="space-y-8">
-          <AxisProgress axies={axies} currentIndex={axisIndex} />
+        <DataWrapper isError={isError || isFetching} retry={refetch} isRefetching={isFetching}>
+          <div className="space-y-8">
+            <AxisProgress axies={axies} currentIndex={axisIndex} />
 
-          <div className="relative w-full overflow-hidden">
-            {isPending && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
-                <Logo isLoading className="h-32 w-32" />
+            <div className="relative w-full overflow-hidden">
+              {isPending && (
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
+                  <Logo isLoading className="h-32 w-32" />
+                </div>
+              )}
+
+              <div className="relative flex transition-all duration-500" style={{ right: `-${axisIndex * 100}%` }}>
+                {axiesQuestions.map((axisItem) => (
+                  <form key={axisItem.id} className="w-full shrink-0 space-y-12">
+                    <p className="text-lg font-semibold">{axisItem.description}</p>
+                    <ol className="list-decimal space-y-12 ps-6">
+                      {axisItem.questions.map((q) => (
+                        <li key={q.id}>
+                          <p className="font-semibold">هل لدى المنظمة خطة استراتيجية واضحة وطويلة المدى؟</p>
+                          <RadioGroup
+                            className="mt-4 flex justify-end gap-24"
+                            onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
+                          >
+                            <div className="flex items-center gap-4">
+                              <Label htmlFor={'no' + q.id} className="text-primary">
+                                لا
+                              </Label>
+                              <RadioGroupItem value="no" id={'no' + q.id} className="h-5 w-5" />
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <Label htmlFor={'yes' + q.id} className="text-primary">
+                                نعم
+                              </Label>
+                              <RadioGroupItem value="yes" id={'yes' + q.id} className="h-5 w-5" />
+                            </div>
+                          </RadioGroup>
+                        </li>
+                      ))}
+                    </ol>
+                    <AttachmentsSection onFileUploaded={handleFileChange} />
+                  </form>
+                ))}
               </div>
-            )}
+            </div>
 
-            <div className="relative flex transition-all duration-500" style={{ right: `-${axisIndex * 100}%` }}>
-              {axiesQuestions.map((axisItem) => (
-                <form key={axisItem.id} className="w-full shrink-0 space-y-12">
-                  <p className="text-lg font-semibold">{axisItem.description}</p>
-                  <ol className="list-decimal space-y-12 ps-6">
-                    {axisItem.questions.map((q) => (
-                      <li key={q.id}>
-                        <p className="font-semibold">هل لدى المنظمة خطة استراتيجية واضحة وطويلة المدى؟</p>
-                        <RadioGroup
-                          className="mt-4 flex justify-end gap-24"
-                          onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
-                        >
-                          <div className="flex items-center gap-4">
-                            <Label htmlFor={'no' + q.id} className="text-primary">
-                              لا
-                            </Label>
-                            <RadioGroupItem value="no" id={'no' + q.id} className="h-5 w-5" />
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <Label htmlFor={'yes' + q.id} className="text-primary">
-                              نعم
-                            </Label>
-                            <RadioGroupItem value="yes" id={'yes' + q.id} className="h-5 w-5" />
-                          </div>
-                        </RadioGroup>
-                      </li>
-                    ))}
-                  </ol>
-                  <AttachmentsSection onFileUploaded={handleFileChange} />
-                </form>
-              ))}
+            <ErrorMessage error={error} />
+
+            <div className="mx-auto w-fit py-4 font-semibold">
+              {axisIndex === axiesQuestions.length - 1 ? (
+                <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit}>
+                  أتمام
+                </SubmitButton>
+              ) : (
+                <SubmitButton variant="secondary" className="w-32" onClick={nextAxis}>
+                  التالي
+                </SubmitButton>
+              )}
             </div>
           </div>
-
-          <ErrorMessage error={error} />
-
-          <div className="mx-auto w-fit py-4 font-semibold">
-            {axisIndex === axiesQuestions.length - 1 ? (
-              <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit}>
-                أتمام
-              </SubmitButton>
-            ) : (
-              <SubmitButton variant="secondary" className="w-32" onClick={nextAxis}>
-                التالي
-              </SubmitButton>
-            )}
-          </div>
-        </div>
+        </DataWrapper>
       )}
     </div>
   );

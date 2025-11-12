@@ -27,12 +27,13 @@ import AdaaShieldInformatics from './pages/AdaaShieldInformatics';
 import VerifiedEmailPage from './pages/VerifiedEmail';
 import VerifyYourMail from './pages/VerifyYourMail';
 import CertificatesPage from './pages/Certificate';
+import UserProvider from './context/UserProvider';
 
 const router = createBrowserRouter([
   {
     //public routes **********************
-    errorElement: <ErrorPage />,
-    element: <AppWrapper />, //if bug happend in the main layout (error Boundry)
+    errorElement: <ErrorPage />, //if bug happend in the main layout (error Boundry)
+    element: <AppWrapper />,
     children: [
       {
         element: <MainLayout />,
@@ -134,8 +135,10 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
-      <RouterProvider router={router} />
+      <UserProvider>
+        <ReactQueryDevtools />
+        <RouterProvider router={router} />
+      </UserProvider>
     </QueryClientProvider>
   </StrictMode>
 );
