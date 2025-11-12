@@ -3,7 +3,7 @@ import ErrorMessage from '@/components/ui/extend/error-message';
 import FormInput, { type FormInputProps } from '@/components/ui/extend/FormInput';
 import Logo from '@/components/ui/extend/Logo';
 import SubmitButton from '@/components/ui/submit-button';
-import useRegisterOrganizationMutation from '@/hooks/queries/useRegisterOrganizationMutation';
+import useRegisterOrganizationMutation from '@/hooks/mutations/useRegisterOrganizationMutation';
 import { registerOrganizationSchema, type RegisterOrganizationForm } from '@/schemas/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';

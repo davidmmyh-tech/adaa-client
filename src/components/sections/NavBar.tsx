@@ -3,14 +3,18 @@ import { Menu } from 'lucide-react';
 import { Button } from '../ui/button';
 import { LgMenuList, MdMenuList, XlMenuList, XXlMenuList } from './MenuLists';
 import { useUserState } from '@/context/UserProvider';
+import useScrollEffect from '@/hooks/useScrollEffect';
 
 type Props = { onOpenSideBar: () => void };
 
 export default function NavBar({ onOpenSideBar }: Props) {
   const { isLoading } = useUserState();
+  const { isScrollingDown } = useScrollEffect();
 
   return (
-    <nav className="fixed top-4 z-30 w-screen">
+    <nav
+      className={`fixed top-4 z-30 w-screen transition-transform duration-300 ${isScrollingDown ? '-translate-y-24' : 'translate-y-0'}`}
+    >
       <div className="container text-sm">
         <div
           className={'z-20 flex h-14 w-full items-center justify-between gap-2 rounded-2xl bg-[#B98F4B] px-4 shadow-md'}

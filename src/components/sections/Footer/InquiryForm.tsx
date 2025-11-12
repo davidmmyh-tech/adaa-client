@@ -1,7 +1,7 @@
 import ErrorMessage from '@/components/ui/extend/error-message';
 import FormInput from '@/components/ui/extend/FormInput';
 import SubmitButton from '@/components/ui/submit-button';
-import useSubmitInquiryMutation from '@/hooks/queries/useSubmitInquiryMutation';
+import useSubmitInquiryMutation from '@/hooks/mutations/useSubmitInquiryMutation';
 import { useRef, useState, type FormEventHandler } from 'react';
 
 export default function InquiryForm() {

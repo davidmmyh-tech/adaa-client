@@ -1,7 +1,7 @@
 import FormInput from '@/components/ui/extend/FormInput';
 import Logo from '@/components/ui/extend/Logo';
 import SubmitButton from '@/components/ui/submit-button';
-import useForgetPasswordMutation from '@/hooks/queries/useForgetPasswordMutation';
+import useForgetPasswordMutation from '@/hooks/mutations/useForgetPasswordMutation';
 import { useState } from 'react';
 
 export default function ForgetPasswordPage() {

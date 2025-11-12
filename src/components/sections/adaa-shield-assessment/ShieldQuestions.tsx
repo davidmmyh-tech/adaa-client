@@ -9,8 +9,8 @@ import { type AxisAnswers, type ShieldQuestionsResponse } from '@/services/shiel
 import { useState } from 'react';
 import type { Id } from 'react-toastify';
 import AxisProgress from './AxisProgress';
-import useGetShieldQuestions from '@/hooks/queries/useGetShieldQuestions';
-import useSubmitAnswers from '@/hooks/queries/useSubmitAnswers';
+import useGetShieldQuestions from '@/hooks/queries/useGetShieldQuestionsQuery';
+import useSubmitAnswers from '@/hooks/mutations/useSubmitAnswersMutation';
 
 type Props = {
   onSuccess?: () => void;

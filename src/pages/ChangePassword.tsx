@@ -3,7 +3,7 @@ import FormInput from '@/components/ui/extend/FormInput';
 import Logo from '@/components/ui/extend/Logo';
 import SuccessScreen from '@/components/ui/extend/SuccessScreen';
 import SubmitButton from '@/components/ui/submit-button';
-import useResetPasswordMutation from '@/hooks/queries/useResetPasswordMutation';
+import useResetPasswordMutation from '@/hooks/mutations/useResetPasswordMutation';
 import { useState, type FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 

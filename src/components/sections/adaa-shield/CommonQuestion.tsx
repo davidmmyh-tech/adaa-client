@@ -22,10 +22,10 @@ export default function CommonQuestion() {
         <div>
           <h4 className="text-3xl font-semibold">الأسئلة الشائعة</h4>
           <ul className="mt-8 space-y-4">
-            {questions.map((question, index) => (
+            {questions.map((q, index) => (
               <li key={index} className="space-y-2">
-                <strong>{question.q}</strong>
-                <p>{question.a}</p>
+                <strong>{q.q}</strong>
+                <p>{q.a}</p>
               </li>
             ))}
           </ul>

@@ -1,5 +1,4 @@
-import { getShieldAnalytics } from '@/services/shield';
-import { useQuery } from '@tanstack/react-query';
+import useGetAdaaSieldAnalytics from '@/hooks/queries/useGetAdaaSieldAnalyticsQuery';
 
 const initialData = {
   total_organizations_awarded: 0,
@@ -9,11 +8,8 @@ const initialData = {
 };
 
 export default function AdaaShieldAnalytics() {
-  const analyticsQuery = useQuery({
-    queryFn: () => getShieldAnalytics(),
-    queryKey: ['adaa-shield-analytics']
-  });
-  const analytics = analyticsQuery.data?.data ?? initialData;
+  const { data } = useGetAdaaSieldAnalytics({});
+  const analytics = data ?? initialData;
 
   return (
     <div className="container space-y-8">

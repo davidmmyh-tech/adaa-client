@@ -9,7 +9,7 @@ import FormInput from '@/components/ui/extend/FormInput';
 import ErrorMessage from '@/components/ui/extend/error-message';
 import { FormDropdown } from '@/components/ui/extend/FormDropdown';
 import { authorities } from '@/constants/data';
-import useRegisterMutation from '@/hooks/queries/useRegisterMutation';
+import useRegisterMutation from '@/hooks/mutations/useRegisterMutation';
 
 export default function RegisterPage() {
   const [error, setError] = useState<string | null>();

@@ -5,9 +5,8 @@ import Dropdown from '@/components/ui/extend/Dropdown';
 import { SearchIcon } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import { grades, regions, years } from '@/constants/data';
+import useGetAdaaShieldOrganizationsQuery from '@/hooks/queries/useGetAdaaShieldOrganizationsQuery';
 import useDebounce from '@/hooks/useDebounce';
-import { getShieldOrganizations } from '@/services/shield';
-import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
 const PAGE_ORG_LIMIT = 5;
@@ -20,24 +19,20 @@ export default function AdaaShieldInformatics() {
   const region = searchParams.get('region') || '';
   const year = Number(searchParams.get('year')) || undefined;
 
-  const { data } = useQuery({
-    queryKey: ['adaa-shield-organizations', query, grade, region, year, ORGS_PAGE, PAGE_ORG_LIMIT],
-    queryFn: () => getShieldOrganizations({ query, grade, region, year, page: ORGS_PAGE, limit: PAGE_ORG_LIMIT })
+  const { data } = useGetAdaaShieldOrganizationsQuery({
+    params: { query, grade, region, year, page: ORGS_PAGE, limit: PAGE_ORG_LIMIT }
   });
 
   const updateSearchParam = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
-    if (value) {
-      newParams.set(key, value);
-    } else {
-      newParams.delete(key);
-    }
+    if (value) newParams.set(key, value);
+    else newParams.delete(key);
     setSearchParams(newParams, { preventScrollReset: true });
   };
 
   const handleQueryChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
     updateSearchParam('query', e.target.value);
-  }, 300);
+  }, 400);
 
   return (
     <div className="space-y-4">
@@ -82,7 +77,6 @@ export default function AdaaShieldInformatics() {
         </div>
 
         <AdaaShieldOrgsTable orgs={data?.data.data || []} />
-
         <AdaaShieldAnalytics />
       </section>
     </div>

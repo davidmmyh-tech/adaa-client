@@ -47,7 +47,7 @@ export default function AdaaShieldHeroSection() {
                 <LinkButton to="/درع-اداء/تقييم" variant="secondary" className="w-auto md:w-32">
                   سجل الان
                 </LinkButton>
-                <LinkButton to="/" variant="outline" className="w-auto md:w-40">
+                <LinkButton to="#prizes" variant="outline" className="w-auto md:w-40">
                   تعرف على الجوائز
                 </LinkButton>
               </div>

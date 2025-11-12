@@ -3,12 +3,12 @@ import LinkButton from '@/components/ui/extend/LinkButton';
 
 const prizes = [
   {
-    prizeValue: 5000,
-    shield: 'برونزي'
+    prizeValue: 15000,
+    shield: 'ذهبي'
   },
   {
-    prizeValue: 5000,
-    shield: 'برونزي'
+    prizeValue: 10000,
+    shield: 'فضي'
   },
   {
     prizeValue: 5000,
@@ -18,7 +18,8 @@ const prizes = [
 
 export default function PrizesSection() {
   return (
-    <section>
+    <section className="relative">
+      <div className="absolute -top-52" id="prizes" />
       <div className="bg-accent text-primary pb-20">
         <div className="container flex flex-col-reverse items-center gap-8 p-8 sm:flex-row sm:items-start">
           <div className="space-y-4">
@@ -27,7 +28,7 @@ export default function PrizesSection() {
               نحن في جائزة درع أداء نقدم جوائز قيّمة لتمكين المنظمات غير الربحية من توسيع تأثيرها وتحقيق أهدافها. سيتم
               منح الجوائز المالية على شكل بطاقات كريدت تُستخدم في مسرعة أثر وريادة لدعم تطوير المشاريع.
             </p>
-            <LinkButton to="/" className="mx-auto flex w-40">
+            <LinkButton to="/تسجيل-دخول" className="mx-auto flex w-40">
               سجّل الآن
             </LinkButton>
           </div>

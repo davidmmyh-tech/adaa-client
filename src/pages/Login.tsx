@@ -2,7 +2,7 @@ import { loginSchema, type LoginForm } from '@/schemas/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useLoginMutation from '@/hooks/queries/useLoginMutation';
+import useLoginMutation from '@/hooks/mutations/useLoginMutation';
 import FormInput from '@/components/ui/extend/FormInput';
 import SubmitButton from '@/components/ui/submit-button';
 import { authImage } from '@/assets/images';
