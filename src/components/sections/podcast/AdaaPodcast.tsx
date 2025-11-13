@@ -22,7 +22,8 @@ export default function AdaaPodcastsSection() {
     fetchNextPage,
     isFetchingNextPage,
     isFetching,
-    isMounted
+    isMounted,
+    hasNextPage
   } = useGetPodcastsQuery({
     params: { query, page: 1, limit: 6 }
   });
@@ -69,7 +70,7 @@ export default function AdaaPodcastsSection() {
         isPending={isPending && !isMounted}
         isError={isError}
         isRefetching={isRefetching}
-        isEmpty={!podcasts.length}
+        isEmpty={!podcasts.length && !isFetching}
         retry={refetch}
       >
         <div className="grid grid-cols-2 gap-8">
@@ -78,23 +79,25 @@ export default function AdaaPodcastsSection() {
               key={podcast.id}
               date={podcast.published_at}
               title={podcast.title}
-              description={podcast.description}
-              image={podcast.cover_image}
+              description={podcast.short_description}
+              image={podcast.image}
               to={`/كرسي-اداء/${podcast.id}`}
             />
           ))}
         </div>
 
-        <div className="my-14 flex justify-center">
-          <SubmitButton
-            variant="secondary"
-            className="w-40 font-semibold"
-            onClick={() => fetchNextPage()}
-            isLoading={isFetchingNextPage}
-          >
-            عرض المزيد
-          </SubmitButton>
-        </div>
+        {hasNextPage && (
+          <div className="my-14 flex justify-center">
+            <SubmitButton
+              variant="secondary"
+              className="w-40 font-semibold"
+              onClick={() => fetchNextPage()}
+              isLoading={isFetchingNextPage}
+            >
+              عرض المزيد
+            </SubmitButton>
+          </div>
+        )}
       </DataWrapper>
     </section>
   );

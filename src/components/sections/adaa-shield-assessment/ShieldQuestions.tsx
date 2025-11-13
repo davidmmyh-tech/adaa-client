@@ -64,7 +64,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       title: axis.title
     })) || [];
 
-  //change answer for question
+  //change answer for question ---------
   const handleAnswerChange = (questionId: Id, answer: boolean) => {
     setError(null);
     setAnswers((prevAnswers) => {

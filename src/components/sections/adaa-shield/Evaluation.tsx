@@ -45,7 +45,7 @@ export default function EvaluationSection() {
               />
             ))}
           </div>
-          <UserStateButton to="/درع-اداء/تقييم" className="mx-auto flex h-14 w-52">
+          <UserStateButton to="/درع-اداء/تقييم" variant="default" className="mx-auto flex h-14 w-52">
             أبداء الآن
           </UserStateButton>
         </div>

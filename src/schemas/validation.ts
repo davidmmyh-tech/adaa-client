@@ -15,7 +15,7 @@ export const registerSchema = z
   })
   .refine((data) => data.password === data.password_confirmation, {
     message: 'تاكيد كلمة المرور لا تتوافق مع كلمة المرور',
-    path: ['confirmPassword']
+    path: ['password_confirmation']
   });
 
 export const registerOrganizationSchema = z.object({

@@ -1,7 +1,7 @@
 import Logo from '../ui/extend/Logo';
 import { Menu } from 'lucide-react';
 import { Button } from '../ui/button';
-import { LgMenuList, MdMenuList, XlMenuList, XXlMenuList } from './MenuLists';
+import { MdMenuList, LgMenuList } from './MenuLists';
 import { useUserState } from '@/context/UserProvider';
 import useScrollEffect from '@/hooks/useScrollEffect';
 
@@ -17,7 +17,7 @@ export default function NavBar({ onOpenSideBar }: Props) {
     >
       <div className="container text-sm">
         <div
-          className={'z-20 flex h-14 w-full items-center justify-between gap-2 rounded-2xl bg-[#B98F4B] px-4 shadow-md'}
+          className={'bg-secondary z-20 flex h-14 w-full items-center justify-between gap-2 rounded-2xl px-4 shadow-md'}
         >
           <div className="flex grow items-center gap-4">
             <Logo variant="light" isLoading={isLoading} className="inline-block h-10 w-10" />
@@ -39,14 +39,8 @@ function UserMenu({ onOpenSideBar }: Props) {
         <ul className="text-primary-foreground hidden lg:inline-flex">
           <LgMenuList />
         </ul>
-        <ul className="text-primary-foreground hidden xl:inline-flex">
-          <XlMenuList />
-        </ul>
-        <ul className="text-primary-foreground hidden 2xl:inline-flex">
-          <XXlMenuList />
-        </ul>
       </div>
-      <Button variant="link" onClick={onOpenSideBar} className="ms-4 h-8 w-8 p-0 2xl:hidden">
+      <Button variant="link" onClick={onOpenSideBar} className="ms-4 h-8 w-8 p-0 lg:hidden">
         <Menu size={20} />
       </Button>
     </div>

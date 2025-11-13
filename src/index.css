@@ -157,7 +157,7 @@ body {
 }
 
 .podcast-hero-background {
-  background: url('/src/assets/images/podcast-hero.webp') no-repeat center center;
+  background: url(/src/assets/images/podcast-hero.webp) no-repeat center center;
   background-size: cover;
 }
 

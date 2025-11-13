@@ -1,7 +1,7 @@
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
-import { LgMenuList, MdMenuList, XlMenuList, XXlMenuList } from './MenuLists';
+import { LgMenuList, MdMenuList } from './MenuLists';
 import { X } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -21,8 +21,8 @@ export default function SideBar({ isOpen, onClose }: Props) {
       <aside
         ref={asideRef}
         className={cn(
-          'bg-background fixed top-0 bottom-0 z-50 block w-80 space-y-2 border-e p-6 drop-shadow-2xl transition-all 2xl:hidden',
-          isOpen ? 'start-0' : '-start-80'
+          'bg-background fixed top-0 bottom-0 z-50 block w-96 space-y-4 border-e p-6 drop-shadow-2xl transition-all 2xl:hidden',
+          isOpen ? 'start-0' : '-start-96'
         )}
       >
         <div>
@@ -30,17 +30,11 @@ export default function SideBar({ isOpen, onClose }: Props) {
             <X />
           </Button>
         </div>
-        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col md:hidden">
+        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col space-y-4 md:hidden">
           <MdMenuList />
         </ul>
-        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col lg:hidden">
+        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col space-y-4 lg:hidden">
           <LgMenuList />
-        </ul>
-        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col xl:hidden">
-          <XlMenuList />
-        </ul>
-        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col 2xl:hidden">
-          <XXlMenuList />
         </ul>
       </aside>
     </>

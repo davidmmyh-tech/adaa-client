@@ -1,6 +1,12 @@
 import { FacebookIcon, InstagramIcon, LinkedInIcon, XIcon } from '@/components/ui/icons';
 
-export const xxlMenuItems = [
+type MenuItem = {
+  name: string;
+  to?: string;
+  subMenu?: MenuItem[];
+};
+
+export const lgMenuItems: MenuItem[] = [
   {
     name: 'كرسي اداء',
     to: '/كرسي-اداء'
@@ -16,28 +22,14 @@ export const xxlMenuItems = [
   {
     name: 'اتصل بنا',
     to: 'اتصل-بنا'
-  },
-  {
-    name: 'تقديم رعاية',
-    to: 'تقديم-رعاية'
   }
 ];
 
-export const xlMenuItems = [
-  {
-    name: 'المنظمات الحاصلة على شهادة اداء',
-    to: '/شهادات-اداء/المنظمات'
-  }
-];
+export const xlMenuItems: MenuItem[] = [];
 
-export const lgMenuItems = [
-  {
-    name: 'المنظمات الحاصلة على درع اداء',
-    to: '/درع-اداء/المنظمات'
-  }
-];
+export const xxlMenuItems: MenuItem[] = [];
 
-export const mdMenuItems = [
+export const mdMenuItems: MenuItem[] = [
   {
     name: 'الصفحة الرئيسية',
     to: '/'
@@ -48,11 +40,29 @@ export const mdMenuItems = [
   },
   {
     name: 'شهادة الاداء السنوي',
-    to: '/شهادات-اداء'
+    subMenu: [
+      {
+        name: 'المنظمات الحاصلة على شهادة اداء',
+        to: '/شهادات-اداء/المنظمات'
+      },
+      {
+        name: 'كيفية الحصول على شهادة اداء',
+        to: '/شهادات-اداء'
+      }
+    ]
   },
   {
     name: 'درع اداء الاستراتيجية',
-    to: '/درع-اداء'
+    subMenu: [
+      {
+        name: 'المنظمات الحاصلة على درع اداء',
+        to: '/درع-اداء/المنظمات'
+      },
+      {
+        name: 'كيفية الحصول على درع اداء',
+        to: '/درع-اداء'
+      }
+    ]
   }
 ];
 

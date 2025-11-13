@@ -7,13 +7,15 @@ const audioPlayers = new Map<string, () => void>();
 let currentPlayingId: string | null = null;
 
 const WAVESURFER_CONFIG = {
-  waveColor: '#b0b0b0',
-  progressColor: '#1f2937',
-  height: 40,
-  cursorWidth: 0,
-  barWidth: 3,
-  barRadius: 3,
-  barGap: 4
+  waveColor: '#e5e7eb',
+  progressColor: '#2b2c52',
+  height: 4,
+  cursorWidth: 12,
+  cursorColor: '#2b2c52',
+  barWidth: 0,
+  barGap: 0,
+  normalize: false,
+  hideScrollbar: true
 } as const;
 
 export default function useWaveSurfer({ src }: { src: string | null | undefined }) {
@@ -23,12 +25,13 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isError, setIsError] = useState(!src);
-  const [soundSrc, setSoundSrc] = useState(() => (src ? remote(src) : 'test.mp3'));
+  const [soundSrc, setSoundSrc] = useState(remote(src) || '/test.mp3');
   const [duration, setDuration] = useState<number | null>(null);
+  const [audioElement, setAudioElement] = useState<HTMLMediaElement | null>(null);
 
   useEffect(() => {
     const container = waveformRef.current;
-    if (!container) return;
+    if (!container || !soundSrc) return;
 
     wavesurferRef.current?.destroy(); // Cleanup previous instance
     const ws = WaveSurfer.create({
@@ -43,6 +46,22 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
     const handleReady = () => {
       const d = ws.getDuration();
       setDuration(isFinite(d) ? d : null);
+      // Get the audio element for visualizer
+      const media = ws.getMediaElement();
+      if (media) setAudioElement(media);
+
+      // Style the cursor to be circular after WaveSurfer is ready
+      setTimeout(() => {
+        const cursor = container.querySelector('[part="cursor"]') as HTMLElement;
+        if (cursor) {
+          cursor.style.borderRadius = '50%';
+          cursor.style.width = '12px';
+          cursor.style.height = '12px';
+          cursor.style.top = '50%';
+          cursor.style.transform = 'translateY(-50%)';
+          cursor.style.marginLeft = '-6px';
+        }
+      }, 100);
     };
 
     const handlePlay = () => {
@@ -54,9 +73,11 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
       currentPlayingId = playerId;
     };
 
-    const handleError = () => {
+    const handleError = (err: Error) => {
+      // eslint-disable-next-line no-console
+      console.error('WaveSurfer error:', err);
       setIsError(true);
-      setSoundSrc('test.mp3');
+      setSoundSrc('/test.mp3');
     };
 
     const handleFinish = () => {
@@ -91,5 +112,25 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
     wavesurferRef.current?.playPause();
   };
 
-  return { waveformRef, isPlaying, isError, togglePlay, duration };
+  const skipForward = () => {
+    const ws = wavesurferRef.current;
+    if (!ws) return;
+    const currentTime = ws.getCurrentTime();
+    const duration = ws.getDuration();
+    if (!isFinite(duration) || duration === 0) return;
+    const newTime = Math.min(currentTime + 30, duration);
+    ws.seekTo(newTime / duration);
+  };
+
+  const skipBackward = () => {
+    const ws = wavesurferRef.current;
+    if (!ws) return;
+    const currentTime = ws.getCurrentTime();
+    const duration = ws.getDuration();
+    if (!isFinite(duration) || duration === 0) return;
+    const newTime = Math.max(currentTime - 30, 0);
+    ws.seekTo(newTime / duration);
+  };
+
+  return { waveformRef, isPlaying, isError, togglePlay, duration, skipForward, skipBackward, audioElement };
 }

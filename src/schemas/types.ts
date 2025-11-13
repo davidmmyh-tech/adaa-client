@@ -20,3 +20,10 @@ export type User = {
 };
 
 export type Id = string | number;
+
+export type Pagination = {
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+};

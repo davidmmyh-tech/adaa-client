@@ -27,7 +27,7 @@ function ErrorFetchingResource({ retry, isRetrying }: { retry: () => void; isRet
 function NoResourceAvilable({ retry, isRetrying }: { retry: () => void; isRetrying: boolean }) {
   return (
     <div className="text-muted flex h-96 flex-col items-center justify-center gap-8 text-center text-4xl font-bold">
-      <Brackets size={100} className="stroke-primary" />
+      <Brackets size={80} className="stroke-primary" />
       <p>لا يوجد محتوي للعرض</p>
       <SubmitButton isLoading={isRetrying} className="block font-medium" onClick={retry}>
         إعادة المحاولة
@@ -38,7 +38,7 @@ function NoResourceAvilable({ retry, isRetrying }: { retry: () => void; isRetryi
 
 function DefaultLoading() {
   return (
-    <div className="my-24 flex items-center justify-center">
+    <div className="flex h-96 items-center justify-center">
       <Logo isLoading className="h-24 w-24" />
     </div>
   );

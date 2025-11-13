@@ -5,6 +5,47 @@ type props = {
   size?: number | string;
 } & React.SVGProps<SVGSVGElement>;
 
+export function ForwardIcon({ className = '', size = '25', ...props }: props) {
+  return (
+    <svg
+      className={cn('fill-white', className)}
+      width={size}
+      height={size}
+      viewBox="0 0 46 45"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M41.2677 28.75C38.6591 36.7348 31.1881 42.5 22.3788 42.5C11.4 42.5 2.5 33.5457 2.5 22.5C2.5 11.4543 11.4 2.5 22.3788 2.5C29.7367 2.5 36.161 6.52199 39.5981 12.5M41.2677 10.5461L38.5295 13.1252M33.5606 15H43.5V5L33.5606 15Z"
+        stroke="#2B2C52"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+export function BackwardIcon({ className = '', size = '25', ...props }: props) {
+  return (
+    <svg
+      className={cn('fill-white', className)}
+      width={size}
+      height={size}
+      viewBox="0 0 46 45"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M4.73233 28.75C7.34091 36.7348 14.8119 42.5 23.6212 42.5C34.6 42.5 43.5 33.5457 43.5 22.5C43.5 11.4543 34.6 2.5 23.6212 2.5C16.2633 2.5 9.83899 6.52199 6.40185 12.5M4.73233 10.5461L7.47051 13.1252M12.4394 15H2.5V5L12.4394 15Z"
+        stroke="#2B2C52"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function FacebookIcon({ className = '', size = '25', ...props }: props) {
   return (
     <svg
