@@ -12,7 +12,7 @@ import { isAxiosError } from 'axios';
 
 import ErrorPage from './pages/Error';
 import MainLayout from './layouts/Main';
-// import UserGuard from './layouts/UserGuard';
+import UserGuard from './layouts/UserGuard';
 import HomePage from './pages/Home';
 import AppWrapper from './layouts/AppWrapper';
 import UserInitRequiredGuard from './layouts/UserInitRequiredGuard';
@@ -77,7 +77,7 @@ const router = createBrowserRouter([
             element: <UserInitRequiredGuard />,
             children: [
               {
-                // element: <UserGuard />,
+                element: <UserGuard />,
                 children: [
                   {
                     errorElement: <ErrorPage />, //handle pages error so keep the layout visable (error Boundry)

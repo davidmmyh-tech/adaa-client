@@ -11,7 +11,7 @@ export default function MainLayout() {
     <>
       <NavBar onOpenSideBar={() => setIsSideBarOpen(true)} />
       <SideBar isOpen={isSideBarOpen} onClose={() => setIsSideBarOpen(false)} />
-      <main className="min-h-[50vh] pb-12">
+      <main className="min-h-[20vh] pb-12">
         <Outlet />
       </main>
       <Footer />
