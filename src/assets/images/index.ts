@@ -20,6 +20,8 @@ import step4 from './how-to-join-steps/step4-howtojoin.webp';
 import p1 from './partners/1.webp';
 import p2 from './partners/2.webp';
 import p3 from './partners/3.webp';
+import podcastHeroImage from './podcast-hero.webp';
+import podcastCoverImage from './podcast-image.webp';
 
 const partners = [p1, p2, p3];
 
@@ -51,5 +53,7 @@ export {
   mapImage,
   descriptionImage,
   howToJoinSteps,
-  partners
+  partners,
+  podcastHeroImage,
+  podcastCoverImage
 };

@@ -1,5 +1,5 @@
 import AdaaShieldHeroSection from '@/components/sections/adaa-shield-assessment/AdaaShieldHero';
-import ShieldQuestionsSection from '@/components/sections/adaa-shield-assessment/ShieldQuestions';
+import CertificatesQuestionsSection from '@/components/sections/adaa-shield-assessment/ShieldQuestions';
 import SuccessScreen from '@/components/ui/extend/SuccessScreen';
 import { useState } from 'react';
 
@@ -18,7 +18,7 @@ export default function AdaaShieldAssessmentPage() {
           <p className="text-2xl font-semibold">تم استلام إجاباتكم بنجاح!</p>
         </SuccessScreen>
       ) : (
-        <ShieldQuestionsSection onSuccess={() => setSuccess(true)} />
+        <CertificatesQuestionsSection onSuccess={() => setSuccess(true)} />
       )}
     </>
   );

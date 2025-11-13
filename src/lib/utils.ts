@@ -33,7 +33,7 @@ export function remote(path: string | null | undefined) {
 
 export function isHere(to: string, location: string) {
   if (to === '/' && location === '/') return true;
-  return to !== '/' && decodeURIComponent(location).includes(to);
+  return to !== '/' && decodeURIComponent(location) === to;
 }
 
 export function hideBodyScroll() {

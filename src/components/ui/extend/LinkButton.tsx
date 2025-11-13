@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Link, type LinkProps } from 'react-router';
 
-type Props = {
+export type LinkButtonProps = {
   variant?: keyof typeof variants;
 } & LinkProps;
 
@@ -11,7 +11,7 @@ const variants = {
   outline: 'border border-secondary text-secondary border-2 font-semibold'
 };
 
-export default function LinkButton({ children, className, variant = 'default', ...props }: Props) {
+export default function LinkButton({ children, className, variant = 'default', ...props }: LinkButtonProps) {
   return (
     <Link
       {...props}

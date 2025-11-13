@@ -1,7 +1,7 @@
 import silverIcon from './silver.webp';
 import goldIcon from './gold.webp';
 import diamondIcon from './diamond.webp';
-import bronzeIcon from './bronze.webp';
+import bronseIcon from './bronze.webp';
 import handTickIcon from './easy.webp';
 import chartIcon from './chart.webp';
 import databaseIcon from './database.webp';
@@ -14,7 +14,7 @@ export {
   silverIcon,
   goldIcon,
   diamondIcon,
-  bronzeIcon,
+  bronseIcon,
   handTickIcon,
   chartIcon,
   databaseIcon,

@@ -1,5 +1,5 @@
 import { shieldImage } from '@/assets/images';
-import LinkButton from '@/components/ui/extend/LinkButton';
+import UserStateButton from '@/components/ui/extend/UserStateButton';
 
 const prizes = [
   {
@@ -28,9 +28,9 @@ export default function PrizesSection() {
               نحن في جائزة درع أداء نقدم جوائز قيّمة لتمكين المنظمات غير الربحية من توسيع تأثيرها وتحقيق أهدافها. سيتم
               منح الجوائز المالية على شكل بطاقات كريدت تُستخدم في مسرعة أثر وريادة لدعم تطوير المشاريع.
             </p>
-            <LinkButton to="/تسجيل-دخول" className="mx-auto flex w-40">
-              سجّل الآن
-            </LinkButton>
+            <UserStateButton to="/تسجيل-دخول" className="mx-auto flex w-40">
+              أبداء الآن
+            </UserStateButton>
           </div>
           <img src={shieldImage} alt="Prizes" className="h-52 rounded-lg object-contain sm:h-64" />
         </div>

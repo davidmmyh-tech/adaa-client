@@ -1,5 +1,5 @@
 import {
-  bronzeIcon,
+  bronseIcon,
   diamondIcon,
   goldIcon,
   humanResourcesIcon,
@@ -7,8 +7,6 @@ import {
   silverIcon,
   stratigicIcon
 } from '@/assets/icons';
-import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
 
 export const authorities = ['مؤسس', 'مسؤول', 'داعم'];
 
@@ -84,7 +82,7 @@ export const certificateClasses = {
     title: 'شهادة أداء برونزية',
     scoreRange: '55-65%',
     description: 'تعكس الالتزام بالممارسات الأساسية للتحسين المستمر',
-    icon: bronzeIcon,
+    icon: bronseIcon,
     bgColorClass: 'bronse-gradient'
   }
 };
@@ -93,19 +91,4 @@ export const certificateTracks = {
   operational: { label: 'الأداء التشغيلي', icon: operationalIcon },
   strategic: { label: 'الأداء الاستراتيجي', icon: stratigicIcon },
   human_resources: { label: 'الموارد البشرية', icon: humanResourcesIcon }
-};
-
-export const states = {
-  completed: {
-    name: 'مكتمل',
-    color: '#078C43',
-    Button: (
-      <Button>
-        <Download />
-        تحميل الشهادة
-      </Button>
-    )
-  },
-  in_review: { name: 'قيد المراجعة', color: '#9D9615', Button: <Button variant="outline">⏳ قيد التقييم</Button> },
-  none: { name: 'لم يبدأ بعد', color: '#B01D1D', Button: <Button variant="secondary">ابدأ الآن</Button> }
 };

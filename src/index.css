@@ -156,6 +156,11 @@ body {
   @apply bg-card-secondary flex flex-col items-center space-y-2 rounded-xl border py-6 text-center shadow-md transition-transform duration-500 hover:-translate-y-1 hover:scale-101;
 }
 
+.podcast-hero-background {
+  background: url('/src/assets/images/podcast-hero.webp') no-repeat center center;
+  background-size: cover;
+}
+
 .bod-logo-split {
   background-image: url(/src/assets/images/bod-logo.webp);
   background-size: 185px;

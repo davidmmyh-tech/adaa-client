@@ -3,7 +3,7 @@ import { FacebookIcon, InstagramIcon, LinkedInIcon, XIcon } from '@/components/u
 export const xxlMenuItems = [
   {
     name: 'كرسي اداء',
-    to: 'كرسي-اداء'
+    to: '/كرسي-اداء'
   },
   {
     name: 'مدونة اداء',
@@ -26,7 +26,7 @@ export const xxlMenuItems = [
 export const xlMenuItems = [
   {
     name: 'المنظمات الحاصلة على شهادة اداء',
-    to: '/شهادة-اداء/المنظمات'
+    to: '/شهادات-اداء/المنظمات'
   }
 ];
 

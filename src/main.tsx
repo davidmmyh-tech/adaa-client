@@ -28,6 +28,9 @@ import VerifiedEmailPage from './pages/VerifiedEmail';
 import VerifyYourMail from './pages/VerifyYourMail';
 import CertificatesPage from './pages/Certificates';
 import UserProvider from './context/UserProvider';
+import CertificatesInformaticsPage from './pages/CertificatesInformatics';
+import CertificatesAssessmentPage from './pages/CertificatesAssessment';
+import Podcast from './pages/Podcast';
 
 const router = createBrowserRouter([
   {
@@ -54,7 +57,17 @@ const router = createBrowserRouter([
               },
               {
                 path: 'شهادات-اداء',
-                children: [{ index: true, element: <CertificatesPage /> }]
+                children: [
+                  { index: true, element: <CertificatesPage /> },
+                  { path: 'المنظمات', element: <CertificatesInformaticsPage /> }
+                ]
+              },
+              {
+                path: 'كرسي-اداء',
+                children: [
+                  { index: true, element: <Podcast /> },
+                  { path: ':id', element: <></> }
+                ]
               }
             ]
           },
@@ -72,6 +85,10 @@ const router = createBrowserRouter([
                       {
                         path: 'درع-اداء',
                         children: [{ path: 'تقييم', element: <AdaaShieldAssessmentPage /> }]
+                      },
+                      {
+                        path: 'شهادات-اداء',
+                        children: [{ path: 'تقييم', element: <CertificatesAssessmentPage /> }]
                       }
                     ]
                   }

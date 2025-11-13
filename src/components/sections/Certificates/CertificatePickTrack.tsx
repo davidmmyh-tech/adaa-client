@@ -42,6 +42,8 @@ export default function CertificatePickTrackSection() {
     }
   };
 
+  const params = selectedTracks.map((t) => `tracks=${t}`).join('&');
+
   return (
     <section className="container space-y-6">
       <h5 className="text-2xl font-semibold">مسارات التقييم</h5>
@@ -60,7 +62,7 @@ export default function CertificatePickTrackSection() {
         ))}
       </div>
       <div className="flex justify-center">
-        <LinkButton to={`/شهادات-اداء/تقييم?tracks=${selectedTracks.join(',')}`} variant="secondary">
+        <LinkButton to={`/شهادات-اداء/تقييم?${params}`} variant="secondary">
           بدء التقييم في المسارات
         </LinkButton>
       </div>
@@ -87,11 +89,8 @@ function CertificateTrackCard({
 }) {
   return (
     <div className="relative rounded-md p-4 md:w-80" style={{ backgroundColor: hexColor }}>
-      <Label
-        htmlFor={name}
-        className="text-primary flex flex-row items-center justify-between gap-4 md:flex-col md:justify-start md:gap-8"
-      >
-        <div className="flex items-center gap-4 md:flex-col md:gap-8">
+      <div className="flex flex-row items-center justify-between gap-4 md:flex-col md:justify-start md:gap-8">
+        <Label htmlFor={name} className="text-primary flex items-center gap-4 md:flex-col md:gap-8">
           <div className="absolute top-4 -mt-1 sm:static md:h-12 md:w-full">
             <Checkbox id={name} className="bg-white" checked={isSelected} onClick={onSelect} />
           </div>
@@ -103,14 +102,14 @@ function CertificateTrackCard({
             </div>
             <p>{description}</p>
           </div>
-        </div>
+        </Label>
         <LinkButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="hidden md:flex">
           ابدأ هذا المسار
         </LinkButton>
         <LinkButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="md:hidden">
           ابدأ
         </LinkButton>
-      </Label>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,6 @@
-import LinkButton from '@/components/ui/extend/LinkButton';
-import { useUserState } from '@/context/UserProvider';
+import UserStateButton from '@/components/ui/extend/UserStateButton';
 
 export default function CertificatesScheduleSection() {
-  const { user } = useUserState();
   return (
     <section className="bg-muted/10">
       <div className="illustration-background">
@@ -54,15 +52,9 @@ export default function CertificatesScheduleSection() {
           </div>
 
           <div className="flex justify-center">
-            {user ? (
-              <LinkButton to="/شهادات-اداء/تقييم" className="bg-secondary w-40">
-                أبداء الآن
-              </LinkButton>
-            ) : (
-              <LinkButton to="/تسجيل-دخول" className="bg-secondary w-40">
-                سجّل الآن
-              </LinkButton>
-            )}
+            <UserStateButton to="/شهادات-اداء/تقييم" className="bg-secondary w-40">
+              أبداء الآن
+            </UserStateButton>
           </div>
         </div>
       </div>

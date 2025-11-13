@@ -28,7 +28,7 @@ export default function RegisterPage() {
         if (error.response?.status === 405) return setError('البريد مستخدم من قبل');
         if (error.response?.status === 422)
           return setError('خطاء في التحقق من البيانات المدخلة, تحقق منها وحاول مرة اخرى');
-        setError(error.response?.data?.message ?? 'خطاء غير معروف حاول لاحقا');
+        setError('خطاء غير معروف حاول لاحقا');
       }
     }
   });

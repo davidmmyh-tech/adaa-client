@@ -1,6 +1,6 @@
 import Logo from '@/components/ui/extend/Logo';
 import SubmitButton from '@/components/ui/submit-button';
-import { BadgeX } from 'lucide-react';
+import { BadgeX, Brackets } from 'lucide-react';
 
 type Props = {
   isError: boolean;
@@ -26,8 +26,9 @@ function ErrorFetchingResource({ retry, isRetrying }: { retry: () => void; isRet
 
 function NoResourceAvilable({ retry, isRetrying }: { retry: () => void; isRetrying: boolean }) {
   return (
-    <div className="text-muted flex h-96 flex-col items-center justify-center gap-4 text-center text-4xl font-bold">
-      لا يوجد محتوي للعرض
+    <div className="text-muted flex h-96 flex-col items-center justify-center gap-8 text-center text-4xl font-bold">
+      <Brackets size={100} className="stroke-primary" />
+      <p>لا يوجد محتوي للعرض</p>
       <SubmitButton isLoading={isRetrying} className="block font-medium" onClick={retry}>
         إعادة المحاولة
       </SubmitButton>
@@ -37,7 +38,7 @@ function NoResourceAvilable({ retry, isRetrying }: { retry: () => void; isRetryi
 
 function DefaultLoading() {
   return (
-    <div className="container my-12 items-center justify-center">
+    <div className="my-24 flex items-center justify-center">
       <Logo isLoading className="h-24 w-24" />
     </div>
   );

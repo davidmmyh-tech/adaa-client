@@ -1,4 +1,6 @@
-import { states } from '@/constants/data';
+import { Button } from '@/components/ui/button';
+import { Table, TBody, TCell, THead, TRow } from '@/components/ui/extend/TableItems';
+import { Download } from 'lucide-react';
 import { useMemo } from 'react';
 
 export default function EvaluationBoardSection() {
@@ -26,36 +28,68 @@ export default function EvaluationBoardSection() {
     []
   );
 
+  const states = useMemo(
+    () => ({
+      completed: {
+        name: 'مكتمل',
+        color: '#078C43',
+        Button: (
+          <Button className="w-full">
+            <Download />
+            تحميل الشهادة
+          </Button>
+        )
+      },
+      in_review: {
+        name: 'قيد المراجعة',
+        color: '#9D9615',
+        Button: (
+          <Button className="w-full" variant="outline">
+            ⏳ قيد التقييم
+          </Button>
+        )
+      },
+      none: {
+        name: 'لم يبدأ بعد',
+        color: '#B01D1D',
+        Button: (
+          <Button className="w-full" variant="secondary">
+            ابدأ الآن
+          </Button>
+        )
+      }
+    }),
+    []
+  );
+
   return (
     <section className="bg-muted/10 container space-y-6 rounded-lg p-4">
       <h6 className="text-2xl font-semibold">لوحة التقييم</h6>
       <div className="space-y-4">
-        <div className="grid grid-cols-5 gap-1 font-semibold md:grid-cols-5 lg:gap-4">
-          <div className="flex h-12 items-center justify-center rounded-lg bg-[#D4D4EC] text-center">المسار</div>
-          <div className="flex h-12 items-center justify-center rounded-lg bg-[#D4D4EC] text-center">الحالة</div>
-          <div className="flex h-12 items-center justify-center rounded-lg bg-[#D4D4EC] text-center">النسبة</div>
-          <div className="flex h-12 items-center justify-center rounded-lg bg-[#D4D4EC] text-center">نوع الشهادة</div>
-        </div>
+        <Table>
+          <TBody className="min-w-4xl">
+            <TRow>
+              <THead className="col-span-3">المسار</THead>
+              <THead className="col-span-3">الحالة</THead>
+              <THead className="col-span-1">النسبة</THead>
+              <THead className="col-span-3">نوع الشهادة</THead>
+            </TRow>
 
-        {userTracksStates.map((t) => (
-          <div key={t.name} className="grid grid-cols-5 gap-1 text-sm font-semibold md:grid-cols-5 lg:gap-4">
-            <div className="flex items-center justify-center py-4">{t.name}</div>
-            <div
-              className="flex items-center justify-center py-4"
-              style={{ color: states[t.state as keyof typeof states].color }}
-            >
-              {states[t.state as keyof typeof states].name}
-            </div>
-            <div
-              className="flex items-center justify-center py-4"
-              style={{ color: states[t.state as keyof typeof states].color }}
-            >
-              {t.percentage || '____'}
-            </div>
-            <div className="flex items-center justify-center py-4">{t.certificateType}</div>
-            {states[t.state as keyof typeof states].Button}
-          </div>
-        ))}
+            {userTracksStates.map((t) => (
+              <TRow key={t.name}>
+                <TCell className="col-span-3">{t.name}</TCell>
+                <TCell className="col-span-3" style={{ color: states[t.state as keyof typeof states].color }}>
+                  {states[t.state as keyof typeof states].name}
+                </TCell>
+                <TCell className="col-span-1" style={{ color: states[t.state as keyof typeof states].color }}>
+                  {t.percentage || '____'}
+                </TCell>
+                <TCell className="col-span-3">{t.certificateType}</TCell>
+                <TCell>{states[t.state as keyof typeof states].Button}</TCell>
+              </TRow>
+            ))}
+          </TBody>
+        </Table>
       </div>
     </section>
   );
