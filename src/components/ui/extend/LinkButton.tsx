@@ -16,8 +16,8 @@ export default function LinkButton({ children, className, variant = 'default', .
     <Link
       {...props}
       className={cn(
-        variants[variant],
         'font-bold, inline-flex h-14 w-fit items-center justify-center rounded-md px-4 shadow-md transition-colors hover:opacity-90',
+        variants[variant],
         className
       )}
     >

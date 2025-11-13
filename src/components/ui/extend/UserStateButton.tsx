@@ -6,9 +6,15 @@ type Props = {
   children?: React.ReactNode;
 } & LinkButtonProps;
 
-export default function UserStateButton({ children, variant, className, ...props }: Props) {
+export default function UserStateButton({ children, variant = 'secondary', className, ...props }: Props) {
   const { user } = useUserState();
-  if (user) return <LinkButton {...props}>{children}</LinkButton>;
+
+  if (user)
+    return (
+      <LinkButton variant={variant} className={className} {...props}>
+        {children}
+      </LinkButton>
+    );
   return (
     <LinkButton to="/تسجيل-دخول" variant={variant} className={className}>
       سجّل الآن

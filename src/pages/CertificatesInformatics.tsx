@@ -56,6 +56,7 @@ export default function CertificatesInformaticsPage() {
                 // onChange={handleQueryChange}
               />
             </div>
+
             <Button variant="outline" className="h-auto border-2 font-semibold">
               عرض كبطاقات <Grid3x3 />
             </Button>
