@@ -1,4 +1,4 @@
-import CertificatesHeroSection from '@/components/sections/certificates/CertificatesHero';
+import CertificatesHeroSection from '@/components/sections/Certificates/CertificatesHero';
 import SubmitButton from '@/components/ui/submit-button';
 import { certificateTracks } from '@/constants/data';
 import { useState } from 'react';

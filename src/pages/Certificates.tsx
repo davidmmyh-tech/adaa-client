@@ -1,9 +1,9 @@
-import CertificatesClassesSection from '@/components/sections/certificates/CertificatesClasses';
-import CertificatesHeroSection from '@/components/sections/certificates/CertificatesHero';
-import CertificatesScheduleSection from '@/components/sections/certificates/CertificatesSchedule';
-import CertificatesTermsSection from '@/components/sections/certificates/CertificatesTerms';
-import EvaluationBoardSection from '@/components/sections/certificates/EvaluationBoard';
-import CertificatePickTrackSection from '@/components/sections/certificates/CertificatePickTrack';
+import CertificatesClassesSection from '@/components/sections/Certificates/CertificatesClasses';
+import CertificatesHeroSection from '@/components/sections/Certificates/CertificatesHero';
+import CertificatesScheduleSection from '@/components/sections/Certificates/CertificatesSchedule';
+import CertificatesTermsSection from '@/components/sections/Certificates/CertificatesTerms';
+import EvaluationBoardSection from '@/components/sections/Certificates/EvaluationBoard';
+import CertificatePickTrackSection from '@/components/sections/Certificates/CertificatePickTrack';
 
 export default function CertificatesPage() {
   return (

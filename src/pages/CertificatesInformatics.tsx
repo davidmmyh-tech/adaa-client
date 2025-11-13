@@ -1,6 +1,6 @@
 import CertificatesAnalyticsSection from '@/components/sections/certificates-informatics/CertificatesAnalytics';
 import CertificatesOrgsTable from '@/components/sections/certificates-informatics/CertificatesOrgsTable';
-import CertificatesHeroSection from '@/components/sections/certificates/CertificatesHero';
+import CertificatesHeroSection from '@/components/sections/Certificates/CertificatesHero';
 import { Button } from '@/components/ui/button';
 import Dropdown from '@/components/ui/extend/Dropdown';
 import { SearchIcon } from '@/components/ui/icons';
