@@ -25,13 +25,12 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isError, setIsError] = useState(!src);
-  const [soundSrc, setSoundSrc] = useState(remote(src) || '/test.mp3');
   const [duration, setDuration] = useState<number | null>(null);
   const [audioElement, setAudioElement] = useState<HTMLMediaElement | null>(null);
 
   useEffect(() => {
     const container = waveformRef.current;
-    if (!container || !soundSrc) return;
+    if (!container || !src) return;
 
     wavesurferRef.current?.destroy(); // Cleanup previous instance
     const ws = WaveSurfer.create({
@@ -77,7 +76,6 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
       // eslint-disable-next-line no-console
       console.error('WaveSurfer error:', err);
       setIsError(true);
-      setSoundSrc('/test.mp3');
     };
 
     const handleFinish = () => {
@@ -92,7 +90,7 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
     ws.on('pause', handlePause);
     ws.on('finish', handleFinish);
 
-    ws.load(soundSrc);
+    ws.load(remote(src));
     audioPlayers.set(playerId, () => ws.pause()); // Register this player's pause function
 
     return () => {
@@ -106,7 +104,7 @@ export default function useWaveSurfer({ src }: { src: string | null | undefined 
       audioPlayers.delete(playerId);
       if (currentPlayingId === playerId) currentPlayingId = null;
     };
-  }, [soundSrc, playerId]);
+  }, [src, playerId]);
 
   const togglePlay = () => {
     wavesurferRef.current?.playPause();

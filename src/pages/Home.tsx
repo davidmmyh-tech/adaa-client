@@ -8,7 +8,7 @@ const PartnersSection = lazy(() => import('@/components/sections/home/Partners')
 
 export default function HomePage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-18">
       <Hero />
       <PlatformDescriptionSection />
       <Suspense fallback={<div>Loading...</div>}>

@@ -8,12 +8,11 @@ export default function UserGuard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let globalAuthErrorInterceptor: number;
     if (!user) {
       navigate('/تسجيل-دخول', { replace: true });
-      return;
     }
 
+    let globalAuthErrorInterceptor: number;
     const initFn = () => {
       globalAuthErrorInterceptor = api.interceptors.response.use(
         (response) => response,
@@ -37,5 +36,5 @@ export default function UserGuard() {
     };
   }, []);
 
-  if (user) return <Outlet />;
+  if (user && user.organization) return <Outlet />;
 }

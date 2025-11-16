@@ -12,10 +12,20 @@ export function MdMenuList() {
     setOpenSubmenu(openSubmenu === itemName ? null : itemName);
   };
 
+  const handleMouseEnter = (itemName: string) => {
+    setOpenSubmenu(itemName);
+  };
+
+  const handleMouseLeave = () => {
+    setOpenSubmenu(null);
+  };
+
   return mdMenuItems.map((item) => (
     <li
       key={item.name}
-      className={`relative rounded-md px-2 py-2 font-semibold whitespace-nowrap ${item.to && isHere(item.to, location.pathname) ? 'text-primary bg-accent md:bg-secondary' : 'cursor-default hover:[&_div]:block md:[&_div]:hidden'}`}
+      className={`relative rounded-md px-2 py-2 font-semibold whitespace-nowrap ${item.to && isHere(item.to, location.pathname) ? 'text-primary bg-accent md:bg-secondary' : 'cursor-default'}`}
+      onMouseEnter={item.subMenu ? () => handleMouseEnter(item.name) : undefined}
+      onMouseLeave={item.subMenu ? handleMouseLeave : undefined}
     >
       {item.to ? (
         <>
@@ -24,7 +34,11 @@ export function MdMenuList() {
         </>
       ) : item.subMenu ? (
         <>
-          <button type="button" onClick={() => toggleSubmenu(item.name)} className="md:cursor-default">
+          <button
+            type="button"
+            onClick={() => toggleSubmenu(item.name)}
+            className="w-full touch-manipulation text-start"
+          >
             <ChevronDown size={18} className="me-1 inline-block" />
             {item.name}
           </button>
@@ -33,9 +47,7 @@ export function MdMenuList() {
         item.name
       )}
       {item.subMenu && (
-        <div
-          className={`text-primary top-8 z-20 hover:block md:absolute md:hidden ${openSubmenu === item.name ? 'block' : 'hidden'}`}
-        >
+        <div className={`text-primary top-8 z-20 md:absolute ${openSubmenu === item.name ? 'block' : 'hidden'}`}>
           <ul className="border-muted/10 relative mt-2 space-y-2 rounded-lg border bg-white p-4 md:mt-6 md:shadow-lg">
             <Play size={11} className="absolute top-[-9px] -rotate-90 fill-white stroke-white" />
             {item.subMenu.map((subItem) => (

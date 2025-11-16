@@ -2,7 +2,7 @@ import { CheckCircle } from 'lucide-react';
 
 export default function CertificatesTermsSection() {
   return (
-    <section className="bg-primary text-primary-foreground">
+    <section className="bg-primary text-primary-foreground mb-0">
       <div className="container py-8">
         <h3 className="text-primary-foreground mb-6 text-2xl font-bold">📋 شروط المشاركة:</h3>
         <div className="flex justify-between">

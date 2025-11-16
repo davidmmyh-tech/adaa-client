@@ -161,10 +161,21 @@ body {
   background-size: cover;
 }
 
+.tools-hero-background {
+  background: url(/src/assets/images/adaa-tools.webp) no-repeat center center;
+  background-size: 375px;
+  background-position: right top;
+  background-repeat: repeat;
+}
+
 .bod-logo-split {
   background-image: url(/src/assets/images/bod-logo.webp);
   background-size: 185px;
   height: 40px;
+}
+
+@utility heading-gradient {
+  background: linear-gradient(180deg, rgba(58, 59, 113, 1) 0%, rgba(120, 122, 205, 1) 50%, transparent 100%);
 }
 
 @utility diamond-gradient {
@@ -172,7 +183,7 @@ body {
   background: linear-gradient(
     180deg,
     rgba(112, 185, 248, 1) 0%,
-    rgba(230, 238, 245, 1) 50%,
+    rgba(230, 238, 245, 1) 90%,
     rgba(255, 255, 255, 1) 100%
   );
 }

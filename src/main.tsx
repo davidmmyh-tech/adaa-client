@@ -32,6 +32,7 @@ import CertificatesInformaticsPage from './pages/CertificatesInformatics';
 import CertificatesAssessmentPage from './pages/CertificatesAssessment';
 import Podcast from './pages/Podcast';
 import PodcastDetailsPage from './pages/PodcastDetails';
+import AdaaToolsPage from './pages/AdaaTools';
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
                   { index: true, element: <Podcast /> },
                   { path: ':id', element: <PodcastDetailsPage /> }
                 ]
+              },
+              {
+                path: 'ادوات-اداء',
+                children: [{ index: true, element: <AdaaToolsPage /> }]
               }
             ]
           },

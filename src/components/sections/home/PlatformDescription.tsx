@@ -2,7 +2,7 @@ import { descriptionImage } from '@/assets/images';
 
 export default function PlatformDescriptionSection() {
   return (
-    <section className="container pb-12">
+    <section className="container md:pb-12">
       <div className="relative">
         <div className="bg-primary rounded-2xl md:me-32">
           <div className="illustration-background text-primary-foreground space-y-4 p-4 md:p-8 md:pe-56">

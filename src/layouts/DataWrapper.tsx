@@ -3,13 +3,13 @@ import SubmitButton from '@/components/ui/submit-button';
 import { BadgeX, Brackets } from 'lucide-react';
 
 type Props = {
-  isError: boolean;
+  isError?: boolean;
   isEmpty?: boolean | null;
   isPending?: boolean;
   isRefetching?: boolean;
   children: React.ReactNode;
   LoadingFallback?: React.ComponentType;
-  retry: () => void;
+  retry?: () => void;
 };
 
 function ErrorFetchingResource({ retry, isRetrying }: { retry: () => void; isRetrying: boolean }) {
@@ -54,7 +54,7 @@ export default function DataWrapper({
   isRefetching
 }: Props) {
   if (isPending) return <LoadingFallback />;
-  if (isError) return <ErrorFetchingResource retry={retry} isRetrying={!!isRefetching} />;
-  if (isEmpty && isEmpty !== undefined) return <NoResourceAvilable retry={retry} isRetrying={!!isRefetching} />;
+  if (isError) return <ErrorFetchingResource retry={() => retry?.()} isRetrying={!!isRefetching} />;
+  if (isEmpty) return <NoResourceAvilable retry={() => retry?.()} isRetrying={!!isRefetching} />;
   return children;
 }

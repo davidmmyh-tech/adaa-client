@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function NewsSection() {
   const { data } = useQuery({
     queryKey: ['news'],
-    queryFn: () => getNews()
+    queryFn: () => getNews(1, 2)
   });
   return (
     <section className="bg-primary text-primary-foreground">

@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState, type VideoHTMLAttributes } from 'react';
 import { VideoIcon } from '../icons';
 import Img from './Img';
+import { cn } from '@/lib/utils';
 
 type Props = {
-  src: string;
   placeholderImage: string;
-};
+} & VideoHTMLAttributes<HTMLVideoElement>;
 
-export default function Video({ src, placeholderImage }: Props) {
+export default function Video({ src, placeholderImage, className }: Props) {
   const [startVideo, setStartVideo] = useState(false);
 
   return startVideo ? (
@@ -15,7 +15,7 @@ export default function Video({ src, placeholderImage }: Props) {
       src={src}
       controls
       autoPlay
-      className="aspect-video max-h-96 min-h-80 w-full max-w-3xl rounded-xl object-cover"
+      className={cn('aspect-video w-full max-w-3xl rounded-xl object-cover', className)}
     />
   ) : (
     <div className="relative cursor-pointer" onClick={() => setStartVideo(true)}>
