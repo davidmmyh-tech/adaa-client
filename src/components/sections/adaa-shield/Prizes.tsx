@@ -28,7 +28,7 @@ export default function PrizesSection() {
               نحن في جائزة درع أداء نقدم جوائز قيّمة لتمكين المنظمات غير الربحية من توسيع تأثيرها وتحقيق أهدافها. سيتم
               منح الجوائز المالية على شكل بطاقات كريدت تُستخدم في مسرعة أثر وريادة لدعم تطوير المشاريع.
             </p>
-            <UserStateButton to="/تسجيل-دخول" variant="default" className="mx-auto flex w-40">
+            <UserStateButton to="/درع-اداء/تقييم" variant="default" className="mx-auto flex w-40">
               أبداء الآن
             </UserStateButton>
           </div>

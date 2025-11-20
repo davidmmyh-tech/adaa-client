@@ -22,7 +22,7 @@ export default function CertificatesInformaticsPage() {
   const year = Number(searchParams.get('year')) || undefined;
 
   const { data, isPending } = useQuery({
-    queryKey: ['certificate-organizations', query, display, rank, year],
+    queryKey: ['certificate-organizations', query, rank, year],
     queryFn: () => getOrganzations({ query, rank, year, page: 1, limit: 5 })
   });
   const organizations = data?.data.data.data || [];
