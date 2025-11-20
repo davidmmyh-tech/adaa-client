@@ -1,4 +1,4 @@
-import { tempFlgs } from '@/constants/data';
+import { TEMP_FLAGS } from '@/constants/data';
 import { useUserState } from '@/context/UserProvider';
 import { setToken } from '@/lib/storage';
 import type { User } from '@/schemas/types';
@@ -20,7 +20,7 @@ export default function useLoginMutation({ onSuccess, onError }: Props) {
     mutationKey: ['login'],
     mutationFn: (form: LoginForm) => loginUser(form),
     onSuccess: async (data) => {
-      const flags = data.data.flags || tempFlgs;
+      const flags = data.data.flags || TEMP_FLAGS;
       setToken(data.data.token);
       setUser(data.data.user);
       setFlags(flags);

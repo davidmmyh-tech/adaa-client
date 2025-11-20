@@ -2,7 +2,7 @@ import { bronzeIcon, diamondIcon, goldIcon, silverIcon } from '@/assets/icons';
 import { useMemo } from 'react';
 
 export default function CertificatesClassesSection() {
-  const certificateClasses = useMemo(
+  const CERTIFICATE_CLASSES = useMemo(
     () => [
       {
         title: 'شهادة أداء ماسية',
@@ -40,7 +40,7 @@ export default function CertificatesClassesSection() {
     <section className="container space-y-6">
       <h2 className="text-2xl font-semibold">انواع الشهادات</h2>
       <div className="grid grid-cols-1 gap-8 text-center font-semibold md:grid-cols-2 xl:grid-cols-4">
-        {certificateClasses.map((c, index) => (
+        {CERTIFICATE_CLASSES.map((c, index) => (
           <div
             key={index + c.title}
             className={`${c.bgColorClass} flex w-full flex-col items-center gap-8 rounded-xl p-10`}

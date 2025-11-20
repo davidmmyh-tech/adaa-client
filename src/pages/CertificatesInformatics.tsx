@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Dropdown from '@/components/ui/extend/Dropdown';
 import { SearchIcon } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
-import { certificateClasses, years } from '@/constants/data';
+import { CERTIFICATE_CLASSES, YEARS } from '@/constants/data';
 import useDebounce from '@/hooks/useDebounce';
 import { getOrganzations } from '@/services/certificates/certificates-data';
 import { useQuery } from '@tanstack/react-query';
@@ -39,7 +39,7 @@ export default function CertificatesInformaticsPage() {
   }, 400);
 
   const certificates = useMemo(
-    () => Object.values(certificateClasses).map((cls) => ({ label: cls.title, value: cls.id })),
+    () => Object.values(CERTIFICATE_CLASSES).map((cls) => ({ label: cls.title, value: cls.id })),
     []
   );
 
@@ -82,7 +82,7 @@ export default function CertificatesInformaticsPage() {
 
             <Dropdown
               variant="secondary"
-              values={years}
+              values={YEARS}
               selectLabel="السنة"
               onValueChange={(value) => updateSearchParam('year', value === 'none' ? '' : value)}
               className="basis-1/6"

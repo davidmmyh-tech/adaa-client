@@ -124,7 +124,6 @@ function ExcelCard({ index, title, description, image, id }: CardProps) {
           <p className="font-light">{description}</p>
           <div className={`flex h-full items-end ${index % 2 === 1 ? 'lg:justify-start' : 'lg:justify-end'}`}>
             <UserStateButton
-              to=""
               useAdaaPlus
               variant="secondary"
               className="border-secondary w-full sm:w-48"

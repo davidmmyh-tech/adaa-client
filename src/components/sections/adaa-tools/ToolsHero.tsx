@@ -1,10 +1,6 @@
-import { Button } from '@/components/ui/button';
-import LinkButton from '@/components/ui/extend/LinkButton';
-import { useUserState } from '@/context/UserProvider';
+import UserStateButton from '@/components/ui/extend/UserStateButton';
 
 export default function ToolsHeroSection() {
-  const { user, flags } = useUserState();
-
   return (
     <header className="bg-primary relative flex h-screen max-h-[650px] items-center justify-center">
       <div className="tools-hero-background absolute inset-0 z-0 opacity-60"></div>
@@ -18,23 +14,9 @@ export default function ToolsHeroSection() {
         </p>
 
         <div>
-          {user ? (
-            flags.subscription_status === 'pending' ? (
-              <Button variant="secondary" disabled className="w-40">
-                جاري التحقق من شاهد الاشتراك ...
-              </Button>
-            ) : (
-              !flags.has_active_subscription && (
-                <LinkButton to="/اشتراك-اداء-المميز" variant="secondary" className="w-40">
-                  اشترك الآن
-                </LinkButton>
-              )
-            )
-          ) : (
-            <LinkButton to="/تسجيل-الدخول" variant="secondary" className="w-40">
-              تسجيل الدخول
-            </LinkButton>
-          )}
+          <UserStateButton variant="secondary" useAdaaPlus>
+            أنت الان مشترك
+          </UserStateButton>
         </div>
       </div>
     </header>

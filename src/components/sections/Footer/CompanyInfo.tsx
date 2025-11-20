@@ -13,7 +13,9 @@ export default function CompanyInfo() {
             </div>
             <span className="text-lg font-semibold">قم بزيارتنا</span>
           </div>
-          <p className="">مجمع ريفا للأعمال - حي النزهة بمدينة جدة- المملكة العربية السعودية</p>
+          <Link to={''} target="_blank" className="">
+            مجمع ريفا للأعمال - حي النزهة بمدينة جدة- المملكة العربية السعودية
+          </Link>
         </li>
         <li>
           <div className="flex items-center gap-2">

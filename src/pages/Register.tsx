@@ -7,7 +7,7 @@ import { authImage } from '@/assets/images';
 import FormInput from '@/components/ui/extend/FormInput';
 import ErrorMessage from '@/components/ui/extend/error-message';
 import { FormDropdown } from '@/components/ui/extend/FormDropdown';
-import { authorities } from '@/constants/data';
+import { AUTHORITIES } from '@/constants/data';
 import useRegisterMutation from '@/hooks/mutations/useRegisterMutation';
 
 export default function RegisterPage() {
@@ -54,7 +54,7 @@ export default function RegisterPage() {
           {...register('password_confirmation')}
           error={errors.password_confirmation?.message}
         />
-        <FormDropdown onChange={(value) => setValue('role', value)} values={authorities} selectLabel="أختر الصلاحية" />
+        <FormDropdown onChange={(value) => setValue('role', value)} values={AUTHORITIES} selectLabel="أختر الصلاحية" />
 
         <div className="text-center">
           <ErrorMessage error={error} />

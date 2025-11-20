@@ -15,7 +15,7 @@ export default function CertificatesAnalyticsSection() {
     (data?.data.data.by_rank.gold || 0) +
     (data?.data.data.by_rank.diamond || 0);
 
-  const certificateClasses = useMemo(
+  const CERTIFICATE_CLASSES = useMemo(
     () => [
       {
         title: 'عدد الجمعيات الماسية',
@@ -59,7 +59,7 @@ export default function CertificatesAnalyticsSection() {
       </div>
 
       <div className="grid grid-cols-1 gap-8 text-center font-semibold md:grid-cols-2 xl:grid-cols-4">
-        {certificateClasses.map((c, index) => (
+        {CERTIFICATE_CLASSES.map((c, index) => (
           <div
             key={index + c.title}
             className={`${c.bgColorClass} flex w-full flex-col items-center gap-4 rounded-xl p-4 pb-14`}

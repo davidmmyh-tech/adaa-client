@@ -2,10 +2,10 @@ import { Button } from '@/components/ui/button';
 import { TCell, TRow } from '@/components/ui/extend/TableItems';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
 import SubmitButton from '@/components/ui/submit-button';
-import { certificateClasses } from '@/constants/data';
+import { CERTIFICATE_CLASSES } from '@/constants/data';
 import type { CertificateClass, CertificateTrack } from '@/schemas/types';
 import { deleteCertificateSubmission, downloadTrackData } from '@/services/certificates/certificates-data';
-import type { CertificateTrackSummary } from '@/services/certificates/types';
+import type { CERTIFICATE_TRACKSummary } from '@/services/certificates/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Download, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -14,7 +14,7 @@ type Props = {
   trackName: CertificateTrack;
   title: string;
   icon: string;
-  summary: CertificateTrackSummary | undefined;
+  summary: CERTIFICATE_TRACKSummary | undefined;
 };
 
 export default function TracksTableRow({ title, icon, trackName, summary }: Props) {
@@ -65,8 +65,8 @@ export default function TracksTableRow({ title, icon, trackName, summary }: Prop
       <TCell className="col-span-3">
         {trackClass !== '____' ? (
           <>
-            <img src={certificateClasses[trackClass].icon} alt={trackClass} className="w-6" />
-            {certificateClasses[trackClass].name}
+            <img src={CERTIFICATE_CLASSES[trackClass].icon} alt={trackClass} className="w-6" />
+            {CERTIFICATE_CLASSES[trackClass].name}
           </>
         ) : (
           '---'

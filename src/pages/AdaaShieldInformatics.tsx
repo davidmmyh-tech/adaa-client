@@ -4,7 +4,7 @@ import AdaaShieldOrgsTable from '@/components/sections/adaa-shield-info/AdaaShie
 import Dropdown from '@/components/ui/extend/Dropdown';
 import { SearchIcon } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
-import { grades, regions, years } from '@/constants/data';
+import { GRADES, REGIONS, YEARS } from '@/constants/data';
 import useGetAdaaShieldOrganizationsQuery from '@/hooks/queries/useGetAdaaShieldOrganizationsQuery';
 import useDebounce from '@/hooks/useDebounce';
 import { useSearchParams } from 'react-router';
@@ -54,21 +54,21 @@ export default function AdaaShieldInformatics() {
             </div>
             <Dropdown
               variant="secondary"
-              values={years}
+              values={YEARS}
               selectLabel="السنة"
               onValueChange={(value) => updateSearchParam('year', value === 'none' ? '' : value)}
               className="basis-1/6"
             />
             <Dropdown
               variant="secondary"
-              values={regions}
+              values={REGIONS}
               selectLabel="المنطقة"
               onValueChange={(value) => updateSearchParam('region', value === 'none' ? '' : value)}
               className="basis-1/6"
             />
             <Dropdown
               variant="secondary"
-              values={grades}
+              values={GRADES}
               selectLabel="مستوى الأداء"
               onValueChange={(value) => updateSearchParam('grade', value === 'none' ? '' : value)}
               className="basis-1/6"

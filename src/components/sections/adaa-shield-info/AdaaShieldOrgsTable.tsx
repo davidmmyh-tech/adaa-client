@@ -1,6 +1,6 @@
 import { Table, TBody, TCell, THead, TRow } from '@/components/ui/extend/TableItems';
 import { TableLoading } from '@/components/ui/loading/TableLoading';
-import { gradesMap } from '@/constants/data';
+import { GRADES_MAP } from '@/constants/data';
 import type { ShieldOrganization } from '@/services/shield';
 
 type Props = {
@@ -32,7 +32,7 @@ export default function AdaaShieldOrgsTable({ orgs, isLoading }: Props) {
                   <TCell className="col-span-3">{org.organization_name}</TCell>
                   <TCell className="col-span-2">{org.region || 'n/a'}</TCell>
                   <TCell className="col-span-2">{org.year}</TCell>
-                  <TCell className="col-span-2">{gradesMap[org.grade]}</TCell>
+                  <TCell className="col-span-2">{GRADES_MAP[org.grade]}</TCell>
                   <TCell className="col-span-1">{org.rate}%</TCell>
                   <TCell className="col-span-2">
                     <a href={org.organization_website || '#'} className="text-blue-600 underline">

@@ -94,7 +94,6 @@ function PowerBiCard({ index, title, description, image, id }: CardProps) {
           style={{ filter: 'invert(78%) sepia(85%) saturate(1586%) hue-rotate(359deg) brightness(102%) contrast(95%)' }}
         />
         <UserStateButton
-          to=""
           useAdaaPlus
           className="border-secondary text-primary h-14 bg-[#F5CA0C]"
           onClick={() => downloadMutation.mutate()}

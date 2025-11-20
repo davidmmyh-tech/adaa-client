@@ -1,5 +1,5 @@
 import CertificatesHeroSection from '@/components/sections/Certificates/CertificatesHero';
-import { certificateTracks } from '@/constants/data';
+import { CERTIFICATE_TRACKS } from '@/constants/data';
 import { useCallback, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import StrategicModel from '@/components/sections/Certificates/questions/StrategicModel';
@@ -66,7 +66,7 @@ export default function CertificatesAssessmentPage() {
                   className={`w-full space-y-1 rounded-lg border p-4 text-center text-sm md:w-52 ${currentTrackIndex === index ? 'border-accent bg-accent/10 text-secondary' : ''}`}
                 >
                   <p>نموذج</p>
-                  <p>{certificateTracks[t].label}</p>
+                  <p>{CERTIFICATE_TRACKS[t].label}</p>
                 </div>
               ))}
             </div>

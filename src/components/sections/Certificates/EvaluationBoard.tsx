@@ -1,6 +1,6 @@
 import { humanResourcesIcon, operationalIcon, stratigicIcon } from '@/assets/icons';
 import { Table, TBody, THead, TRow } from '@/components/ui/extend/TableItems';
-import { tempSummary } from '@/constants/data';
+import { TEMP_SUMMARY } from '@/constants/data';
 import TracksTableRow from './TrackTableRow';
 import { useQuery } from '@tanstack/react-query';
 import { userSummary } from '@/services/certificates/certificates-data';
@@ -11,7 +11,7 @@ export default function EvaluationBoardSection() {
     queryFn: () => userSummary(),
     placeholderData: (data) => data
   });
-  const pathsSummary = data?.data.data.paths || tempSummary.data.paths;
+  const pathsSummary = data?.data.data.paths || TEMP_SUMMARY.data.paths;
 
   return (
     <section className="bg-muted/10 container space-y-6 rounded-lg p-4">

@@ -1,7 +1,7 @@
 export type Id = string | number;
 export type CertificateClass = 'diamond' | 'gold' | 'silver' | 'bronze';
 export type CertificateTrack = 'strategic' | 'operational' | 'hr';
-export type CertificateTrackStatus = 'لم يبدأ بعد' | 'مكتمل' | 'قيد التقييم';
+export type CERTIFICATE_TRACKStatus = 'لم يبدأ بعد' | 'مكتمل' | 'قيد التقييم';
 
 export type Pagination = {
   current_page: number;

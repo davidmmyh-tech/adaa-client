@@ -39,8 +39,8 @@ export function MdMenuList() {
             onClick={() => toggleSubmenu(item.name)}
             className="w-full touch-manipulation text-start"
           >
-            <ChevronDown size={18} className="me-1 inline-block" />
             {item.name}
+            <ChevronDown size={18} className="me-1 inline-block" />
           </button>
         </>
       ) : (

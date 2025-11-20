@@ -10,11 +10,11 @@ import {
 import type { Flags } from '@/schemas/types';
 import type { UserSummaryResponse } from '@/services/certificates/types';
 
-export const authorities = ['مؤسس', 'مسؤول', 'داعم'];
+export const AUTHORITIES = ['مؤسس', 'مسؤول', 'داعم'];
 
 // Generate years from 2020 to current year in Arabic format
 const currentYear = new Date().getFullYear();
-export const years = [
+export const YEARS = [
   { value: 'none', label: 'كل السنوات' },
   ...Array.from({ length: currentYear - 2020 + 1 }, (_, i) => {
     const year = 2020 + i;
@@ -25,7 +25,7 @@ export const years = [
   }).reverse()
 ];
 
-export const grades = [
+export const GRADES = [
   { value: 'none', label: 'كل المستويات' },
   { value: 'excellent', label: 'ممتاز' },
   { value: 'very_good', label: 'جيد جداً' },
@@ -33,7 +33,7 @@ export const grades = [
   { value: 'acceptable', label: 'مقبول' }
 ];
 
-export const gradesMap: Record<string, string> = {
+export const GRADES_MAP: Record<string, string> = {
   excellent: 'ممتاز',
   very_good: 'جيد جداً',
   good: 'جيد',
@@ -41,7 +41,7 @@ export const gradesMap: Record<string, string> = {
   none: 'كل المستويات'
 };
 
-export const regions = [
+export const REGIONS = [
   { value: 'none', label: 'كل المناطق' },
   { value: 'Riyadh', label: 'الرياض' },
   { value: 'Makkah', label: 'مكة المكرمة' },
@@ -58,7 +58,7 @@ export const regions = [
   { value: 'Al Jawf', label: 'الجوف' }
 ];
 
-export const certificateClasses = {
+export const CERTIFICATE_CLASSES = {
   diamond: {
     id: 'diamond',
     title: 'شهادة أداء ماسية',
@@ -97,14 +97,14 @@ export const certificateClasses = {
   }
 };
 
-export const certificateTracks = {
+export const CERTIFICATE_TRACKS = {
   operational: { label: 'الأداء التشغيلي', icon: operationalIcon },
   strategic: { label: 'الأداء الاستراتيجي', icon: stratigicIcon },
   hr: { label: 'الموارد البشرية', icon: humanResourcesIcon }
 };
 
-export const tempFlgs: Flags = {
-  email_verified: true,
+export const TEMP_FLAGS: Flags = {
+  email_verified: false,
   has_organization: false,
   organization_status: null,
   can_access_features: false,
@@ -116,7 +116,7 @@ export const tempFlgs: Flags = {
   subscription_status: null
 };
 
-export const tempSummary: UserSummaryResponse = {
+export const TEMP_SUMMARY: UserSummaryResponse = {
   success: true,
   data: {
     paths: {

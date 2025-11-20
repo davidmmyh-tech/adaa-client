@@ -89,7 +89,6 @@ function DashboardCard({ title, description, image, id }: CardProps) {
 
       <div className="-mt-6 flex w-full justify-center">
         <UserStateButton
-          to=""
           useAdaaPlus
           className="border-secondary -mb-24 h-14"
           onClick={() => downloadMutation.mutate()}

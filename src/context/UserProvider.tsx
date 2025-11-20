@@ -1,7 +1,8 @@
-import { tempFlgs } from '@/constants/data';
+import { TEMP_FLAGS } from '@/constants/data';
 import useCurrentUserQuery from '@/hooks/queries/useCurrentUserQuery';
 import type { Flags, Organization, User } from '@/schemas/types';
 import { createContext, useContext, useState, type Dispatch } from 'react';
+import { toast } from 'react-toastify';
 
 type Props = {
   children: React.ReactNode;
@@ -21,17 +22,25 @@ const userContext = createContext<ContextProvidedValues | undefined>(undefined);
 
 export default function UserProvider({ children }: Props) {
   const [user, setUser] = useState<User | null>(null);
-  const [flags, setFlags] = useState<Flags>(tempFlgs);
+  const [flags, setFlags] = useState<Flags>(TEMP_FLAGS);
   const [organization, setOrganization] = useState<Organization | null>(null);
 
   const verifyQuery = useCurrentUserQuery({
+    onError: (err) => {
+      if (err.response?.status === 401 && user) {
+        toast.error('انتهت جلسة تسجيل الدخول، يرجى تسجيل الدخول مرة أخرى.');
+        setUser(null);
+        setFlags(TEMP_FLAGS);
+        setOrganization(null);
+      }
+    },
     onSuccess: (user, organization, flags) => {
       setUser(user);
       setOrganization(organization);
-      setFlags(flags || tempFlgs);
+      setFlags(flags || TEMP_FLAGS);
     }
   });
-  const isLoading = verifyQuery.isFetching;
+  const isLoading = verifyQuery.isPending && !user;
 
   return (
     <userContext.Provider value={{ user, setUser, flags, setFlags, organization, setOrganization, isLoading }}>

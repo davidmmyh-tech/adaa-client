@@ -15,11 +15,11 @@ export default function NavBar({ onOpenSideBar }: Props) {
     <nav
       className={`fixed top-4 z-30 w-screen transition-transform duration-300 ${isScrollingDown ? '-translate-y-24' : 'translate-y-0'}`}
     >
-      <div className="container text-sm">
+      <div className="container flex justify-center text-sm">
         <div
-          className={'bg-secondary z-20 flex h-14 w-full items-center justify-between gap-2 rounded-2xl px-4 shadow-md'}
+          className={'bg-secondary z-20 flex h-14 w-full items-center justify-center gap-2 rounded-2xl px-4 shadow-md'}
         >
-          <div className="flex grow items-center gap-4">
+          <div className="flex items-center gap-4">
             <Logo variant="light" isLoading={isLoading} className="inline-block h-10 w-10" />
             <UserMenu onOpenSideBar={onOpenSideBar} />
           </div>

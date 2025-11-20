@@ -1,6 +1,6 @@
 import { Table, TBody, TCell, THead, TRow } from '@/components/ui/extend/TableItems';
 import { TableLoading } from '@/components/ui/loading/TableLoading';
-import { certificateClasses, certificateTracks } from '@/constants/data';
+import { CERTIFICATE_CLASSES, CERTIFICATE_TRACKS } from '@/constants/data';
 import type { CertificatesOrganization } from '@/services/certificates/types';
 
 type Props = {
@@ -30,14 +30,14 @@ export default function CertificatesOrgsTable({ orgs, isLoading = false }: Props
                 <TRow key={org.organization_id + org.path}>
                   <TCell className="col-span-3">{org.organization_name}</TCell>
                   <TCell className="col-span-2 flex items-center gap-2">
-                    <img src={certificateTracks[org.path].icon} alt={org.path_label} className="w-6" />
+                    <img src={CERTIFICATE_TRACKS[org.path].icon} alt={org.path_label} className="w-6" />
                     {org.path_label}
                   </TCell>
                   <TCell className="col-span-2">
-                    {certificateClasses[org.rank].name}
+                    {CERTIFICATE_CLASSES[org.rank].name}
                     <img
-                      src={certificateClasses[org.rank].icon}
-                      alt={certificateClasses[org.rank].name}
+                      src={CERTIFICATE_CLASSES[org.rank].icon}
+                      alt={CERTIFICATE_CLASSES[org.rank].name}
                       className="w-6"
                     />
                   </TCell>
