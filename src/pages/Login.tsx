@@ -22,7 +22,7 @@ export default function LoginPage() {
   const { mutate, isPending } = useLoginMutation({
     onError: (err) => {
       if (err.response?.status === 401) setError('كلمة المرور او البريد غير صحيح');
-      else setError(JSON.stringify(err.response?.data ?? 'خطأ غير متوقع حاول لاحقا'));
+      else setError('خطأ غير متوقع حاول لاحقا');
     }
   });
 

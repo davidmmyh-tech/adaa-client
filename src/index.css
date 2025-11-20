@@ -103,7 +103,7 @@ body {
   --diamond: #70b9f8;
   --gold: #f3d734;
   --silver: #898889;
-  --bronse: #884108;
+  --bronze: #884108;
 }
 
 @theme inline {
@@ -156,6 +156,21 @@ body {
   @apply bg-card-secondary flex flex-col items-center space-y-2 rounded-xl border py-6 text-center shadow-md transition-transform duration-500 hover:-translate-y-1 hover:scale-101;
 }
 
+.contactus-hero-background {
+  background: url(/src/assets/images/contactus.webp) no-repeat center center;
+  background-size: cover;
+}
+
+.releases-hero-background {
+  background: url(/src/assets/images/releases-hero.webp) no-repeat center center;
+  background-size: cover;
+}
+
+.blogs-hero-background {
+  background: url(/src/assets/images/blogs-hero.webp) no-repeat center center;
+  background-size: cover;
+}
+
 .podcast-hero-background {
   background: url(/src/assets/images/podcast-hero.webp) no-repeat center center;
   background-size: cover;
@@ -188,7 +203,7 @@ body {
   );
 }
 
-@utility gold-gradient {
+@utility silver-gradient {
   background: #898889;
   background: linear-gradient(
     180deg,
@@ -198,7 +213,7 @@ body {
   );
 }
 
-@utility silver-gradient {
+@utility gold-gradient {
   background: #f3d734;
   background: linear-gradient(
     180deg,
@@ -209,7 +224,7 @@ body {
   );
 }
 
-@utility bronse-gradient {
+@utility bronze-gradient {
   background: #884108;
   background: linear-gradient(
     180deg,

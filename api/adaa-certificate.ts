@@ -111,3 +111,33 @@ type CertificateAttachmentUploadResponse = {
   success: boolean;
   file_url: string;
 };
+
+//TODO: api/certificates/schedule
+type CertificateScheduleResponse = {
+  success: boolean;
+  data: {
+    submission: {
+      start_date: string; //ISO date
+      end_date: string; //ISO date
+      note: string; //description/note
+    };
+    submission_end: {
+      date: string; //ISO date
+      note: string; //description/note
+    };
+    evaluation: {
+      start_date: string; //ISO date
+      end_date: string; //ISO date
+      note: string; //description/note
+    };
+    announcement: {
+      date: string; //ISO date
+      note: string; //description/note
+    };
+    awarding: {
+      start_date: string; //ISO date
+      end_date: string; //ISO date
+      note: string; //description/note
+    };
+  };
+};

@@ -1,3 +1,4 @@
+import { tempFlgs } from '@/constants/data';
 import { useUserState } from '@/context/UserProvider';
 import { setToken } from '@/lib/storage';
 import type { User } from '@/schemas/types';
@@ -13,16 +14,21 @@ type Props = {
 };
 
 export default function useLoginMutation({ onSuccess, onError }: Props) {
-  const { setUser } = useUserState();
+  const { setUser, setFlags, setOrganization } = useUserState();
   const navigate = useNavigate();
   return useMutation({
     mutationKey: ['login'],
     mutationFn: (form: LoginForm) => loginUser(form),
     onSuccess: async (data) => {
       setToken(data.data.token);
+      const flags = data.data.flags || tempFlgs;
       setUser(data.data.user);
+      setFlags(data.data.flags ?? tempFlgs);
+      setOrganization(data.data.organization);
       onSuccess?.(data.data.user);
-      navigate('/');
+
+      if (flags.has_organization && data.data.flags.organization_status === 'approved') navigate('/');
+      else navigate('/تسجيل-منظمة');
     },
     onError: (err) => {
       if (isAxiosError(err)) onError?.(err);

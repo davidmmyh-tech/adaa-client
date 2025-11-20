@@ -22,6 +22,9 @@ import p2 from './partners/2.webp';
 import p3 from './partners/3.webp';
 import podcastHeroImage from './podcast-hero.webp';
 import podcastCoverImage from './podcast-image.webp';
+import blogsHeroImage from './blogs-hero.webp';
+import contactUsImage from './contactus.webp';
+import successSub from './success-sub.gif';
 
 const partners = [p1, p2, p3];
 
@@ -55,5 +58,8 @@ export {
   howToJoinSteps,
   partners,
   podcastHeroImage,
-  podcastCoverImage
+  podcastCoverImage,
+  blogsHeroImage,
+  successSub,
+  contactUsImage
 };

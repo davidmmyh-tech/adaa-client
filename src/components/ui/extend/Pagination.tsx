@@ -41,19 +41,27 @@ export default function DataPagination({ currentPage, totalPages, onPageChange }
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            className={currentPage <= 1 ? 'cursor-not-allowed opacity-40 hover:bg-transparent' : 'cursor-pointer'}
+            className={
+              currentPage <= 1
+                ? 'cursor-not-allowed opacity-40 hover:bg-transparent'
+                : 'hover:bg-muted/10 cursor-pointer'
+            }
             aria-disabled={currentPage <= 1}
             onClick={() => handleClick(currentPage - 1)}
           />
         </PaginationItem>
         {getPages().map((page, idx) =>
           page === '...' ? (
-            <PaginationItem key={idx} className="cursor-pointer">
+            <PaginationItem key={idx} className="hover:bg-muted/10 cursor-pointer">
               <PaginationEllipsis />
             </PaginationItem>
           ) : (
             <PaginationItem key={page} className="cursor-pointer">
-              <PaginationLink isActive={page === currentPage} onClick={() => handleClick(Number(page))}>
+              <PaginationLink
+                className="hover:bg-muted/10"
+                isActive={page === currentPage}
+                onClick={() => handleClick(Number(page))}
+              >
                 {page}
               </PaginationLink>
             </PaginationItem>
@@ -62,7 +70,9 @@ export default function DataPagination({ currentPage, totalPages, onPageChange }
         <PaginationItem>
           <PaginationNext
             className={
-              currentPage >= totalPages ? 'cursor-not-allowed opacity-40 hover:bg-transparent' : 'cursor-pointer'
+              currentPage >= totalPages
+                ? 'cursor-not-allowed opacity-40 hover:bg-transparent'
+                : 'hover:bg-muted/10 cursor-pointer'
             }
             aria-disabled={currentPage >= totalPages}
             onClick={() => handleClick(currentPage + 1)}

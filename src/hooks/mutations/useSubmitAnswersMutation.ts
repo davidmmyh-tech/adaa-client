@@ -15,7 +15,7 @@ export default function useSubmitAnswers({ onSuccess, axisIndex, onError }: Prop
     mutationFn: (answers: AxisAnswers) => submitShieldQuestions(answers),
     onSuccess: (data) => onSuccess?.(data.data),
     onError: (err) => {
-      if (isAxiosError(err)) onError?.(err);
+      if (isAxiosError(err)) return onError?.(err);
       toast.error('حدث خطأ أثناء إرسال الإجابات. يرجى المحاولة مرة أخرى.');
     }
   });

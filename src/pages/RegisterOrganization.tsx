@@ -22,6 +22,7 @@ export default function RegisterOrganizationPage() {
   const { mutate, isPending } = useRegisterOrganizationMutation({
     onError: (error) => {
       if (error.response?.status === 405) return setError('الرخصة تم تسجيلها من قبل');
+      if (error.response?.status === 422) return setError('البيانات تمم استخدامها من قبل او غير صحيحة');
       setError('خطاء غير معروف حاول لاحقا');
     }
   });

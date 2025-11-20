@@ -19,7 +19,7 @@ export default function useRegisterMutation({
     onSuccess: (data) => {
       onSuccess?.(data.data);
       setSessionEmail(data.data.user.email);
-      navigate(`/تسجيل-دخول`);
+      navigate(`/تحقق-من-البريد-الالكتروني`);
     },
     onError: (error) => {
       if (isAxiosError(error)) onError?.(error);

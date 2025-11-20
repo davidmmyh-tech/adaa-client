@@ -1,4 +1,4 @@
-import AdaaPodcastsSection from '@/components/sections/podcast/AdaaPodcast';
+import AdaaPodcastsSection from '@/components/sections/podcast/AdaaPodcasts';
 import NewsSection from '@/components/sections/podcast/News';
 import PodcastHeroSection from '@/components/sections/podcast/PodcastHero';
 

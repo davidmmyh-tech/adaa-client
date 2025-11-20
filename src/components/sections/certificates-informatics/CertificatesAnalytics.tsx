@@ -1,35 +1,48 @@
-import { bronseIcon, diamondIcon, goldIcon, silverIcon } from '@/assets/icons';
+import { bronzeIcon, diamondIcon, goldIcon, silverIcon } from '@/assets/icons';
+import { getAnalytics } from '@/services/certificates/certificates-data';
+import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 export default function CertificatesAnalyticsSection() {
+  const { data } = useQuery({
+    queryKey: ['certificates-analytics'],
+    queryFn: () => getAnalytics()
+  });
+
+  const total =
+    (data?.data.data.by_rank.bronze || 0) +
+    (data?.data.data.by_rank.silver || 0) +
+    (data?.data.data.by_rank.gold || 0) +
+    (data?.data.data.by_rank.diamond || 0);
+
   const certificateClasses = useMemo(
     () => [
       {
         title: 'عدد الجمعيات الماسية',
         icon: diamondIcon,
         bgColorClass: 'diamond-gradient',
-        count: 0
+        count: data?.data.data.by_rank.diamond || 0
       },
       {
         title: 'عدد الجمعيات الذهبية',
         icon: goldIcon,
         bgColorClass: 'gold-gradient',
-        count: 0
+        count: data?.data.data.by_rank.gold || 0
       },
       {
         title: 'عدد الجمعيات الفضية',
         icon: silverIcon,
         bgColorClass: 'silver-gradient',
-        count: 0
+        count: data?.data.data.by_rank.silver || 0
       },
       {
         title: 'عدد الجمعيات البرونزية',
-        icon: bronseIcon,
-        bgColorClass: 'bronse-gradient',
-        count: 0
+        icon: bronzeIcon,
+        bgColorClass: 'bronze-gradient',
+        count: data?.data.data.by_rank.bronze || 0
       }
     ],
-    []
+    [data]
   );
 
   return (
@@ -37,11 +50,11 @@ export default function CertificatesAnalyticsSection() {
       <div className="flex justify-center gap-4">
         <div className="bg-secondary text-secondary-foreground max-w-sm rounded-2xl p-6 text-center text-2xl font-semibold shadow-lg">
           <h4>عدد الجمعيات المشاركه</h4>
-          <p>0</p>
+          <p>{data?.data.data.total_organizations}</p>
         </div>
         <div className="bg-secondary text-secondary-foreground max-w-sm rounded-2xl p-6 text-center text-2xl font-semibold shadow-lg">
           <h4>عدد شهادات الأداء الممنوحة</h4>
-          <p>0</p>
+          <p>{total}</p>
         </div>
       </div>
 

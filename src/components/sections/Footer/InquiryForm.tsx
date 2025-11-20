@@ -8,9 +8,7 @@ export default function InquiryForm() {
   const inquiryContentRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const { mutate, isPending } = useSubmitInquiryMutation({
-    onError: () => {
-      setError('حدث خطأ أثناء إرسال استفسارك. يرجى المحاولة مرة أخرى.');
-    }
+    onError: () => setError('حدث خطأ أثناء إرسال استفسارك. يرجى المحاولة مرة أخرى.')
   });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {

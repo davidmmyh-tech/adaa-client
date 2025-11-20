@@ -9,7 +9,7 @@ type Props = {
 
 export default function useSubmitInquiryMutation({ onSuccess, onError }: Props) {
   return useMutation({
-    mutationFn: (content: string) => inquiry(content),
+    mutationFn: (content: string) => inquiry({ message: content }),
     onSuccess: (data) => onSuccess?.(data.data.success),
     onError: (error) => {
       if (isAxiosError(error)) onError?.(error);

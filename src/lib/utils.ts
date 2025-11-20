@@ -48,3 +48,22 @@ export function showBodyScroll() {
   document.body.style.paddingRight = `0px`;
   document.body.style.overflowY = 'auto';
 }
+
+export function formatPeriodInArabic(milliseconds: number): string {
+  const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
+  const weeks = Math.floor(days / 7);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365);
+
+  if (years > 0) {
+    return years === 1 ? 'سنة واحدة' : years === 2 ? 'سنتان' : `${years} سنوات`;
+  } else if (months > 0) {
+    return months === 1 ? 'شهر واحد' : months === 2 ? 'شهران' : `${months} أشهر`;
+  } else if (weeks > 0) {
+    return weeks === 1 ? 'أسبوع واحد' : weeks === 2 ? 'أسبوعان' : `${weeks} أسابيع`;
+  } else if (days > 0) {
+    return days === 1 ? 'يوم واحد' : days === 2 ? 'يومان' : `${days} أيام`;
+  } else {
+    return 'أقل من يوم';
+  }
+}

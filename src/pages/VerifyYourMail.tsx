@@ -1,35 +1,25 @@
 import BackgroundElement1, { BackgroundElement2 } from '@/components/ui/extend/BackgroundElements';
+import ErrorMessage from '@/components/ui/extend/error-message';
 import Logo from '@/components/ui/extend/Logo';
 import SubmitButton from '@/components/ui/submit-button';
-import { getSessionEmail } from '@/lib/storage';
-import { resendEmailVerification } from '@/services/auth';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import useResendVerifyMailMutation from '@/hooks/mutations/useResendVerifyMailMutation';
+import useCountDown from '@/hooks/useCountDown';
+import { useState } from 'react';
 
 export default function VerifyYourMail() {
-  const [countdown, setCountdown] = useState(60);
-  const [canResend, setCanResend] = useState(false);
+  const { countdown, isCounting, restart } = useCountDown({ initial: 60 });
+  const [error, setError] = useState<string | null>(null);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: () => resendEmailVerification({ email: getSessionEmail() }),
+  const { mutate, isPending } = useResendVerifyMailMutation({
     onSuccess: () => {
-      setCountdown(60);
-      setCanResend(false);
+      restart();
+      setError(null);
+    },
+    onError: (err) => {
+      if (err.response?.status === 400) setError('البريد تم تفعيلة بالفعل');
+      else setError('حدث خطأ ما، يرجى المحاولة مرة أخرى.');
     }
   });
-
-  useEffect(() => {
-    if (countdown === 0) {
-      setCanResend(true);
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setCountdown((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [countdown]);
 
   return (
     <>
@@ -52,11 +42,14 @@ export default function VerifyYourMail() {
           "شكرًا لانضمامك إلى منصة اداء . يرجى تفعيل حسابك من خلال الرابط المرسل لبريدك."
         </h1>
 
+        <ErrorMessage error={error} />
+
         <div className="flex flex-col items-center gap-4">
-          <SubmitButton onClick={() => mutate()} isLoading={isPending} disabled={!canResend || isPending}>
-            {canResend ? 'إعادة ارسال التفعيل' : `إعادة الإرسال ${countdown} ثانية`}
+          <SubmitButton onClick={() => mutate()} isLoading={isPending} disabled={isCounting || isPending}>
+            {isCounting ? `إعادة الإرسال ${countdown} ثانية` : 'إعادة ارسال التفعيل'}
           </SubmitButton>
-          {!canResend && <p className="text-muted text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
+
+          {!isCounting && <p className="text-muted text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
         </div>
       </div>
     </>

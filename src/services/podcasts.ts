@@ -55,6 +55,6 @@ export function getPodcastDetails(id: Id) {
   return api.get<PodcastDetailsResponse>(`/api/podcasts/${id}`);
 }
 
-export function getNews(page: number = 1, limit: number = 5) {
+export function getNews({ page = 1, limit = 5 }: { page?: number; limit?: number }) {
   return api.get<NewsResponse>('/api/news', { params: { page, limit } });
 }

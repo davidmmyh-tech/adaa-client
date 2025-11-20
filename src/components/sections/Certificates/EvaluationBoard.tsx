@@ -1,66 +1,17 @@
-import { Button } from '@/components/ui/button';
-import { Table, TBody, TCell, THead, TRow } from '@/components/ui/extend/TableItems';
-import { Download } from 'lucide-react';
-import { useMemo } from 'react';
+import { humanResourcesIcon, operationalIcon, stratigicIcon } from '@/assets/icons';
+import { Table, TBody, THead, TRow } from '@/components/ui/extend/TableItems';
+import { tempSummary } from '@/constants/data';
+import TracksTableRow from './TrackTableRow';
+import { useQuery } from '@tanstack/react-query';
+import { userSummary } from '@/services/certificates/certificates-data';
 
 export default function EvaluationBoardSection() {
-  const userTracksStates = useMemo(
-    () => [
-      {
-        name: 'الأداء التشغيلي',
-        state: 'completed',
-        percentage: 100,
-        certificateType: 'الشهادة الماسية'
-      },
-      {
-        name: 'الأداء الاستراتيجي',
-        state: 'in_review',
-        percentage: 0,
-        certificateType: ''
-      },
-      {
-        name: 'الموارد البشرية',
-        state: 'none',
-        percentage: 0,
-        certificateType: ''
-      }
-    ],
-    []
-  );
-
-  const states = useMemo(
-    () => ({
-      completed: {
-        name: 'مكتمل',
-        color: '#078C43',
-        Button: (
-          <Button className="w-full">
-            <Download />
-            تحميل الشهادة
-          </Button>
-        )
-      },
-      in_review: {
-        name: 'قيد المراجعة',
-        color: '#9D9615',
-        Button: (
-          <Button className="w-full" variant="outline">
-            ⏳ قيد التقييم
-          </Button>
-        )
-      },
-      none: {
-        name: 'لم يبدأ بعد',
-        color: '#B01D1D',
-        Button: (
-          <Button className="w-full" variant="secondary">
-            ابدأ الآن
-          </Button>
-        )
-      }
-    }),
-    []
-  );
+  const { data } = useQuery({
+    queryKey: ['user-certificate-tracks-states'],
+    queryFn: () => userSummary(),
+    placeholderData: (data) => data
+  });
+  const pathsSummary = data?.data.data.paths || tempSummary.data.paths;
 
   return (
     <section className="bg-muted/10 container space-y-6 rounded-lg p-4">
@@ -75,19 +26,26 @@ export default function EvaluationBoardSection() {
               <THead className="col-span-3">نوع الشهادة</THead>
             </TRow>
 
-            {userTracksStates.map((t) => (
-              <TRow key={t.name}>
-                <TCell className="col-span-3">{t.name}</TCell>
-                <TCell className="col-span-3" style={{ color: states[t.state as keyof typeof states].color }}>
-                  {states[t.state as keyof typeof states].name}
-                </TCell>
-                <TCell className="col-span-1" style={{ color: states[t.state as keyof typeof states].color }}>
-                  {t.percentage || '____'}
-                </TCell>
-                <TCell className="col-span-3">{t.certificateType}</TCell>
-                <TCell>{states[t.state as keyof typeof states].Button}</TCell>
-              </TRow>
-            ))}
+            <TracksTableRow
+              title="الأداء الاستراتيجي"
+              icon={stratigicIcon}
+              trackName="strategic"
+              summary={pathsSummary?.strategic}
+            />
+
+            <TracksTableRow
+              title="الأداء التشغيلي"
+              icon={operationalIcon}
+              trackName="operational"
+              summary={pathsSummary?.operational}
+            />
+
+            <TracksTableRow
+              title="الموارد البشرية"
+              icon={humanResourcesIcon}
+              trackName="hr"
+              summary={pathsSummary?.hr}
+            />
           </TBody>
         </Table>
       </div>

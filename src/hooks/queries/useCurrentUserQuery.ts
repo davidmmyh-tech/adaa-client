@@ -1,10 +1,10 @@
 import { getToken } from '@/lib/storage';
-import type { User } from '@/schemas/types';
+import type { Flags, Organization, User } from '@/schemas/types';
 import { currentUser } from '@/services/auth';
 import { useQuery } from '@tanstack/react-query';
 
 type Props = {
-  onSuccess?: (user: User) => void;
+  onSuccess?: (user: User, organization: Organization, flags: Flags) => void;
 };
 
 export default function useCurrentUserQuery({ onSuccess }: Props) {
@@ -13,12 +13,7 @@ export default function useCurrentUserQuery({ onSuccess }: Props) {
     queryFn: () =>
       currentUser()
         .then((res) => {
-          onSuccess?.({
-            first_name: res.data.user.name,
-            last_name: '',
-            id: res.data.user.id,
-            organization: res.data.user.organization
-          });
+          onSuccess?.(res.data.user, res.data.organization, res.data.flags);
           return res.data.user;
         })
         .catch(() => null),

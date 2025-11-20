@@ -1,7 +1,7 @@
 import silverIcon from './silver.webp';
 import goldIcon from './gold.webp';
 import diamondIcon from './diamond.webp';
-import bronseIcon from './bronze.webp';
+import bronzeIcon from './bronze.webp';
 import handTickIcon from './easy.webp';
 import chartIcon from './chart.webp';
 import databaseIcon from './database.webp';
@@ -9,17 +9,19 @@ import toolsIcon from './tools.webp';
 import humanResourcesIcon from './human-resources.png';
 import stratigicIcon from './strategic.png';
 import operationalIcon from './operational.png';
+import powerBiIcon from './powerBi.png';
 
 export {
   silverIcon,
   goldIcon,
   diamondIcon,
-  bronseIcon,
+  bronzeIcon,
   handTickIcon,
   chartIcon,
   databaseIcon,
   toolsIcon,
   humanResourcesIcon,
   stratigicIcon,
-  operationalIcon
+  operationalIcon,
+  powerBiIcon
 };

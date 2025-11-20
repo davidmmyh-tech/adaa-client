@@ -10,8 +10,8 @@ export default function VerifiedEmailPage() {
       <Logo className="h-32 w-32" />
       <h2 className="text-4xl font-semibold">تم التحقق من البريد الإلكتروني</h2>
       <div>
-        <Button className="me-2" onClick={() => navigate('/تسجيل-منظمة')}>
-          سجل منظمتك الان
+        <Button className="me-2" onClick={() => navigate('/تسجيل-دخول')}>
+          تسجيل الدخول
         </Button>
       </div>
     </div>

@@ -33,6 +33,12 @@ import CertificatesAssessmentPage from './pages/CertificatesAssessment';
 import Podcast from './pages/Podcast';
 import PodcastDetailsPage from './pages/PodcastDetails';
 import AdaaToolsPage from './pages/AdaaTools';
+import BlogsPage from './pages/Blogs';
+import BlogDetailsPage from './pages/BlogDetails';
+import AdaaPlusPage from './pages/AdaaPlus';
+import ContactUsPage from './pages/ContactUs';
+import OrganizationGuard from './layouts/OrganizationGuard';
+import ReleasesPage from './pages/Releases';
 
 const router = createBrowserRouter([
   {
@@ -74,6 +80,21 @@ const router = createBrowserRouter([
               {
                 path: 'ادوات-اداء',
                 children: [{ index: true, element: <AdaaToolsPage /> }]
+              },
+              {
+                path: 'اصدارات-اداء',
+                children: [{ index: true, element: <ReleasesPage /> }]
+              },
+              {
+                path: 'مدونة-اداء',
+                children: [
+                  { index: true, element: <BlogsPage /> },
+                  { path: ':id', element: <BlogDetailsPage /> }
+                ]
+              },
+              {
+                path: 'اتصل-بنا',
+                element: <ContactUsPage />
               }
             ]
           },
@@ -89,12 +110,17 @@ const router = createBrowserRouter([
                     errorElement: <ErrorPage />, //handle pages error so keep the layout visable (error Boundry)
                     children: [
                       {
-                        path: 'درع-اداء',
-                        children: [{ path: 'تقييم', element: <AdaaShieldAssessmentPage /> }]
-                      },
-                      {
-                        path: 'شهادات-اداء',
-                        children: [{ path: 'تقييم', element: <CertificatesAssessmentPage /> }]
+                        element: <OrganizationGuard />,
+                        children: [
+                          {
+                            path: 'درع-اداء',
+                            children: [{ path: 'تقييم', element: <AdaaShieldAssessmentPage /> }]
+                          },
+                          {
+                            path: 'شهادات-اداء',
+                            children: [{ path: 'تقييم', element: <CertificatesAssessmentPage /> }]
+                          }
+                        ]
                       }
                     ]
                   }
@@ -105,7 +131,28 @@ const router = createBrowserRouter([
         ]
       },
 
-      //Auth Routes **********************
+      //Protected Routes without layout **********************
+      {
+        element: <UserInitRequiredGuard />,
+        children: [
+          {
+            element: <UserGuard />,
+            children: [
+              {
+                element: <OrganizationGuard />,
+                children: [
+                  {
+                    path: 'اشتراك-اداء-المميز',
+                    element: <AdaaPlusPage />
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+
+      //Auth Routes without layout **********************
       {
         path: 'تسجيل-دخول',
         element: <LoginPage />

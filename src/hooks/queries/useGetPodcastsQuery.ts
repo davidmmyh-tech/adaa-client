@@ -31,6 +31,7 @@ export default function useGetPodcastsQuery({ params = {}, onSuccess }: Props) {
   });
 
   const podcasts = query.data?.pages.flatMap((p) => p.data.podcasts) || [];
+  const isEmpty = query.data?.pages[0].data.podcasts.length === 0;
 
-  return { ...query, podcasts, isMounted };
+  return { ...query, podcasts, isEmpty, isMounted };
 }

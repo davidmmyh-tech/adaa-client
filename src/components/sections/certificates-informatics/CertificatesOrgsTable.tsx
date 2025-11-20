@@ -1,6 +1,14 @@
 import { Table, TBody, TCell, THead, TRow } from '@/components/ui/extend/TableItems';
+import { TableLoading } from '@/components/ui/loading/TableLoading';
+import { certificateClasses, certificateTracks } from '@/constants/data';
+import type { CertificatesOrganization } from '@/services/certificates/types';
 
-export default function CertificatesOrgsTable() {
+type Props = {
+  orgs: CertificatesOrganization[];
+  isLoading?: boolean;
+};
+
+export default function CertificatesOrgsTable({ orgs, isLoading = false }: Props) {
   return (
     <div className="bg-muted/10">
       <div className="container space-y-6 py-4">
@@ -15,17 +23,29 @@ export default function CertificatesOrgsTable() {
               <THead className="col-span-3">الموقع الالكتروني</THead>
             </TRow>
 
-            <TRow>
-              <TCell className="col-span-3">جمعية نماء الأهلية</TCell>
-              <TCell className="col-span-2">⚙️ الأداء التشغيلي</TCell>
-              <TCell className="col-span-2">شهادة ماسية</TCell>
-              <TCell className="col-span-1">94%</TCell>
-              <TCell className="col-span-3">
-                <a href={'/#'} className="flex items-center justify-center text-blue-600 underline">
-                  org.organization_website || 'n/a'
-                </a>
-              </TCell>
-            </TRow>
+            {isLoading ? (
+              <TableLoading />
+            ) : (
+              orgs.map((org) => (
+                <TRow key={org.organization_id + org.path}>
+                  <TCell className="col-span-3">{org.organization_name}</TCell>
+                  <TCell className="col-span-2 flex items-center gap-2">
+                    <img src={certificateTracks[org.path].icon} alt={org.path_name_ar} className="w-6" />
+                    {org.path_name_ar}
+                  </TCell>
+                  <TCell className="col-span-2">
+                    {org.rank_ar}
+                    <img src={certificateClasses[org.rank].icon} alt={org.path_name_ar} className="w-6" />
+                  </TCell>
+                  <TCell className="col-span-1">{org.percentage ? `${org.percentage}%` : '___'}</TCell>
+                  <TCell className="col-span-3">
+                    <a href={org.website || '#'} className="flex items-center justify-center text-blue-600 underline">
+                      {org.website || 'n/a'}
+                    </a>
+                  </TCell>
+                </TRow>
+              ))
+            )}
           </TBody>
         </Table>
       </div>

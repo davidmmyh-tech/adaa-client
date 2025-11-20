@@ -1,4 +1,4 @@
-import { bronseIcon, diamondIcon, goldIcon, silverIcon } from '@/assets/icons';
+import { bronzeIcon, diamondIcon, goldIcon, silverIcon } from '@/assets/icons';
 import { useMemo } from 'react';
 
 export default function CertificatesClassesSection() {
@@ -29,8 +29,8 @@ export default function CertificatesClassesSection() {
         title: 'شهادة أداء برونزية',
         scoreRange: '55-65%',
         description: 'تعكس الالتزام بالممارسات الأساسية للتحسين المستمر',
-        icon: bronseIcon,
-        bgColorClass: 'bronse-gradient'
+        icon: bronzeIcon,
+        bgColorClass: 'bronze-gradient'
       }
     ],
     []

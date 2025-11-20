@@ -1,18 +1,13 @@
 import type { LoginForm, RegisterForm, RegisterOrganizationForm } from '@/schemas/validation';
 import api from './api';
-import type { Id, Organization, User } from '@/schemas/types';
+import type { Flags, Organization, User } from '@/schemas/types';
 
 type CurrentUserResponse = {
   success: boolean;
-  token: '4|jvcddteJ2KQL7Bo3XVd01srlcJVFpIy8pSl2dzWvf3680509';
-  user: {
-    id: Id;
-    name: string;
-    email: string;
-    phone: string;
-    user_priviliages: string;
-    organization: Organization | null;
-  };
+  message: string;
+  user: User;
+  organization: Organization;
+  flags: Flags;
 };
 
 type RegisterResponse = {
@@ -37,6 +32,8 @@ type LoginResponse = {
   success: boolean;
   token: string;
   user: User;
+  organization: Organization;
+  flags: Flags;
 };
 
 type ForgetPasswordResponse = {
@@ -52,6 +49,20 @@ export type ResetPasswordPayload = {
   password: string;
   password_confirmation: string;
   token: string;
+};
+
+export type SubscripeResponse = {
+  message: string;
+  subscription: {
+    id: number;
+    user_id: number;
+    plan_id: number;
+    starts_at: string;
+    ends_at: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+  };
 };
 
 export function currentUser() {
@@ -92,4 +103,8 @@ export function resetPassword(payload: { password: string; password_confirmation
 
 export function resendEmailVerification(payload: { email: string }) {
   return api.post<ResetPasswordResponse>('/api/email/resend', payload);
+}
+
+export function subscrip(payload: { email: string }) {
+  return api.post<SubscripeResponse>('/api/subscriptions/subscribe-pro', payload);
 }

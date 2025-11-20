@@ -11,7 +11,7 @@ export default function SubmitButton({ isLoading, children, ...props }: Props) {
       <div className="relative">
         <span className={isLoading ? 'text-transparent' : ''}>{children}</span>
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center rounded fill-white text-inherit">
+          <div className="absolute inset-0 flex items-center justify-center rounded text-inherit">
             <Loader2 className="spinner" />
           </div>
         )}

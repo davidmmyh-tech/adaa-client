@@ -70,7 +70,7 @@ export default function AdaaPodcastsSection() {
         isPending={isPending && !isMounted}
         isError={isError}
         isRefetching={isRefetching}
-        isEmpty={!podcasts.length && !isFetching}
+        isEmpty={!podcasts.length}
         retry={refetch}
       >
         <div className="grid grid-cols-2 gap-8">

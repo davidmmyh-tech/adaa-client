@@ -5,13 +5,14 @@ import { Label } from '@/components/ui/label';
 import QuestionsLoading from '@/components/ui/loading/QuestionsLoading';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import SubmitButton from '@/components/ui/submit-button';
-import { type AxisAnswers, type ShieldQuestionsResponse } from '@/services/shield';
+import { type AxisAnswers } from '@/services/shield';
 import { useState } from 'react';
 import type { Id } from 'react-toastify';
 import AxisProgress from './AxisProgress';
 import useGetShieldQuestions from '@/hooks/queries/useGetShieldQuestionsQuery';
 import useSubmitAnswers from '@/hooks/mutations/useSubmitAnswersMutation';
 import DataWrapper from '@/layouts/DataWrapper';
+import { validateShieldAnswers } from '@/schemas/questions-validation';
 
 type Props = {
   onSuccess?: () => void;
@@ -20,13 +21,13 @@ type Props = {
 const axiesNumNames = ['المحور الأول', 'المحور الثاني', 'المحور الثالث', 'المحور الرابع'];
 
 export default function ShieldQuestionsSection({ onSuccess }: Props) {
-  const [axisIndex, setAxisIndex] = useState(0);
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(0);
   const [answers, setAnswers] = useState<AxisAnswers>();
   const [error, setError] = useState<string | null>(null);
 
-  const setupAnswers = (qs: ShieldQuestionsResponse, index: number) => {
+  const setupAnswers = (axisId: Id) => {
     setAnswers({
-      axis_id: qs.axes[index].id,
+      axis_id: axisId,
       questions: [],
       attachments: []
     });
@@ -39,18 +40,21 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
     isError,
     refetch,
     isFetchedAfterMount
-  } = useGetShieldQuestions({ onSuccess: (data) => setupAnswers(data, 0) });
-  if (questions && !answers) setupAnswers(questions, 0);
+  } = useGetShieldQuestions({ onSuccess: (data) => setupAnswers(data.axes[0].id) });
+  if (questions && !answers) setupAnswers(questions.axes[0].id);
 
   //Submit Answers request ---------
-  const { mutate, isPending } = useSubmitAnswers({
-    axisIndex,
+  const { mutate, isPending: isSubmitting } = useSubmitAnswers({
+    axisIndex: currentAxisIndex,
     onSuccess: () => {
-      if (questions && questions.axes.length < axisIndex + 1) {
-        setAxisIndex((prev) => prev + 1);
-        setupAnswers(questions, axisIndex + 1);
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+
+      if (questions && questions.axes.length > currentAxisIndex + 1) {
+        setCurrentAxisIndex((prev) => prev + 1);
+        setupAnswers(questions.axes[currentAxisIndex + 1].id);
+        return;
       }
-      if (axisIndex === axiesQuestions.length - 1) onSuccess?.();
+      if (currentAxisIndex === axiesQuestions.length - 1) onSuccess?.();
     },
     onError: (err) => {
       if (err.response?.status === 422) setError('يرجى التأكد من الإجابة على جميع الأسئلة قبل المتابعة.');
@@ -89,17 +93,19 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       updatedAttachments[index] = url;
       return {
         ...prevAnswers,
-        attachments: updatedAttachments
+        attachments: [...updatedAttachments]
       };
     });
   };
 
-  const nextAxis = () => {
-    if (answers) mutate(answers);
-  };
-
   const handleSubmit = () => {
-    if (answers) mutate(answers);
+    if (!answers || !questions) return;
+    const currentAxisQuestions = questions.axes[currentAxisIndex].questions;
+    const validation = validateShieldAnswers(currentAxisQuestions, answers);
+
+    if (!validation.isValid) {
+      setError('تأكد من الإجابة على جميع الأسئلة و ارفاق جميع المرفقات قبل التأكيد.');
+    } else mutate(answers);
   };
 
   return (
@@ -109,44 +115,43 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       ) : (
         <DataWrapper isError={isError || isFetching} retry={refetch} isRefetching={isFetching}>
           <div className="space-y-8">
-            <AxisProgress axies={axies} currentIndex={axisIndex} />
+            <AxisProgress axies={axies} currentIndex={currentAxisIndex} />
 
             <div className="relative w-full overflow-hidden">
-              {isPending && (
+              {isSubmitting && (
                 <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
                   <Logo isLoading className="h-32 w-32" />
                 </div>
               )}
 
-              <div className="relative flex transition-all duration-500" style={{ right: `-${axisIndex * 100}%` }}>
+              <div
+                className="relative flex transition-all duration-500"
+                style={{ right: `-${currentAxisIndex * 100}%` }}
+              >
                 {axiesQuestions.map((axisItem) => (
                   <form key={axisItem.id} className="w-full shrink-0 space-y-12">
                     <p className="text-lg font-semibold">{axisItem.description}</p>
                     <ol className="list-decimal space-y-12 ps-6">
                       {axisItem.questions.map((q) => (
                         <li key={q.id}>
-                          <p className="font-semibold">هل لدى المنظمة خطة استراتيجية واضحة وطويلة المدى؟</p>
+                          <p className="font-semibold">{q.question}</p>
                           <RadioGroup
                             className="mt-4 flex justify-end gap-24"
                             onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
                           >
-                            <div className="flex items-center gap-4">
-                              <Label htmlFor={'no' + q.id} className="text-primary">
-                                لا
-                              </Label>
+                            <Label htmlFor={'no' + q.id} className="flex items-center gap-4">
+                              <div className="text-primary">لا</div>
                               <RadioGroupItem value="no" id={'no' + q.id} className="h-5 w-5" />
-                            </div>
-                            <div className="flex items-center gap-4">
-                              <Label htmlFor={'yes' + q.id} className="text-primary">
-                                نعم
-                              </Label>
+                            </Label>
+                            <Label htmlFor={'yes' + q.id} className="flex items-center gap-4">
+                              <div className="text-primary">نعم</div>
                               <RadioGroupItem value="yes" id={'yes' + q.id} className="h-5 w-5" />
-                            </div>
+                            </Label>
                           </RadioGroup>
                         </li>
                       ))}
                     </ol>
-                    <AttachmentsSection onFileUploaded={handleFileChange} />
+                    <AttachmentsSection onFileUploaded={handleFileChange} axisId={axisItem.id} />
                   </form>
                 ))}
               </div>
@@ -155,12 +160,12 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
             <ErrorMessage error={error} />
 
             <div className="mx-auto w-fit py-4 font-semibold">
-              {axisIndex === axiesQuestions.length - 1 ? (
-                <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit}>
+              {currentAxisIndex === axiesQuestions.length - 1 ? (
+                <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
                   أتمام
                 </SubmitButton>
               ) : (
-                <SubmitButton variant="secondary" className="w-32" onClick={nextAxis}>
+                <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
                   التالي
                 </SubmitButton>
               )}

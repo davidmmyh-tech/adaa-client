@@ -1,10 +1,14 @@
 import { humanResourcesIcon, operationalIcon, stratigicIcon } from '@/assets/icons';
 import { Checkbox } from '@/components/ui/checkbox';
 import LinkButton from '@/components/ui/extend/LinkButton';
+import UserStateButton from '@/components/ui/extend/UserStateButton';
 import { Label } from '@/components/ui/label';
+import { useUserState } from '@/context/UserProvider';
+import { cn } from '@/lib/utils';
 import { useMemo, useState } from 'react';
 
 export default function CertificatePickTrackSection() {
+  const { flags } = useUserState();
   const [selectedTracks, setSelectedTracks] = useState<string[]>([]);
 
   const tracks = useMemo(
@@ -24,7 +28,7 @@ export default function CertificatePickTrackSection() {
         bgColor: '#EDE7F6'
       },
       {
-        name: 'human-resources',
+        name: 'hr',
         title: 'الموارد البشرية',
         description: 'يقيس جودة ممارسات الموارد البشرية والتخطيط الوظيفي.',
         icon: humanResourcesIcon,
@@ -48,21 +52,40 @@ export default function CertificatePickTrackSection() {
     <section className="container space-y-6">
       <h5 className="text-2xl font-semibold">مسارات التقييم</h5>
       <div className="flex flex-col justify-center gap-4 md:flex-row">
-        {tracks.map((t) => (
-          <CertificateTrackCard
-            key={t.name}
-            description={t.description}
-            icon={t.icon}
-            name={t.name}
-            isSelected={selectedTracks.includes(t.name)}
-            onSelect={() => hadelSelectTrack(t.name)}
-            title={t.title}
-            hexColor={t.bgColor}
-          />
-        ))}
+        {tracks.map((t) => {
+          const certificateDisabled =
+            (t.name === 'strategic' && flags.completed_strategic_certificate) ||
+            (t.name === 'hr' && flags.completed_hr_certificate) ||
+            (t.name === 'operational' && flags.completed_operational_certificate) ||
+            false;
+
+          return (
+            <CertificateTrackCard
+              key={t.name}
+              description={t.description}
+              icon={t.icon}
+              name={t.name}
+              isSelected={selectedTracks.includes(t.name)}
+              onSelect={() => hadelSelectTrack(t.name)}
+              title={t.title}
+              hexColor={t.bgColor}
+              isDisabled={certificateDisabled}
+            />
+          );
+        })}
       </div>
+
       <div className="flex justify-center">
-        <LinkButton to={`/شهادات-اداء/تقييم?${params}`} variant="secondary">
+        <LinkButton
+          to={`/شهادات-اداء/تقييم?${params}`}
+          variant="secondary"
+          aria-disabled={selectedTracks.length === 0}
+          className={
+            selectedTracks.length === 0 || (flags.has_organization && flags.organization_status != 'approved')
+              ? 'pointer-events-none opacity-50'
+              : ''
+          }
+        >
           بدء التقييم في المسارات
         </LinkButton>
       </div>
@@ -77,7 +100,8 @@ function CertificateTrackCard({
   description,
   icon,
   isSelected,
-  onSelect
+  onSelect,
+  isDisabled
 }: {
   hexColor: string;
   name: string;
@@ -86,9 +110,13 @@ function CertificateTrackCard({
   icon: string;
   isSelected: boolean;
   onSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  isDisabled: boolean;
 }) {
   return (
-    <div className="relative rounded-md p-4 md:w-80" style={{ backgroundColor: hexColor }}>
+    <div
+      className={cn('relative rounded-md p-4 md:w-80', isDisabled && 'pointer-events-none opacity-50')}
+      style={{ backgroundColor: hexColor }}
+    >
       <div className="flex flex-row items-center justify-between gap-4 md:flex-col md:justify-start md:gap-8">
         <Label htmlFor={name} className="text-primary flex items-center gap-4 md:flex-col md:gap-8">
           <div className="absolute top-4 -mt-1 sm:static md:h-12 md:w-full">
@@ -103,12 +131,12 @@ function CertificateTrackCard({
             <p>{description}</p>
           </div>
         </Label>
-        <LinkButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="hidden md:flex">
+        <UserStateButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="hidden md:flex">
           ابدأ هذا المسار
-        </LinkButton>
-        <LinkButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="md:hidden">
+        </UserStateButton>
+        <UserStateButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="md:hidden">
           ابدأ
-        </LinkButton>
+        </UserStateButton>
       </div>
     </div>
   );

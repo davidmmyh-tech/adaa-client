@@ -1,12 +1,14 @@
 import { Table, TBody, TCell, THead, TRow } from '@/components/ui/extend/TableItems';
+import { TableLoading } from '@/components/ui/loading/TableLoading';
 import { gradesMap } from '@/constants/data';
 import type { ShieldOrganization } from '@/services/shield';
 
 type Props = {
   orgs: ShieldOrganization[];
+  isLoading: boolean;
 };
 
-export default function AdaaShieldOrgsTable({ orgs }: Props) {
+export default function AdaaShieldOrgsTable({ orgs, isLoading }: Props) {
   return (
     <div className="bg-muted/10">
       <div className="container space-y-6 py-4">
@@ -22,20 +24,24 @@ export default function AdaaShieldOrgsTable({ orgs }: Props) {
               <THead className="col-span-2">الموقع الالكتروني</THead>
             </TRow>
 
-            {orgs.map((org, index) => (
-              <TRow key={org.organization_name + index}>
-                <TCell className="col-span-3">{org.organization_name}</TCell>
-                <TCell className="col-span-2">{org.region || 'n/a'}</TCell>
-                <TCell className="col-span-2">{org.year}</TCell>
-                <TCell className="col-span-2">{gradesMap[org.grade]}</TCell>
-                <TCell className="col-span-1">{org.rate}%</TCell>
-                <TCell className="col-span-2">
-                  <a href={org.organization_website || '#'} className="text-blue-600 underline">
-                    {org.organization_website || 'n/a'}
-                  </a>
-                </TCell>
-              </TRow>
-            ))}
+            {isLoading ? (
+              <TableLoading />
+            ) : (
+              orgs.map((org, index) => (
+                <TRow key={org.organization_name + index}>
+                  <TCell className="col-span-3">{org.organization_name}</TCell>
+                  <TCell className="col-span-2">{org.region || 'n/a'}</TCell>
+                  <TCell className="col-span-2">{org.year}</TCell>
+                  <TCell className="col-span-2">{gradesMap[org.grade]}</TCell>
+                  <TCell className="col-span-1">{org.rate}%</TCell>
+                  <TCell className="col-span-2">
+                    <a href={org.organization_website || '#'} className="text-blue-600 underline">
+                      {org.organization_website || 'n/a'}
+                    </a>
+                  </TCell>
+                </TRow>
+              ))
+            )}
           </TBody>
         </Table>
       </div>

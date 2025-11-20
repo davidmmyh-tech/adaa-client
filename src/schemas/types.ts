@@ -1,29 +1,48 @@
-export type Organization = {
-  id: Id;
-  name: string;
-  website: string;
-  is_registered: boolean;
-  is_approval_pending: boolean;
-  is_approved: boolean;
-  has_shield_completed: boolean;
-  has_operational_certificate: boolean;
-  has_strategic_certificate: boolean;
-  has_human_resources_certificate: boolean;
-  is_adaa_plus: boolean;
-};
-
-export type User = {
-  id: Id;
-  first_name: string;
-  last_name: string;
-  organization: null | Organization;
-};
-
 export type Id = string | number;
+export type CertificateClass = 'diamond' | 'gold' | 'silver' | 'bronze';
+export type CertificateTrack = 'strategic' | 'operational' | 'hr';
+export type CertificateTrackStatus = 'لم يبدأ بعد' | 'مكتمل' | 'قيد التقييم';
 
 export type Pagination = {
   current_page: number;
   per_page: number;
   total: number;
   last_page: number;
+};
+
+export type User = {
+  id: Id;
+  name: string;
+  email: string;
+  phone: string;
+  email_verified_at: string;
+  user_priviliages: string;
+  created_at: string;
+};
+
+export type Organization = {
+  id: Id;
+  name: string;
+  sector: string;
+  email: string;
+  phone: string;
+  status: 'approved' | 'pending';
+  shield_percentage: number;
+  shield_rank: number;
+  certificate_final_score: number;
+  certificate_final_rank: number;
+  established_at: string;
+  created_at: string;
+};
+
+export type Flags = {
+  email_verified: boolean;
+  has_organization: boolean;
+  organization_status: 'approved' | 'pending' | null;
+  can_access_features: boolean;
+  has_active_subscription: boolean;
+  completed_shield: boolean;
+  completed_strategic_certificate: boolean;
+  completed_hr_certificate: boolean;
+  completed_operational_certificate: boolean;
 };

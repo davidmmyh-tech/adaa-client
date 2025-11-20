@@ -1,20 +1,14 @@
 import DataWrapper from '@/layouts/DataWrapper';
 import InnerHTML from '@/components/ui/extend/InnerHTML';
-import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
-import { getPodcastDetails } from '@/services/podcasts';
 import MorePodcastsSection from '@/components/sections/podcast/MorePodcasts';
 import PodcastHeader from '@/components/sections/podcast/PodcastHeader';
 import PodcastVideoSection from '@/components/sections/podcast/Video';
+import useGetPodcastDetailsQuery from '@/hooks/queries/useGetPodcastDetailsQuery';
 
 export default function PodcastDetailsPage() {
-  const params = useParams<{ id: string }>();
-
-  const { data: podcast, isLoading } = useQuery({
-    queryKey: ['podcastDetails', params.id],
-    queryFn: () => getPodcastDetails(params.id!).then((res) => res.data.podcast),
-    throwOnError: true
-  });
+  const { id } = useParams<{ id: string }>();
+  const { data: podcast, isLoading } = useGetPodcastDetailsQuery({ id: Number(id) });
 
   return (
     <DataWrapper isPending={isLoading}>

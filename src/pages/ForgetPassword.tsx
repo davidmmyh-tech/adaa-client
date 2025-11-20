@@ -2,13 +2,16 @@ import FormInput from '@/components/ui/extend/FormInput';
 import Logo from '@/components/ui/extend/Logo';
 import SubmitButton from '@/components/ui/submit-button';
 import useForgetPasswordMutation from '@/hooks/mutations/useForgetPasswordMutation';
+import useCountDown from '@/hooks/useCountDown';
 import { useState } from 'react';
 
 export default function ForgetPasswordPage() {
   const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string | null>();
+  const { countdown, isCounting, restart } = useCountDown({ initial: 0 });
 
   const { mutate, isPending, isSuccess } = useForgetPasswordMutation({
+    onSuccess: () => restart(),
     onError: (error) => {
       if (error.response?.status === 400)
         return setError('لا يمكنك تغير كلمة المرور حاليا, انتظر بعض الوقت ثم حاول مرة اخرى');
@@ -42,9 +45,13 @@ export default function ForgetPasswordPage() {
             onChange={(e) => setEmail(e.target.value)}
             error={error}
           />
-          <SubmitButton className="mx-auto block" isLoading={isPending}>
-            إعادة تعيين كلمة السر
-          </SubmitButton>
+          <div className="flex flex-col items-center gap-4">
+            <SubmitButton onClick={handleSubmit} isLoading={isPending} disabled={isCounting || isPending}>
+              {isCounting ? `إعادة الإرسال ${countdown} ثانية` : 'إعادة تعيين كلمة السر'}
+            </SubmitButton>
+
+            {!isCounting && <p className="text-muted text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
+          </div>
         </>
       )}
     </form>

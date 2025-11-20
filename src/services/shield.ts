@@ -1,22 +1,20 @@
 import type { Id } from '@/schemas/types';
 import api from './api';
 
+export type ShieldQuestion = {
+  id: Id;
+  question: string;
+  has_attachment: false;
+  current_answer: null;
+  attachment: null;
+};
+
 export type ShieldQuestionsResponse = {
   axes: {
-    id: 1;
+    id: Id;
     title: string;
     description: string;
-    questions: {
-      id: number;
-      question: string;
-      has_attachment: false;
-      current_answer: null;
-      attachment: null;
-      options: {
-        value: boolean;
-        label: string;
-      }[];
-    }[];
+    questions: ShieldQuestion[];
   }[];
 };
 

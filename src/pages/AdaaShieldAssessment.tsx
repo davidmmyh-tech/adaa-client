@@ -1,10 +1,12 @@
 import AdaaShieldHeroSection from '@/components/sections/adaa-shield-assessment/AdaaShieldHero';
-import CertificatesQuestionsSection from '@/components/sections/adaa-shield-assessment/ShieldQuestions';
+import ShildQuestionsSection from '@/components/sections/adaa-shield-assessment/ShieldQuestions';
 import SuccessScreen from '@/components/ui/extend/SuccessScreen';
+import { useUserState } from '@/context/UserProvider';
 import { useState } from 'react';
 
 export default function AdaaShieldAssessmentPage() {
-  const [success, setSuccess] = useState(false);
+  const { setFlags, flags } = useUserState();
+  const [success, setSuccess] = useState(() => flags.completed_shield);
 
   return (
     <>
@@ -15,10 +17,16 @@ export default function AdaaShieldAssessmentPage() {
 
       {success ? (
         <SuccessScreen>
-          <p className="text-2xl font-semibold">تم استلام إجاباتكم بنجاح!</p>
+          <p className="mb-4 text-2xl font-semibold">تهانينا! لقد أكملت جميع نماذج التقييم بنجاح.</p>
+          <p>شكرًا لمشاركتك في جائزة درع أداء. سيتم مراجعة إجاباتك والاتصال بك قريبًا.</p>
         </SuccessScreen>
       ) : (
-        <CertificatesQuestionsSection onSuccess={() => setSuccess(true)} />
+        <ShildQuestionsSection
+          onSuccess={() => {
+            setFlags((prev) => ({ ...prev, completed_shield: true }));
+            setSuccess(true);
+          }}
+        />
       )}
     </>
   );

@@ -36,5 +36,5 @@ export default function UserGuard() {
     };
   }, []);
 
-  if (user && user.organization) return <Outlet />;
+  if (user) return <Outlet />;
 }

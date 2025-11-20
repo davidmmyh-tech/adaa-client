@@ -1,38 +1,45 @@
 import CertificatesHeroSection from '@/components/sections/Certificates/CertificatesHero';
-import SubmitButton from '@/components/ui/submit-button';
 import { certificateTracks } from '@/constants/data';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
-
-const axies = [
-  { name: 'المحور الأول', title: 'الحوكمة النتائج' },
-  { name: 'المحور الثاني', title: 'الاستراتيجية  النتائج' },
-  { name: 'المحور الثالث', title: 'العمليات  النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج النتائج النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج' },
-  { name: 'المحور الرابع', title: 'النتائج النتائج النتائج النتائج' }
-];
+import StrategicModel from '@/components/sections/Certificates/questions/StrategicModel';
+import OperationalModel from '@/components/sections/Certificates/questions/OperationalModel';
+import HrModel from '@/components/sections/Certificates/questions/HrModel';
+import SuccessScreen from '@/components/ui/extend/SuccessScreen';
+import { useUserState } from '@/context/UserProvider';
+import type { CertificateTrack } from '@/schemas/types';
 
 export default function CertificatesAssessmentPage() {
   const [searchParams] = useSearchParams();
-  const tracks = (searchParams.getAll('tracks') || []) as (keyof typeof certificateTracks)[];
-  const [currentModelData, setCurrentModelData] = useState({
-    currentAxisIndex: 0,
-    currentModelIndex: 0
-  });
+  const trackParam = searchParams.getAll('tracks');
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [success, setSuccess] = useState(false);
+  const { flags } = useUserState();
 
-  const handleNext = () => {
-    if (currentModelData.currentAxisIndex < axies.length - 1) {
-      setCurrentModelData((prev) => ({ ...prev, currentAxisIndex: prev.currentAxisIndex + 1 }));
-    } else if (currentModelData.currentModelIndex < tracks.length - 1) {
-      setCurrentModelData((prev) => ({ currentAxisIndex: 0, currentModelIndex: prev.currentModelIndex + 1 }));
-    }
-  };
+  const tracks = useMemo(() => {
+    let tempTracks = trackParam && trackParam?.length > 0 ? [...trackParam] : ['hr', 'strategic', 'operational'];
+
+    if (flags.completed_hr_certificate) tempTracks = tempTracks.filter((t) => t !== 'hr');
+    if (flags.completed_strategic_certificate) tempTracks = tempTracks.filter((t) => t !== 'strategic');
+    if (flags.completed_operational_certificate) tempTracks = tempTracks.filter((t) => t !== 'operational');
+    if (tempTracks.length === 0) setSuccess(true);
+
+    return [...tempTracks] as CertificateTrack[];
+  }, []);
+
+  const handleSuccessSubmission = useCallback(() => {
+    if (currentTrackIndex >= tracks.length - 1) setSuccess(true);
+    else setCurrentTrackIndex(currentTrackIndex + 1);
+  }, [currentTrackIndex, tracks.length]);
+
+  const trackFormMap = useMemo(
+    () => ({
+      strategic: <StrategicModel onSuccess={handleSuccessSubmission} isLast={false} />,
+      operational: <OperationalModel onSuccess={handleSuccessSubmission} isLast={false} />,
+      hr: <HrModel onSuccess={handleSuccessSubmission} isLast={true} />
+    }),
+    [handleSuccessSubmission]
+  );
 
   return (
     <>
@@ -42,49 +49,44 @@ export default function CertificatesAssessmentPage() {
 لتسجيل جمعيتك في “درع أداء”، يرجى تعبئة النموذج أدناه. نرجو منك التأكد من تقديم معلومات دقيقة وكاملة ليتم تقييم مشاركتك بشكل صحيح."
       />
 
-      <div className="mt-8 space-y-8">
-        <div className="flex justify-center gap-4">
-          {tracks.map((t, index) => (
-            <div
-              key={t}
-              className={`w-52 space-y-1 rounded-lg border p-4 text-center text-sm ${currentModelData.currentModelIndex === index ? 'border-accent bg-accent/10 text-secondary' : ''}`}
-            >
-              <p>نموذج</p>
-              <p>{certificateTracks[t].label}</p>
+      <div className="container">
+        {success ? (
+          <SuccessScreen>
+            <div>
+              <p className="mb-4 text-2xl font-semibold">تهانينا! لقد أكملت جميع نماذج التقييم بنجاح.</p>
+              <p>شكرًا لمشاركتك في جائزة درع أداء. سيتم مراجعة إجاباتك والاتصال بك قريبًا.</p>
             </div>
-          ))}
-        </div>
-
-        <div className="container">
-          <div className="no-scrollbar max-w-full overflow-auto">
-            <div className="w-fit min-w-full space-y-4">
-              <div className="text-muted flex w-fit min-w-full justify-between text-center text-sm font-semibold">
-                {axies.map((axisItem, i) => (
-                  <div
-                    key={axisItem.name}
-                    className={`w-36 space-y-2 transition-colors duration-500 ${i === currentModelData.currentAxisIndex ? 'text-secondary' : ''}`}
-                  >
-                    <p>{axisItem.name}</p>
-                    <p>{axisItem.title}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-muted relative mb-1 h-1 w-full">
+          </SuccessScreen>
+        ) : (
+          <div className="mt-8 space-y-8">
+            <div className="flex flex-col justify-center gap-4 md:flex-row">
+              {tracks.map((t, index) => (
                 <div
-                  className="bg-secondary absolute -top-0.5 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${((currentModelData.currentAxisIndex + 1) * 100) / axies.length}%` }}
-                ></div>
+                  key={t}
+                  className={`w-full space-y-1 rounded-lg border p-4 text-center text-sm md:w-52 ${currentTrackIndex === index ? 'border-accent bg-accent/10 text-secondary' : ''}`}
+                >
+                  <p>نموذج</p>
+                  <p>{certificateTracks[t].label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="container">
+              <div className="w-full overflow-hidden">
+                <div
+                  className="relative flex transition-all duration-500"
+                  style={{ right: `-${currentTrackIndex * 100}%` }}
+                >
+                  {tracks.map((track) => (
+                    <div className="w-full shrink-0" key={track}>
+                      {trackFormMap[track]}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="flex justify-center">
-        <SubmitButton variant="secondary" className="mx-auto w-32" onClick={handleNext}>
-          التالي
-        </SubmitButton>
+        )}
       </div>
     </>
   );

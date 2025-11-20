@@ -6,13 +6,15 @@ import { useMutation } from '@tanstack/react-query';
 import { isAxiosError, type AxiosError } from 'axios';
 import { Loader2 } from 'lucide-react';
 import { useRef, useState } from 'react';
+import type { Id } from 'react-toastify';
 
 type Props = {
   onFileUploaded: (url: string, index: number) => void;
   onUploadError?: (error: AxiosError) => void;
+  axisId: Id;
 };
 
-export default function AttachmentsSection({ onFileUploaded, onUploadError }: Props) {
+export default function AttachmentsSection({ onFileUploaded, onUploadError, axisId }: Props) {
   return (
     <>
       <p className="font-semibold">المرفقات</p>
@@ -23,6 +25,7 @@ export default function AttachmentsSection({ onFileUploaded, onUploadError }: Pr
             onFileUpload={(url) => onFileUploaded(url, 0)}
             onError={onUploadError}
             label="المرفق الأول"
+            axisId={axisId}
           />
         </div>
         <div className="basis-1/3 px-2">
@@ -31,6 +34,7 @@ export default function AttachmentsSection({ onFileUploaded, onUploadError }: Pr
             onFileUpload={(url) => onFileUploaded(url, 1)}
             onError={onUploadError}
             label="المرفق الثاني"
+            axisId={axisId}
           />
         </div>
         <div className="basis-1/3 px-2">
@@ -39,6 +43,7 @@ export default function AttachmentsSection({ onFileUploaded, onUploadError }: Pr
             onError={onUploadError}
             onFileUpload={(url) => onFileUploaded(url, 2)}
             label="المرفق الثالث"
+            axisId={axisId}
           />
         </div>
       </div>
@@ -51,15 +56,16 @@ type AttachmentUploadInputProps = {
   onFileUpload: (url: string) => void;
   onError?: (error: AxiosError) => void;
   label: string;
+  axisId: Id;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onError'>;
 
-function AttachmentUploadInput({ index, onFileUpload, label, onError, ...props }: AttachmentUploadInputProps) {
+function AttachmentUploadInput({ index, onFileUpload, label, onError, axisId, ...props }: AttachmentUploadInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const { isPending, mutate } = useMutation({
-    mutationKey: ['shield-attachment-upload', index],
+    mutationKey: ['shield-attachment-upload', `${index}-${axisId}`],
     mutationFn: (data: { file: File; index: number }) => uploadShieldAttachment(data.file),
     onSuccess: (data, variables) => {
       onFileUpload(data.data.files[0].file_url);
@@ -82,7 +88,7 @@ function AttachmentUploadInput({ index, onFileUpload, label, onError, ...props }
       <p className="font-semibold">{label}</p>
       <FileInput
         ref={fileInputRef}
-        id={`attachment-${index}`}
+        id={`attachment-${index}-${axisId}`}
         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
         onFileChange={handleFileChange}
         disabled={isPending}

@@ -3,7 +3,6 @@ import SubmitButton from '@/components/ui/submit-button';
 import { registerSchema, type RegisterForm } from '@/schemas/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { isAxiosError } from 'axios';
 import { authImage } from '@/assets/images';
 import FormInput from '@/components/ui/extend/FormInput';
 import ErrorMessage from '@/components/ui/extend/error-message';
@@ -24,12 +23,10 @@ export default function RegisterPage() {
 
   const { mutate, isPending } = useRegisterMutation({
     onError: (error) => {
-      if (isAxiosError(error)) {
-        if (error.response?.status === 405) return setError('البريد مستخدم من قبل');
-        if (error.response?.status === 422)
-          return setError('خطاء في التحقق من البيانات المدخلة, تحقق منها وحاول مرة اخرى');
-        setError('خطاء غير معروف حاول لاحقا');
-      }
+      if (error.response?.status === 405) return setError('البريد مستخدم من قبل');
+      if (error.response?.status === 422)
+        return setError('خطاء في التحقق من البيانات المدخلة, تحقق منها وحاول مرة اخرى');
+      setError('خطاء غير معروف حاول لاحقا');
     }
   });
 

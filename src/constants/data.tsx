@@ -1,5 +1,5 @@
 import {
-  bronseIcon,
+  bronzeIcon,
   diamondIcon,
   goldIcon,
   humanResourcesIcon,
@@ -7,6 +7,8 @@ import {
   silverIcon,
   stratigicIcon
 } from '@/assets/icons';
+import type { Flags } from '@/schemas/types';
+import type { UserSummaryResponse } from '@/services/certificates/types';
 
 export const authorities = ['مؤسس', 'مسؤول', 'داعم'];
 
@@ -58,37 +60,104 @@ export const regions = [
 
 export const certificateClasses = {
   diamond: {
+    id: 'diamond',
     title: 'شهادة أداء ماسية',
+    name: 'شهادة ماسية',
     scoreRange: '86-100%',
     description: 'تهنئ الجمعية بتحقيق مستوى تميز مؤسسي عالي جدًا',
     icon: diamondIcon,
     bgColorClass: 'diamond-gradient'
   },
   gold: {
+    id: 'gold',
     title: 'شهادة أداء ذهبية',
+    name: 'شهادة ذهبية',
     scoreRange: '76-85%',
     description: 'تؤكد التميز في تطبيق الممارسات المؤسسية',
     icon: goldIcon,
     bgColorClass: 'gold-gradient'
   },
   silver: {
+    id: 'silver',
     title: 'شهادة أداء فضية',
+    name: 'شهادة فضية',
     scoreRange: '66-75%',
     description: 'تشير إلى جاهزية مؤسسية قوية وتطبيق جيد',
     icon: silverIcon,
     bgColorClass: 'silver-gradient'
   },
-  bronse: {
+  bronze: {
+    id: 'bronze',
     title: 'شهادة أداء برونزية',
+    name: 'شهادة برونزية',
     scoreRange: '55-65%',
     description: 'تعكس الالتزام بالممارسات الأساسية للتحسين المستمر',
-    icon: bronseIcon,
-    bgColorClass: 'bronse-gradient'
+    icon: bronzeIcon,
+    bgColorClass: 'bronze-gradient'
   }
 };
 
 export const certificateTracks = {
   operational: { label: 'الأداء التشغيلي', icon: operationalIcon },
   strategic: { label: 'الأداء الاستراتيجي', icon: stratigicIcon },
-  human_resources: { label: 'الموارد البشرية', icon: humanResourcesIcon }
+  hr: { label: 'الموارد البشرية', icon: humanResourcesIcon }
+};
+
+export const tempFlgs: Flags = {
+  email_verified: true,
+  has_organization: true,
+  organization_status: 'pending',
+  can_access_features: false,
+  has_active_subscription: false,
+  completed_shield: false,
+  completed_strategic_certificate: false,
+  completed_hr_certificate: false,
+  completed_operational_certificate: false
+};
+
+export const tempSummary: UserSummaryResponse = {
+  success: true,
+  data: {
+    paths: {
+      strategic: {
+        name_ar: 'الأداء الاستراتيجي',
+        name_en: 'Strategic Performance',
+        status: 'لم يبدأ بعد',
+        progress: {
+          answered: 0,
+          total: 5,
+          percentage: 0
+        },
+        score: 0,
+        completed: false,
+        submitted: 0
+      },
+      operational: {
+        name_ar: 'الأداء التشغيلي',
+        name_en: 'Operational Performance',
+        status: 'لم يبدأ بعد',
+        progress: {
+          answered: 0,
+          total: 3,
+          percentage: 0
+        },
+        score: 0,
+        completed: false,
+        submitted: 0
+      },
+      hr: {
+        name_ar: 'الموارد البشرية',
+        name_en: 'Human Resources',
+        status: 'لم يبدأ بعد',
+        progress: {
+          answered: 0,
+          total: 35,
+          percentage: 0
+        },
+        score: 0,
+        completed: false,
+        submitted: 0
+      }
+    }
+  }
 };
