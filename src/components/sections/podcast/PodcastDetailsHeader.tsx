@@ -12,12 +12,12 @@ type Props = {
   shortDescription: string;
 };
 
-export default function PodcastHeader({ audioUrl, title, image, shortDescription }: Props) {
+export default function PodcastDetailsHeader({ audioUrl, title, image, shortDescription }: Props) {
   const { waveformRef, isPlaying, togglePlay, skipForward, skipBackward, audioElement, isError } = useWaveSurfer({
     src: audioUrl
   });
 
-  const { canvasRef } = useAudioVisualizer({ isPlaying, audioElement });
+  const { visualizerRef } = useAudioVisualizer({ isPlaying, audioElement });
 
   return (
     <header className="container space-y-8">
@@ -30,7 +30,7 @@ export default function PodcastHeader({ audioUrl, title, image, shortDescription
           </div>
         )}
         {/* Animated frequency bars */}
-        <canvas ref={canvasRef} className="w-full" style={{ height: '80px' }} />
+        <canvas ref={visualizerRef} className="w-full" style={{ height: '80px' }} />
 
         {/* Static progress */}
         <div ref={waveformRef} className="h-2 w-full"></div>

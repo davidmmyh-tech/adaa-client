@@ -2,8 +2,8 @@ import DataWrapper from '@/layouts/DataWrapper';
 import InnerHTML from '@/components/ui/extend/InnerHTML';
 import { useParams } from 'react-router';
 import MorePodcastsSection from '@/components/sections/podcast/MorePodcasts';
-import PodcastHeader from '@/components/sections/podcast/PodcastHeader';
-import PodcastVideoSection from '@/components/sections/podcast/Video';
+import PodcastDetailsHeader from '@/components/sections/podcast/PodcastDetailsHeader';
+import PodcastVideoSection from '@/components/sections/podcast/PodcastVideo';
 import useGetPodcastDetailsQuery from '@/hooks/queries/useGetPodcastDetailsQuery';
 
 export default function PodcastDetailsPage() {
@@ -13,7 +13,7 @@ export default function PodcastDetailsPage() {
   return (
     <DataWrapper isPending={isLoading}>
       <div className="mt-32 space-y-12">
-        <PodcastHeader
+        <PodcastDetailsHeader
           audioUrl={podcast?.audio_url || ''}
           title={podcast?.title || ''}
           image={podcast?.image || ''}

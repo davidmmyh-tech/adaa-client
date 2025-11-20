@@ -6,16 +6,16 @@ interface UseAudioVisualizerProps {
 }
 
 export default function useAudioVisualizer({ isPlaying, audioElement }: UseAudioVisualizerProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const visualizerRef = useRef<HTMLCanvasElement | null>(null);
   const animationFrameRef = useRef<number>(0);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
 
   useEffect(() => {
-    if (!audioElement || !canvasRef.current) return;
+    if (!audioElement || !visualizerRef.current) return;
 
-    const canvas = canvasRef.current;
+    const canvas = visualizerRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -216,5 +216,5 @@ export default function useAudioVisualizer({ isPlaying, audioElement }: UseAudio
     };
   }, [isPlaying, audioElement]);
 
-  return { canvasRef };
+  return { visualizerRef };
 }

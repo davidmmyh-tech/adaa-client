@@ -8,12 +8,13 @@ type Props = {
   description: string;
   image: string;
   to?: string;
+  handlePrefetch?: () => void;
 };
 
-export default function DetailsCard({ date, title, description, image, to = '' }: Props) {
+export default function DetailsCard({ date, title, description, image, to = '', handlePrefetch }: Props) {
   const Element = to ? Link : 'div';
   return (
-    <div className="flex flex-col gap-6 sm:flex-row">
+    <div className="flex flex-col gap-6 sm:flex-row" onMouseEnter={handlePrefetch}>
       <Element to={to} className="block aspect-square shrink-0 sm:w-40">
         <Img src={image} className="rounded-xl object-cover" alt={title} />
       </Element>

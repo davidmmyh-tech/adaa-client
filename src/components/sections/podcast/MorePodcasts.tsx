@@ -1,8 +1,10 @@
 import DetailsCard from '@/components/ui/extend/DetailsCard';
+import usePrefetchPodcastDetails from '@/hooks/prefetch/usePrefetchPodcastDetails';
 import useGetPodcastsQuery from '@/hooks/queries/useGetPodcastsQuery';
 import DataWrapper from '@/layouts/DataWrapper';
 
 export default function MorePodcastsSection() {
+  const { handlePrefetchPodcast } = usePrefetchPodcastDetails();
   const { podcasts, isError, isRefetching, refetch } = useGetPodcastsQuery({
     params: { page: 1, limit: 4 }
   });
@@ -19,7 +21,8 @@ export default function MorePodcastsSection() {
               description={podcast.short_description}
               date={podcast.published_at}
               image={podcast.image}
-              to="#"
+              handlePrefetch={() => handlePrefetchPodcast(podcast.id)}
+              to={`/كرسي-اداء/${podcast.id}`}
             />
           ))}
         </div>

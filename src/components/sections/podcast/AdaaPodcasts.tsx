@@ -3,6 +3,7 @@ import DetailsCard from '@/components/ui/extend/DetailsCard';
 import { SearchIcon } from '@/components/ui/icons';
 import { Input } from '@/components/ui/input';
 import SubmitButton from '@/components/ui/submit-button';
+import usePrefetchPodcastDetails from '@/hooks/prefetch/usePrefetchPodcastDetails';
 import useGetPodcastsQuery from '@/hooks/queries/useGetPodcastsQuery';
 import useDebounce from '@/hooks/useDebounce';
 import DataWrapper from '@/layouts/DataWrapper';
@@ -11,6 +12,7 @@ import { useSearchParams } from 'react-router';
 
 export default function AdaaPodcastsSection() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { handlePrefetchPodcast } = usePrefetchPodcastDetails();
   const query = searchParams.get('query') || '';
 
   const {
@@ -82,6 +84,7 @@ export default function AdaaPodcastsSection() {
               description={podcast.short_description}
               image={podcast.image}
               to={`/كرسي-اداء/${podcast.id}`}
+              handlePrefetch={() => handlePrefetchPodcast(podcast.id)}
             />
           ))}
         </div>
