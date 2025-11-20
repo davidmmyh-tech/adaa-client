@@ -26,13 +26,11 @@ export default function DashboardsSection({ items, isLoading }: Props) {
           </p>
         </div>
 
-        {isLoading && (
+        {isLoading ? (
           <div className="flex h-48 items-center justify-center">
             <Logo isLoading />
           </div>
-        )}
-
-        {items.length > 0 ? (
+        ) : items.length > 0 ? (
           <div className="mx-auto grid max-w-5xl gap-8 gap-y-18 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((t, index) => (
               <Fragment key={t.id}>

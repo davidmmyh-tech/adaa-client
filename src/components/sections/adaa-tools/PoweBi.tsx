@@ -29,13 +29,11 @@ export default function PoweBiSection({ items, isLoading }: Props) {
         </p>
       </div>
 
-      {isLoading && (
+      {isLoading ? (
         <div className="flex h-48 items-center justify-center">
           <Logo isLoading />
         </div>
-      )}
-
-      {items.length > 0 ? (
+      ) : items.length > 0 ? (
         <div className="space-y-2">
           {items.map((t, index) => (
             <PowerBiCard

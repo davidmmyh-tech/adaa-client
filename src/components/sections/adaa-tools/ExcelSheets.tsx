@@ -33,13 +33,11 @@ export default function ExcelSheetsSection({ items, isLoading }: Props) {
       </div>
 
       <div className="bg-primary py-14">
-        {isLoading && (
+        {isLoading ? (
           <div className="flex h-96 items-center justify-center">
             <Logo isLoading className="h-28 w-28" />
           </div>
-        )}
-
-        {topItems.length > 0 ? (
+        ) : topItems.length > 0 ? (
           <div className="text-primary-foreground container">
             {topItems.map((t, index) => (
               <Fragment key={t.id}>
