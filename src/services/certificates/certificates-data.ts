@@ -17,7 +17,7 @@ export function userSummary() {
 
 export function getOrganzations(params: {
   query?: string;
-  certificate?: string;
+  rank?: string;
   year?: number;
   page?: number;
   limit?: number;

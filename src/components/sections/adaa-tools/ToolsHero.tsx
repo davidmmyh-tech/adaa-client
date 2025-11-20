@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import LinkButton from '@/components/ui/extend/LinkButton';
 import { useUserState } from '@/context/UserProvider';
 
@@ -18,13 +19,19 @@ export default function ToolsHeroSection() {
 
         <div>
           {user ? (
-            !flags.has_active_subscription && (
-              <LinkButton to={'/اشتراك-اداء-المميز'} variant="secondary" className="w-40">
-                اشترك الآن
-              </LinkButton>
+            flags.subscription_status === 'pending' ? (
+              <Button variant="secondary" disabled className="w-40">
+                جاري التحقق من شاهد الاشتراك ...
+              </Button>
+            ) : (
+              !flags.has_active_subscription && (
+                <LinkButton to="/اشتراك-اداء-المميز" variant="secondary" className="w-40">
+                  اشترك الآن
+                </LinkButton>
+              )
             )
           ) : (
-            <LinkButton to={'/تسجيل-الدخول'} variant="secondary" className="w-40">
+            <LinkButton to="/تسجيل-الدخول" variant="secondary" className="w-40">
               تسجيل الدخول
             </LinkButton>
           )}

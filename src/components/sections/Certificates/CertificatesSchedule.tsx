@@ -15,64 +15,72 @@ export default function CertificatesScheduleSection() {
     <section className="bg-muted/10">
       <div className="illustration-background">
         <div className="container space-y-8 py-8">
-          <h5 className="text-center text-2xl font-semibold">الجدول الزمني الرسمي 2026</h5>
-          {schedule && (
-            <div className="grid grid-cols-4 gap-x-8 gap-y-4">
-              <ScheduleCard
-                title="فتح باب التقديم"
-                from={parsedDate(schedule.submission_start_date)}
-                period={formatPeriodInArabic(
-                  new Date(schedule.submission_end_date).getTime() - new Date(schedule.submission_start_date).getTime()
-                )}
-                details={schedule.submission_note}
-              />
-              <ScheduleCard
-                title="إغلاق التقديم"
-                from={parsedDate(schedule.submission_end_date)}
-                period="______"
-                details={schedule.submission_end_note}
-              />
-              <ScheduleCard
-                title="لتقييم الإلكتروني"
-                from={parsedDate(schedule.evaluation_start_date)}
-                period={formatPeriodInArabic(
-                  new Date(schedule.evaluation_end_date).getTime() - new Date(schedule.evaluation_start_date).getTime()
-                )}
-                details={schedule.evaluation_note}
-              />
-              <ScheduleCard
-                title="فتح باب التقديم"
-                from={parsedDate(schedule.announcement_date)}
-                period="_______"
-                details={schedule.announcement_note}
-              />
-            </div>
-          )}
+          {schedule ? (
+            <>
+              <h5 className="text-center text-2xl font-semibold">
+                الجدول الزمني الرسمي {new Date(schedule.submission_end_date).getFullYear()}
+              </h5>
+              <div className="grid grid-cols-4 gap-x-8 gap-y-4">
+                <ScheduleCard
+                  title="فتح باب التقديم"
+                  from={parsedDate(schedule.submission_start_date)}
+                  period={formatPeriodInArabic(
+                    new Date(schedule.submission_end_date).getTime() -
+                      new Date(schedule.submission_start_date).getTime()
+                  )}
+                  details={schedule.submission_note}
+                />
+                <ScheduleCard
+                  title="إغلاق التقديم"
+                  from={parsedDate(schedule.submission_end_date)}
+                  period="______"
+                  details={schedule.submission_end_note}
+                />
+                <ScheduleCard
+                  title="لتقييم الإلكتروني"
+                  from={parsedDate(schedule.evaluation_start_date)}
+                  period={formatPeriodInArabic(
+                    new Date(schedule.evaluation_end_date).getTime() -
+                      new Date(schedule.evaluation_start_date).getTime()
+                  )}
+                  details={schedule.evaluation_note}
+                />
+                <ScheduleCard
+                  title="فتح باب التقديم"
+                  from={parsedDate(schedule.announcement_date)}
+                  period="_______"
+                  details={schedule.announcement_note}
+                />
+              </div>
 
-          <div className="card text-primary-foreground mx-auto max-w-xl bg-[#6062A7] px-4">
-            <div className="w-full space-y-4 text-start">
-              <p> 🗓️ تسليم شهادات الأداء</p>
-              <p className="space-x-8">
-                <span>
-                  <span className="font-semibold">التاريخ:</span>
-                  {parsedDate(schedule?.awarding_start_date)}{' '}
-                </span>
-                <span>
-                  <span className="font-semibold">المده:</span>
-                  {schedule
-                    ? formatPeriodInArabic(
-                        new Date(schedule.awarding_end_date).getTime() -
-                          new Date(schedule.awarding_start_date).getTime()
-                      )
-                    : ''}
-                </span>
-              </p>
-              <p>
-                <span className="font-semibold">التفاصيل:</span>
-                {schedule?.awarding_note}
-              </p>
-            </div>
-          </div>
+              <div className="card text-primary-foreground mx-auto max-w-xl bg-[#6062A7] px-4">
+                <div className="w-full space-y-4 text-start">
+                  <p> 🗓️ تسليم شهادات الأداء</p>
+                  <p className="space-x-8">
+                    <span>
+                      <span className="font-semibold">التاريخ:</span>
+                      {parsedDate(schedule.awarding_start_date)}{' '}
+                    </span>
+                    <span>
+                      <span className="font-semibold">المده:</span>
+                      {schedule
+                        ? formatPeriodInArabic(
+                            new Date(schedule.awarding_end_date).getTime() -
+                              new Date(schedule.awarding_start_date).getTime()
+                          )
+                        : ''}
+                    </span>
+                  </p>
+                  <p>
+                    <span className="font-semibold">التفاصيل:</span>
+                    {schedule.awarding_note}
+                  </p>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="py-32 text-center text-4xl font-semibold">لا توجد جدول متاحة حالياً.</div>
+          )}
 
           <div className="flex justify-center">
             <UserStateButton to="/شهادات-اداء/تقييم" className="bg-secondary w-40">

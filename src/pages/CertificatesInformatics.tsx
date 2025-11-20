@@ -18,12 +18,12 @@ export default function CertificatesInformaticsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
   const display = searchParams.get('display') || '';
-  const certificate = searchParams.get('certificate') || '';
+  const rank = searchParams.get('rank') || '';
   const year = Number(searchParams.get('year')) || undefined;
 
   const { data, isPending } = useQuery({
-    queryKey: ['certificate-organizations', query, display, certificate, year],
-    queryFn: () => getOrganzations({ query, certificate, year, page: 1, limit: 5 })
+    queryKey: ['certificate-organizations', query, display, rank, year],
+    queryFn: () => getOrganzations({ query, rank, year, page: 1, limit: 5 })
   });
   const organizations = data?.data.data.data || [];
 
@@ -76,7 +76,7 @@ export default function CertificatesInformaticsPage() {
               variant="secondary"
               values={certificates}
               selectLabel="نوع الشهادة"
-              onValueChange={(value) => updateSearchParam('certificate', value === 'none' ? '' : value)}
+              onValueChange={(value) => updateSearchParam('rank', value === 'none' ? '' : value)}
               className="basis-1/6"
             />
 

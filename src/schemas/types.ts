@@ -39,6 +39,7 @@ export type Flags = {
   email_verified: boolean;
   has_organization: boolean;
   organization_status: 'approved' | 'pending' | null;
+  subscription_status: 'approved' | 'pending' | null;
   can_access_features: boolean;
   has_active_subscription: boolean;
   completed_shield: boolean;

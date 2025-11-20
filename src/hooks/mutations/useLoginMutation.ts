@@ -20,14 +20,14 @@ export default function useLoginMutation({ onSuccess, onError }: Props) {
     mutationKey: ['login'],
     mutationFn: (form: LoginForm) => loginUser(form),
     onSuccess: async (data) => {
-      setToken(data.data.token);
       const flags = data.data.flags || tempFlgs;
+      setToken(data.data.token);
       setUser(data.data.user);
-      setFlags(data.data.flags ?? tempFlgs);
+      setFlags(flags);
       setOrganization(data.data.organization);
       onSuccess?.(data.data.user);
 
-      if (flags.has_organization && data.data.flags.organization_status === 'approved') navigate('/');
+      if (flags.has_organization) navigate('/');
       else navigate('/تسجيل-منظمة');
     },
     onError: (err) => {

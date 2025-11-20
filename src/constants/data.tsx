@@ -105,14 +105,15 @@ export const certificateTracks = {
 
 export const tempFlgs: Flags = {
   email_verified: true,
-  has_organization: true,
-  organization_status: 'pending',
+  has_organization: false,
+  organization_status: null,
   can_access_features: false,
   has_active_subscription: false,
   completed_shield: false,
   completed_strategic_certificate: false,
   completed_hr_certificate: false,
-  completed_operational_certificate: false
+  completed_operational_certificate: false,
+  subscription_status: null
 };
 
 export const tempSummary: UserSummaryResponse = {

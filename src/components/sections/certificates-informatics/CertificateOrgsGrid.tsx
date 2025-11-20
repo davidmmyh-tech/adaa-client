@@ -1,4 +1,4 @@
-import { certificateClasses } from '@/constants/data';
+import { certificateClasses, certificateTracks } from '@/constants/data';
 import type { CertificatesOrganization } from '@/services/certificates/types';
 
 export function CertificateOrgsGrid({ orgs }: { orgs: CertificatesOrganization[] }) {
@@ -10,13 +10,17 @@ export function CertificateOrgsGrid({ orgs }: { orgs: CertificatesOrganization[]
           className={`${certificateClasses[o.rank].bgColorClass} flex w-full flex-col items-center gap-8 rounded-xl p-4 pb-14`}
         >
           <img src={certificateClasses[o.rank].icon} alt="gold medal" className="h-14 object-contain" />
-          <p className="text-xl">{o.rank_ar}</p>
+          <p className="text-xl">{certificateClasses[o.rank].name}</p>
           <p className="text-2xl font-semibold">{o.organization_name}</p>
-          <p className="text-2xl font-semibold">{o.path_name_ar}</p>
+          <p className="text-2xl font-semibold">{certificateTracks[o.path].label}</p>
           <p className="text-2xl font-semibold">{o.percentage ? `${o.percentage}%` : '___'}</p>
-          <a href={o.website || '#'} className="text-2xl font-semibold">
-            {o.website || 'n/a'}
-          </a>
+          {o.website ? (
+            <a href={o.website} className="flex items-center justify-center text-blue-600 underline">
+              {o.website}
+            </a>
+          ) : (
+            <p>لا يوجد</p>
+          )}
         </div>
       ))}
     </div>

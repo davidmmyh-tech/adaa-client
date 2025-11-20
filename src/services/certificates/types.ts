@@ -57,23 +57,18 @@ export type ChertificatesAnalyticsResponse = {
 };
 
 export type CertificatesOrganization = {
-  organization_id: Id;
+  organization_id: number;
   organization_name: string;
   path: CertificateTrack;
-  path_name_ar: string;
-  path_name_en: string;
-  percentage: number;
-  rank: CertificateClass;
-  rank_ar: string;
-  rank_icon: string;
-  rank_color: string;
-  website: string | null;
-  email: string;
+  path_label: string;
   score: string;
-  answered: number;
-  total: number;
-  is_submitted: number;
+  rank: CertificateClass;
+  percentage: number;
+  answered_questions: number;
+  total_questions: number;
   is_complete: boolean;
+  is_approved: boolean;
+  website: string | null | undefined;
 };
 
 export type CertificateOrganizationsResponse = {

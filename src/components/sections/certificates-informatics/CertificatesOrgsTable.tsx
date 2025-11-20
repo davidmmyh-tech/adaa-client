@@ -30,18 +30,26 @@ export default function CertificatesOrgsTable({ orgs, isLoading = false }: Props
                 <TRow key={org.organization_id + org.path}>
                   <TCell className="col-span-3">{org.organization_name}</TCell>
                   <TCell className="col-span-2 flex items-center gap-2">
-                    <img src={certificateTracks[org.path].icon} alt={org.path_name_ar} className="w-6" />
-                    {org.path_name_ar}
+                    <img src={certificateTracks[org.path].icon} alt={org.path_label} className="w-6" />
+                    {org.path_label}
                   </TCell>
                   <TCell className="col-span-2">
-                    {org.rank_ar}
-                    <img src={certificateClasses[org.rank].icon} alt={org.path_name_ar} className="w-6" />
+                    {certificateClasses[org.rank].name}
+                    <img
+                      src={certificateClasses[org.rank].icon}
+                      alt={certificateClasses[org.rank].name}
+                      className="w-6"
+                    />
                   </TCell>
                   <TCell className="col-span-1">{org.percentage ? `${org.percentage}%` : '___'}</TCell>
                   <TCell className="col-span-3">
-                    <a href={org.website || '#'} className="flex items-center justify-center text-blue-600 underline">
-                      {org.website || 'n/a'}
-                    </a>
+                    {org.website ? (
+                      <a href={org.website} className="flex items-center justify-center text-blue-600 underline">
+                        {org.website}
+                      </a>
+                    ) : (
+                      'لا يوجد'
+                    )}
                   </TCell>
                 </TRow>
               ))
