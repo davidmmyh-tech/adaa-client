@@ -1,8 +1,14 @@
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/ui/extend/Logo';
 import { useNavigate } from 'react-router';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function VerifiedEmailPage() {
+  useDocumentHead({
+    title: 'تم التحقق من البريد الإلكتروني - أداء',
+    description: 'تم التحقق من بريدك الإلكتروني بنجاح. يمكنك الآن تسجيل الدخول إلى حسابك.'
+  });
+
   const navigate = useNavigate();
 
   return (

@@ -4,6 +4,7 @@ import SubmitButton from '@/components/ui/submit-button';
 import useForgetPasswordMutation from '@/hooks/mutations/useForgetPasswordMutation';
 import useCountDown from '@/hooks/useCountDown';
 import { useState } from 'react';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function ForgetPasswordPage() {
   const [email, setEmail] = useState<string>('');
@@ -24,6 +25,11 @@ export default function ForgetPasswordPage() {
     e.preventDefault();
     mutate(email);
   };
+
+  useDocumentHead({
+    title: 'استعادة كلمة المرور - أداء',
+    description: 'أعد تعيين كلمة المرور الخاصة بك في منصة أداء للوصول إلى حسابك.'
+  });
 
   return (
     <form className="mx-auto mt-28 flex w-full max-w-2xl flex-col space-y-4 px-8" onSubmit={handleSubmit}>

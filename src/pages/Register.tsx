@@ -9,6 +9,7 @@ import ErrorMessage from '@/components/ui/extend/error-message';
 import { FormDropdown } from '@/components/ui/extend/FormDropdown';
 import { AUTHORITIES } from '@/constants/data';
 import useRegisterMutation from '@/hooks/mutations/useRegisterMutation';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function RegisterPage() {
   const [error, setError] = useState<string | null>();
@@ -31,6 +32,13 @@ export default function RegisterPage() {
   });
 
   const submitForm = handleSubmit((form: RegisterForm) => mutate(form));
+
+  useDocumentHead({
+    title: 'إنشاء حساب جديد - أداء',
+    description:
+      'أنشئ حسابك الخاص في منصة أداء للاستفادة من خدمات التقييم والشهادات المعتمدة والأدوات المتخصصة للمنظمات غير الربحية.'
+  });
+
   return (
     <div className="flex min-h-screen gap-4">
       <div className="my-20 grow px-8">

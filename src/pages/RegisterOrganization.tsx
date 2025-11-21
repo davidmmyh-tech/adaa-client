@@ -8,6 +8,7 @@ import { registerOrganizationSchema, type RegisterOrganizationForm } from '@/sch
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function RegisterOrganizationPage() {
   const [error, setError] = useState<string | null>();
@@ -25,6 +26,12 @@ export default function RegisterOrganizationPage() {
       if (error.response?.status === 422) return setError('البيانات تمم استخدامها من قبل او غير صحيحة');
       setError('خطاء غير معروف حاول لاحقا');
     }
+  });
+
+  useDocumentHead({
+    title: 'تسجيل منظمة - أداء',
+    description:
+      'سجّل منظمتك غير الربحية في منصة أداء للحصول على التقييمات والشهادات المعتمدة والاستفادة من الخدمات المتخصصة.'
   });
 
   const submitForm = handleSubmit((form: RegisterOrganizationForm) => mutate(form));

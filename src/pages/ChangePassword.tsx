@@ -6,8 +6,14 @@ import SubmitButton from '@/components/ui/submit-button';
 import useResetPasswordMutation from '@/hooks/mutations/useResetPasswordMutation';
 import { useState, type FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function ChangePasswordPage() {
+  useDocumentHead({
+    title: 'تغيير كلمة المرور - أداء',
+    description: 'أدخل كلمة المرور الجديدة لحسابك في منصة أداء.'
+  });
+
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token') || '';
 

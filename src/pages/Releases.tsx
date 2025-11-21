@@ -11,6 +11,7 @@ import { findReleases, getReleasesCategories } from '@/services/releases';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function ReleasesPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,6 +52,14 @@ export default function ReleasesPage() {
   const handleQueryChange = useDebounce((e: React.ChangeEvent<HTMLInputElement>) => {
     updateSearchParam('query', e.target.value);
   }, 400);
+
+  useDocumentHead({
+    title: 'اصدارات أداء - كتب ومنشورات القطاع غير الربحي',
+    description:
+      'اكتشف مجموعة من الكتب والمنشورات المتخصصة من منصة أداء في مجال التميز المؤسسي والأداء للمنظمات غير الربحية. تحميل ملفات PDF مجاناً.',
+    ogTitle: 'اصدارات أداء - كتب ومنشورات متخصصة',
+    ogDescription: 'مكتبة رقمية تضم كتب ومنشورات متخصصة في التميز المؤسسي للقطاع غير الربحي متاحة للتحميل المجاني.'
+  });
 
   return (
     <>

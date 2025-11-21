@@ -8,8 +8,16 @@ import HrModel from '@/components/sections/Certificates/questions/HrModel';
 import SuccessScreen from '@/components/ui/extend/SuccessScreen';
 import { useUserState } from '@/context/UserProvider';
 import type { CertificateTrack } from '@/schemas/types';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function CertificatesAssessmentPage() {
+  useDocumentHead({
+    title: 'تقييم شهادات أداء - الأداء المؤسسي',
+    description: 'أكمل تقييم الأداء المؤسسي للحصول على شهادة أداء معتمدة في المسارات الثلاثة: الاستراتيجي، التشغيلي، والموارد البشرية.',
+    ogTitle: 'تقييم شهادات أداء',
+    ogDescription: 'نموذج تقييم الأداء المؤسسي للحصول على شهادة معتمدة في المسارات الثلاثة.'
+  });
+
   const [searchParams] = useSearchParams();
   const trackParam = searchParams.getAll('tracks');
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);

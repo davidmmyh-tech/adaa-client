@@ -13,8 +13,16 @@ import { useQuery } from '@tanstack/react-query';
 import { Grid3x3 } from 'lucide-react';
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function CertificatesInformaticsPage() {
+  useDocumentHead({
+    title: 'معلومات شهادات أداء - المنظمات الحاصلة على الشهادات',
+    description: 'تصفح قائمة المنظمات غير الربحية الحاصلة على شهادات الأداء المؤسسي المعتمدة مع إحصائيات وتحليلات شاملة.',
+    ogTitle: 'معلومات شهادات أداء',
+    ogDescription: 'قائمة المنظمات الحاصلة على شهادات أداء مع إحصائيات وتحليلات.'
+  });
+
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
   const display = searchParams.get('display') || '';

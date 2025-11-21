@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router';
 import DataWrapper from '../layouts/DataWrapper';
 import { BLOG_DETAILS_QUERY_KEY } from '@/constants/query-keys';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function BlogDetailsPage() {
   const { id = '' } = useParams<{ id: string }>();
@@ -13,8 +14,16 @@ export default function BlogDetailsPage() {
     queryFn: () => getBlogDetails(id),
     throwOnError: true
   });
-
   const blog = data?.data.blog;
+
+  useDocumentHead({
+    title: blog?.title ? `${blog.title} - مدونة أداء` : 'مدونة أداء',
+    description: blog?.content?.substring(0, 160).replace(/<[^>]*>/g, '') || 'اقرأ المزيد في مدونة أداء',
+    ogTitle: blog?.title || 'مدونة أداء',
+    ogDescription: blog?.content?.substring(0, 160).replace(/<[^>]*>/g, '') || 'مقالات التميز المؤسسي',
+    ogImage: blog?.image
+  });
+
   return (
     <DataWrapper isPending={isPending} retry={refetch} isRefetching={isRefetching}>
       <header className="container mt-28 space-y-12">

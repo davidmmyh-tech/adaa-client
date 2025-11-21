@@ -5,8 +5,14 @@ import SubmitButton from '@/components/ui/submit-button';
 import useResendVerifyMailMutation from '@/hooks/mutations/useResendVerifyMailMutation';
 import useCountDown from '@/hooks/useCountDown';
 import { useState } from 'react';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function VerifyYourMail() {
+  useDocumentHead({
+    title: 'تحقق من بريدك الإلكتروني - أداء',
+    description: 'يرجى التحقق من بريدك الإلكتروني لتفعيل حسابك في منصة أداء.'
+  });
+
   const { countdown, isCounting, restart } = useCountDown({ initial: 60 });
   const [error, setError] = useState<string | null>(null);
 

@@ -8,11 +8,19 @@ import { GRADES, REGIONS, YEARS } from '@/constants/data';
 import useGetAdaaShieldOrganizationsQuery from '@/hooks/queries/useGetAdaaShieldOrganizationsQuery';
 import useDebounce from '@/hooks/useDebounce';
 import { useSearchParams } from 'react-router';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 const PAGE_ORG_LIMIT = 5;
 const ORGS_PAGE = 1;
 
 export default function AdaaShieldInformatics() {
+  useDocumentHead({
+    title: 'معلومات درع أداء - المنظمات الفائزة',
+    description: 'اطلع على قائمة المنظمات غير الربحية الفائزة بجائزة درع أداء وتصفح الإحصائيات والتحليلات المفصلة.',
+    ogTitle: 'معلومات درع أداء - المنظمات الفائزة',
+    ogDescription: 'قائمة المنظمات غير الربحية الفائزة بجائزة درع أداء مع إحصائيات وتحليلات.'
+  });
+
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
   const grade = searchParams.get('grade') || '';

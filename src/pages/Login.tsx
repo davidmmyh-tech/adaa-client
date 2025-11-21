@@ -8,6 +8,7 @@ import SubmitButton from '@/components/ui/submit-button';
 import { authImage } from '@/assets/images';
 import ErrorMessage from '@/components/ui/extend/error-message';
 import { Link } from 'react-router';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>();
@@ -27,6 +28,11 @@ export default function LoginPage() {
   });
 
   const submitForm = handleSubmit((form: LoginForm) => mutate(form));
+
+  useDocumentHead({
+    title: 'تسجيل الدخول - أداء',
+    description: 'سجّل دخولك إلى منصة أداء للوصول إلى خدمات التقييم والشهادات والأدوات المتخصصة للمنظمات غير الربحية.'
+  });
 
   return (
     <div className="flex min-h-screen gap-4">

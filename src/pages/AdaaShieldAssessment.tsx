@@ -3,8 +3,16 @@ import ShildQuestionsSection from '@/components/sections/adaa-shield-assessment/
 import SuccessScreen from '@/components/ui/extend/SuccessScreen';
 import { useUserState } from '@/context/UserProvider';
 import { useState } from 'react';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function AdaaShieldAssessmentPage() {
+  useDocumentHead({
+    title: 'تقييم درع أداء - جائزة التميز المؤسسي',
+    description: 'سجّل منظمتك في جائزة درع أداء من خلال تعبئة نموذج التقييم الشامل للأداء المؤسسي.',
+    ogTitle: 'تقييم درع أداء',
+    ogDescription: 'نموذج تقييم شامل للمنظمات غير الربحية للمشاركة في جائزة درع أداء.'
+  });
+
   const { setFlags, flags } = useUserState();
   const [success, setSuccess] = useState(() => flags.completed_shield);
 

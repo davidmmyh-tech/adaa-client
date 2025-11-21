@@ -4,8 +4,17 @@ import CertificatesScheduleSection from '@/components/sections/Certificates/Cert
 import CertificatesTermsSection from '@/components/sections/Certificates/CertificatesTerms';
 import EvaluationBoardSection from '@/components/sections/Certificates/EvaluationBoard';
 import CertificatePickTrackSection from '@/components/sections/Certificates/CertificatePickTrack';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function CertificatesPage() {
+  useDocumentHead({
+    title: 'شهادات أداء - شهادة الأداء المؤسسي المعتمدة',
+    description:
+      'احصل على شهادة الأداء المؤسسي المعتمدة. منصة إلكترونية لقياس وتقييم أداء الجمعيات في ثلاثة مسارات مستقلة مع إصدار شهادة معتمدة.',
+    ogTitle: 'شهادات أداء - شهادة الأداء المؤسسي المعتمدة',
+    ogDescription: 'منصة إلكترونية لقياس وتقييم أداء الجمعيات في ثلاثة مسارات مستقلة، مع إصدار شهادة أداء معتمدة.'
+  });
+
   return (
     <div className="space-y-12">
       <CertificatesHeroSection

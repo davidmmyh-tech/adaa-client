@@ -3,8 +3,16 @@ import SponsorshipSubmissionForm from '@/components/sections/contact-forms/Spons
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function ContactUsPage() {
+  useDocumentHead({
+    title: 'اتصل بنا - أداء',
+    description: 'تواصل مع فريق أداء للاستفسارات والدعم أو لتقديم طلبات الرعاية والشراكات التي تدعم رحلتنا في رفع كفاءة القطاع غير الربحي.',
+    ogTitle: 'اتصل بنا - منصة أداع',
+    ogDescription: 'تواصل مع فريق أداء للاستفسارات والدعم أو لتقديم طلبات الرعاية والشراكات.'
+  });
+
   const [selectedForm, setSelectedForm] = useState<'تقديم-رعاية' | 'اتصل-بنا'>('تقديم-رعاية');
 
   return (

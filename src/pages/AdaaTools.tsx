@@ -5,6 +5,8 @@ import ToolsGuideSection from '@/components/sections/adaa-tools/ToolsGuide';
 import ToolsHeroSection from '@/components/sections/adaa-tools/ToolsHero';
 import { getTools } from '@/services/tools';
 import { useQueries } from '@tanstack/react-query';
+import { useDocumentHead } from '@/hooks/useDocumentHead';
+
 export default function AdaaToolsPage() {
   const toolsQueries = useQueries({
     queries: [
@@ -21,6 +23,14 @@ export default function AdaaToolsPage() {
         queryFn: () => getTools('tools') //fetchPowerBiTemplates()
       }
     ]
+  });
+
+  useDocumentHead({
+    title: 'أدوات أداء - نماذج ولوحات تحليلية للمنظمات غير الربحية',
+    description:
+      'احصل على أدوات تقييم احترافية للمنظمات غير الربحية. نماذج إكسل، لوحات تحليلية، وقوالب Power BI جاهزة لقياس وتحسين الأداء المؤسسي.',
+    ogTitle: 'أدوات أداء - نماذج ولوحات تحليلية احترافية',
+    ogDescription: 'أدوات تقييم احترافية للمنظمات غير الربحية تشمل نماذج إكسل، لوحات تحليلية، وقوالب Power BI.'
   });
 
   return (
