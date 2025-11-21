@@ -26,6 +26,11 @@ export default function UserProvider({ children }: Props) {
   const [organization, setOrganization] = useState<Organization | null>(null);
 
   const verifyQuery = useCurrentUserQuery({
+    onSuccess: (user, organization, flags) => {
+      setUser(user);
+      setOrganization(organization);
+      setFlags(flags || TEMP_FLAGS);
+    },
     onError: (err) => {
       if (err.response?.status === 401 && user) {
         toast.error('انتهت جلسة تسجيل الدخول، يرجى تسجيل الدخول مرة أخرى.');
@@ -33,11 +38,6 @@ export default function UserProvider({ children }: Props) {
         setFlags(TEMP_FLAGS);
         setOrganization(null);
       }
-    },
-    onSuccess: (user, organization, flags) => {
-      setUser(user);
-      setOrganization(organization);
-      setFlags(flags || TEMP_FLAGS);
     }
   });
   const isLoading = verifyQuery.isPending && !user;
