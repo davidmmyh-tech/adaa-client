@@ -45,7 +45,7 @@ const VerifyYourMail = lazy(() => import('./pages/VerifyYourMail'));
 function FallbackScreen() {
   return (
     <div className="flex h-screen items-center justify-center">
-      <Logo isLoading className="h-20 w-20" />
+      <Logo isLoading className="h-28 w-28" />
     </div>
   );
 }
