@@ -76,6 +76,12 @@ export default function AdaaPlusPage() {
     if (file) setValue('attachment', file, { shouldValidate: true });
   };
 
+  useDocumentHead({
+    title: 'أداء المميز - ترقية الاشتراك في منصة أداء',
+    description:
+      'قم بترقية اشتراكك إلى أداء المميز للاستفادة من جميع الأدوات والخدمات المتقدمة التي تقدمها منصة أداء للمنظمات غير الربحية.'
+  });
+
   if (success)
     return (
       <div className="flex h-screen flex-col items-center justify-center">

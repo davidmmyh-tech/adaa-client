@@ -6,6 +6,7 @@ import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { Brackets, Download } from 'lucide-react';
+import { memo } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
@@ -64,7 +65,7 @@ type CardProps = {
   id: number;
 };
 
-function PowerBiCard({ index, title, description, image, id }: CardProps) {
+const PowerBiCard = memo(function PowerBiCard({ index, title, description, image, id }: CardProps) {
   const navigate = useNavigate();
   const downloadMutation = useMutation({
     mutationKey: ['download-dashboard-design', id],
@@ -106,4 +107,4 @@ function PowerBiCard({ index, title, description, image, id }: CardProps) {
       </div>
     </div>
   );
-}
+});

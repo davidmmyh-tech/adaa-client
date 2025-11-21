@@ -5,6 +5,7 @@ import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { Brackets, Download } from 'lucide-react';
+import { memo } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { Fragment } from 'react/jsx-runtime';
@@ -64,7 +65,7 @@ type CardProps = {
   id: number;
 };
 
-function DashboardCard({ title, description, image, id }: CardProps) {
+const DashboardCard = memo(function DashboardCard({ title, description, image, id }: CardProps) {
   const navigate = useNavigate();
   const downloadMutation = useMutation({
     mutationKey: ['download-dashboard-design', id],
@@ -101,4 +102,4 @@ function DashboardCard({ title, description, image, id }: CardProps) {
       </div>
     </div>
   );
-}
+});

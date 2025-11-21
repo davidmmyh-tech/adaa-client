@@ -14,7 +14,7 @@ export default defineConfig({
     port: 3000
   },
   build: {
-    // ...existing code...
+    chunkSizeWarningLimit: 1400,
     rollupOptions: {
       input: {
         main: 'index.html'

@@ -1,7 +1,7 @@
 import './index.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-import { StrictMode } from 'react';
+import { StrictMode, lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -19,26 +19,36 @@ import UserInitRequiredGuard from './layouts/UserInitRequiredGuard';
 import RegisterPage from './pages/Register';
 import LoginPage from './pages/Login';
 import ForgetPasswordPage from './pages/ForgetPassword';
-import ChangePasswordPage from './pages/ChangePassword';
-import RegisterOrganizationPage from './pages/RegisterOrganization';
 import AdaaShieldPage from './pages/AdaaShield';
-import AdaaShieldAssessmentPage from './pages/AdaaShieldAssessment';
 import AdaaShieldInformatics from './pages/AdaaShieldInformatics';
-import VerifiedEmailPage from './pages/VerifiedEmail';
-import VerifyYourMail from './pages/VerifyYourMail';
 import CertificatesPage from './pages/Certificates';
 import UserProvider from './context/UserProvider';
 import CertificatesInformaticsPage from './pages/CertificatesInformatics';
-import CertificatesAssessmentPage from './pages/CertificatesAssessment';
 import Podcast from './pages/Podcast';
-import PodcastDetailsPage from './pages/PodcastDetails';
 import AdaaToolsPage from './pages/AdaaTools';
 import BlogsPage from './pages/Blogs';
-import BlogDetailsPage from './pages/BlogDetails';
-import AdaaPlusPage from './pages/AdaaPlus';
 import ContactUsPage from './pages/ContactUs';
+import Logo from './components/ui/extend/Logo';
 import OrganizationGuard from './layouts/OrganizationGuard';
 import ReleasesPage from './pages/Releases';
+
+const AdaaPlusPage = lazy(() => import('./pages/AdaaPlus'));
+const AdaaShieldAssessmentPage = lazy(() => import('./pages/AdaaShieldAssessment'));
+const CertificatesAssessmentPage = lazy(() => import('./pages/CertificatesAssessment'));
+const RegisterOrganizationPage = lazy(() => import('./pages/RegisterOrganization'));
+const BlogDetailsPage = lazy(() => import('./pages/BlogDetails'));
+const PodcastDetailsPage = lazy(() => import('./pages/PodcastDetails'));
+const ChangePasswordPage = lazy(() => import('./pages/ChangePassword'));
+const VerifiedEmailPage = lazy(() => import('./pages/VerifiedEmail'));
+const VerifyYourMail = lazy(() => import('./pages/VerifyYourMail'));
+
+function FallbackScreen() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <Logo isLoading className="h-20 w-20" />
+    </div>
+  );
+}
 
 const router = createBrowserRouter([
   {
@@ -74,7 +84,14 @@ const router = createBrowserRouter([
                 path: 'كرسي-اداء',
                 children: [
                   { index: true, element: <Podcast /> },
-                  { path: ':id', element: <PodcastDetailsPage /> }
+                  {
+                    path: ':id',
+                    element: (
+                      <Suspense fallback={<FallbackScreen />}>
+                        <PodcastDetailsPage />
+                      </Suspense>
+                    )
+                  }
                 ]
               },
               {
@@ -89,7 +106,14 @@ const router = createBrowserRouter([
                 path: 'مدونة-اداء',
                 children: [
                   { index: true, element: <BlogsPage /> },
-                  { path: ':id', element: <BlogDetailsPage /> }
+                  {
+                    path: ':id',
+                    element: (
+                      <Suspense fallback={<FallbackScreen />}>
+                        <BlogDetailsPage />
+                      </Suspense>
+                    )
+                  }
                 ]
               },
               {
@@ -114,11 +138,29 @@ const router = createBrowserRouter([
                         children: [
                           {
                             path: 'درع-اداء',
-                            children: [{ path: 'تقييم', element: <AdaaShieldAssessmentPage /> }]
+                            children: [
+                              {
+                                path: 'تقييم',
+                                element: (
+                                  <Suspense fallback={<FallbackScreen />}>
+                                    <AdaaShieldAssessmentPage />
+                                  </Suspense>
+                                )
+                              }
+                            ]
                           },
                           {
                             path: 'شهادات-اداء',
-                            children: [{ path: 'تقييم', element: <CertificatesAssessmentPage /> }]
+                            children: [
+                              {
+                                path: 'تقييم',
+                                element: (
+                                  <Suspense fallback={<FallbackScreen />}>
+                                    <CertificatesAssessmentPage />
+                                  </Suspense>
+                                )
+                              }
+                            ]
                           }
                         ]
                       }
@@ -143,7 +185,11 @@ const router = createBrowserRouter([
                 children: [
                   {
                     path: 'اشتراك-اداء-المميز',
-                    element: <AdaaPlusPage />
+                    element: (
+                      <Suspense fallback={<FallbackScreen />}>
+                        <AdaaPlusPage />
+                      </Suspense>
+                    )
                   }
                 ]
               }
@@ -163,7 +209,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'تسجيل-منظمة',
-        element: <RegisterOrganizationPage />
+        element: (
+          <Suspense fallback={<FallbackScreen />}>
+            <RegisterOrganizationPage />
+          </Suspense>
+        )
       },
       {
         path: 'نسيت-كلمة-المرور',
@@ -171,15 +221,27 @@ const router = createBrowserRouter([
       },
       {
         path: 'reset-password',
-        element: <ChangePasswordPage />
+        element: (
+          <Suspense fallback={<FallbackScreen />}>
+            <ChangePasswordPage />
+          </Suspense>
+        )
       },
       {
         path: 'verified',
-        element: <VerifiedEmailPage />
+        element: (
+          <Suspense fallback={<FallbackScreen />}>
+            <VerifiedEmailPage />
+          </Suspense>
+        )
       },
       {
         path: 'تحقق-من-البريد-الالكتروني',
-        element: <VerifyYourMail />
+        element: (
+          <Suspense fallback={<FallbackScreen />}>
+            <VerifyYourMail />
+          </Suspense>
+        )
       }
     ]
   }

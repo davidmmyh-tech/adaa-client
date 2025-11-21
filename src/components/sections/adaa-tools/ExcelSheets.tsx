@@ -8,7 +8,7 @@ import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { Brackets, Download, Eye } from 'lucide-react';
-import { Fragment, useState } from 'react';
+import { Fragment, memo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
@@ -96,7 +96,7 @@ type CardProps = {
   id: number;
 };
 
-function ExcelCard({ index, title, description, image, id }: CardProps) {
+const ExcelCard = memo(function ExcelCard({ index, title, description, image, id }: CardProps) {
   const navigate = useNavigate();
   const downloadMutation = useMutation({
     mutationKey: ['download-excel-sheet', id],
@@ -139,4 +139,4 @@ function ExcelCard({ index, title, description, image, id }: CardProps) {
       </div>
     </Fragment>
   );
-}
+});

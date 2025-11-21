@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import Img from './Img';
 import { parsedDate } from '@/lib/utils';
+import { memo } from 'react';
 
 type Props = {
   date?: string;
@@ -11,7 +12,7 @@ type Props = {
   handlePrefetch?: () => void;
 };
 
-export default function DetailsCard({ date, title, description, image, to = '', handlePrefetch }: Props) {
+const DetailsCard = memo(function DetailsCard({ date, title, description, image, to = '', handlePrefetch }: Props) {
   const Element = to ? Link : 'div';
   return (
     <div className="flex flex-col gap-6 sm:flex-row" onMouseEnter={handlePrefetch}>
@@ -27,4 +28,6 @@ export default function DetailsCard({ date, title, description, image, to = '', 
       </div>
     </div>
   );
-}
+});
+
+export default DetailsCard;

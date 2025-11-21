@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import Img from './Img';
 import type { Id } from '@/schemas/types';
 import usePrefetchBlogDetails from '@/hooks/prefetch/usePrefetchBlogDetails';
+import { memo } from 'react';
 
 type Props = {
   title: string;
@@ -10,7 +11,7 @@ type Props = {
   id: Id;
 };
 
-export default function BlogCard({ title, description, image, id }: Props) {
+const BlogCard = memo(function BlogCard({ title, description, image, id }: Props) {
   const { handlePrefetchBlog } = usePrefetchBlogDetails();
   return (
     <div className="flex flex-col gap-6 sm:flex-row" onMouseEnter={() => handlePrefetchBlog(id)}>
@@ -28,4 +29,6 @@ export default function BlogCard({ title, description, image, id }: Props) {
       </div>
     </div>
   );
-}
+});
+
+export default BlogCard;

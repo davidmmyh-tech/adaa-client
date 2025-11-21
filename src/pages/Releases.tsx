@@ -9,7 +9,7 @@ import DataWrapper from '@/layouts/DataWrapper';
 import { remote } from '@/lib/utils';
 import { findReleases, getReleasesCategories } from '@/services/releases';
 import { useQuery } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Link, useSearchParams } from 'react-router';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
 
@@ -129,7 +129,7 @@ type Props = {
   image: string;
 };
 
-function ReleaseCard({ title, description, pdfUrl, image }: Props) {
+const ReleaseCard = memo(function ReleaseCard({ title, description, pdfUrl, image }: Props) {
   return (
     <Link to={remote(pdfUrl)} target="_blank" className="overflow-clip rounded-lg border shadow-md">
       <Img src={image} alt="release sample" className="h-64 w-full object-cover" />
@@ -139,4 +139,4 @@ function ReleaseCard({ title, description, pdfUrl, image }: Props) {
       </div>
     </Link>
   );
-}
+});
