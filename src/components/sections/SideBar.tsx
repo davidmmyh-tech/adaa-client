@@ -1,4 +1,3 @@
-import useOutsideClick from '@/hooks/useOutsideClick';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
 import { LgSideBarMenuList, MdSideBarMenuList } from './SideBarMenuList';
@@ -9,12 +8,12 @@ type Props = { isOpen: boolean; onClose: () => void };
 
 export default function SideBar({ isOpen, onClose }: Props) {
   const asideRef = useRef<HTMLElement>(null);
-  useOutsideClick({ containerRef: asideRef, onOutsideClick: onClose });
 
   return (
     <>
       {/* Overlay*/}
       <div
+        onClick={() => onClose()}
         className={`fixed inset-0 z-40 bg-black transition-all 2xl:hidden ${isOpen ? 'opacity-50' : 'pointer-events-none opacity-0'}`}
       />
 
