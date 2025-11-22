@@ -2,6 +2,7 @@ import DetailsCard from '@/components/ui/extend/DetailsCard';
 import usePrefetchPodcastDetails from '@/hooks/prefetch/usePrefetchPodcastDetails';
 import useGetPodcastsQuery from '@/hooks/queries/useGetPodcastsQuery';
 import DataWrapper from '@/layouts/DataWrapper';
+import { ROUTES } from '@/routes';
 
 export default function MorePodcastsSection() {
   const { handlePrefetchPodcast } = usePrefetchPodcastDetails();
@@ -22,7 +23,7 @@ export default function MorePodcastsSection() {
               date={podcast.published_at}
               image={podcast.image}
               handlePrefetch={() => handlePrefetchPodcast(podcast.id)}
-              to={`/كرسي-اداء/${podcast.id}`}
+              to={ROUTES.PODCAST.DETAILS(podcast.id)}
             />
           ))}
         </div>

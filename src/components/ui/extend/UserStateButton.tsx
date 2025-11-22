@@ -4,6 +4,7 @@ import { useUserState } from '@/context/UserProvider';
 import { cn } from '@/lib/utils';
 import SubmitButton from '../submit-button';
 import { Button } from '../button';
+import { ROUTES } from '@/routes';
 
 type UserStateButtonProps = {
   children?: React.ReactNode;
@@ -28,7 +29,7 @@ export default function UserStateButton({
   if (useAdaaPlus && user) {
     if (!flags.subscription_status) {
       return (
-        <LinkButton to="/اشتراك-اداء-المميز" variant={variant} className={className}>
+        <LinkButton to={ROUTES.ADAA_PLUS} variant={variant} className={className}>
           اشترك الان
         </LinkButton>
       );
@@ -70,7 +71,7 @@ export default function UserStateButton({
   }
 
   // User not logged in or has no organization
-  const redirectPath = user && !flags.has_organization ? '/تسجيل-منظمة' : '/تسجيل-دخول';
+  const redirectPath = user && !flags.has_organization ? ROUTES.AUTH.REGISTER : ROUTES.AUTH.LOGIN;
 
   return (
     <LinkButton to={redirectPath} variant={variant} className={className}>

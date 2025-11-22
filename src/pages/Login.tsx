@@ -9,6 +9,7 @@ import { authImage } from '@/assets/images';
 import ErrorMessage from '@/components/ui/extend/error-message';
 import { Link } from 'react-router';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
+import { ROUTES } from '@/routes';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>();
@@ -55,14 +56,14 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center">
-          <Link className="ms-2 underline" to="/نسيت-كلمة-المرور">
+          <Link className="ms-2 underline" to={ROUTES.AUTH.FORGOT_PASSWORD}>
             هل نسيت كلمة المرور ؟
           </Link>
         </p>
 
         <p className="text-center">
           <span>ليس لديك حساب؟ </span>
-          <Link className="ms-2 underline" to="/حساب-جديد">
+          <Link className="ms-2 underline" to={ROUTES.AUTH.REGISTER}>
             انشئ حساب الآن
           </Link>
         </p>

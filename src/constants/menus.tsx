@@ -1,4 +1,5 @@
 import { FacebookIcon, InstagramIcon, LinkedInIcon, XIcon } from '@/components/ui/icons';
+import { ROUTES } from '@/routes';
 
 type MenuItem = {
   name: string;
@@ -9,45 +10,41 @@ type MenuItem = {
 export const lgMenuItems: MenuItem[] = [
   {
     name: 'كرسي اداء',
-    to: '/كرسي-اداء'
+    to: ROUTES.PODCAST.INDEX
   },
   {
     name: 'مدونة اداء',
-    to: '/مدونة-اداء'
+    to: ROUTES.BLOG.INDEX
   },
   {
     name: 'الإصدارات',
-    to: '/اصدارات-اداء'
+    to: ROUTES.RELEASES
   },
   {
     name: 'اتصل بنا',
-    to: '/اتصل-بنا'
+    to: ROUTES.CONTACT
   }
 ];
-
-export const xlMenuItems: MenuItem[] = [];
-
-export const xxlMenuItems: MenuItem[] = [];
 
 export const mdMenuItems: MenuItem[] = [
   {
     name: 'الصفحة الرئيسية',
-    to: '/'
+    to: ROUTES.HOME
   },
   {
     name: 'ادوات اداء',
-    to: '/ادوات-اداء'
+    to: ROUTES.TOOLS
   },
   {
     name: 'شهادة الاداء السنوي',
     subMenu: [
       {
         name: 'المنظمات الحاصلة على شهادة اداء',
-        to: '/شهادات-اداء/المنظمات'
+        to: ROUTES.CERTIFICATES.ORGANIZATIONS
       },
       {
         name: 'كيفية الحصول على شهادة اداء',
-        to: '/شهادات-اداء'
+        to: ROUTES.CERTIFICATES.INDEX
       }
     ]
   },
@@ -56,11 +53,11 @@ export const mdMenuItems: MenuItem[] = [
     subMenu: [
       {
         name: 'المنظمات الحاصلة على درع اداء',
-        to: '/درع-اداء/المنظمات'
+        to: ROUTES.ADAA_SHIELD.ORGANIZATIONS
       },
       {
         name: 'كيفية الحصول على درع اداء',
-        to: '/درع-اداء'
+        to: ROUTES.ADAA_SHIELD.INDEX
       }
     ]
   }

@@ -1,6 +1,7 @@
 import { TEMP_FLAGS } from '@/constants/data';
 import { useUserState } from '@/context/UserProvider';
 import { setToken } from '@/lib/storage';
+import { ROUTES } from '@/routes';
 import type { User } from '@/schemas/types';
 import type { LoginForm } from '@/schemas/validation';
 import { loginUser } from '@/services/auth';
@@ -27,8 +28,8 @@ export default function useLoginMutation({ onSuccess, onError }: Props) {
       setOrganization(data.data.organization);
       onSuccess?.(data.data.user);
 
-      if (flags.has_organization) navigate('/');
-      else navigate('/تسجيل-منظمة');
+      if (flags.has_organization) navigate(ROUTES.HOME);
+      else navigate(ROUTES.AUTH.REGISTER_ORGANIZATION);
     },
     onError: (err) => {
       if (isAxiosError(err)) onError?.(err);

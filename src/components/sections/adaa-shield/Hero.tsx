@@ -1,6 +1,7 @@
 import { adaaShieldImage } from '@/assets/images';
 import LinkButton from '@/components/ui/extend/LinkButton';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
+import { ROUTES } from '@/routes';
 import { Check } from 'lucide-react';
 
 const advantages = [
@@ -47,7 +48,7 @@ export default function AdaaShieldHeroSection() {
               </ul>
 
               <div className="flex gap-2">
-                <UserStateButton to="/درع-اداء/تقييم" variant="secondary" className="w-auto md:w-32">
+                <UserStateButton to={ROUTES.ADAA_SHIELD.ASSESSMENT} variant="secondary" className="w-auto md:w-32">
                   أبداء الآن
                 </UserStateButton>
                 <LinkButton to="#prizes" variant="outline" className="w-auto md:w-40">

@@ -7,6 +7,7 @@ import usePrefetchPodcastDetails from '@/hooks/prefetch/usePrefetchPodcastDetail
 import useGetPodcastsQuery from '@/hooks/queries/useGetPodcastsQuery';
 import useDebounce from '@/hooks/useDebounce';
 import DataWrapper from '@/layouts/DataWrapper';
+import { ROUTES } from '@/routes';
 import { Loader2 } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 
@@ -83,7 +84,7 @@ export default function AdaaPodcastsSection() {
               title={podcast.title}
               description={podcast.short_description}
               image={podcast.image}
-              to={`/كرسي-اداء/${podcast.id}`}
+              to={ROUTES.PODCAST.DETAILS(podcast.id)}
               handlePrefetch={() => handlePrefetchPodcast(podcast.id)}
             />
           ))}

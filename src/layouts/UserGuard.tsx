@@ -1,4 +1,5 @@
 import { useUserState } from '@/context/UserProvider';
+import { ROUTES } from '@/routes';
 import api from '@/services/api';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
@@ -10,7 +11,7 @@ export default function UserGuard() {
 
   useEffect(() => {
     if (!user) {
-      navigate('/تسجيل-دخول', { replace: true });
+      navigate(ROUTES.AUTH.LOGIN, { replace: true });
     }
 
     let globalAuthErrorInterceptor: number;
@@ -19,7 +20,7 @@ export default function UserGuard() {
         (response) => response,
         (error) => {
           if (error.response?.status === 401) {
-            navigate('/تسجيل-دخول', { replace: true });
+            navigate(ROUTES.AUTH.LOGIN, { replace: true });
             toast.error('انتهت جلسة تسجيل الدخول، يرجى تسجيل الدخول مرة أخرى.');
           }
           return Promise.reject(error);

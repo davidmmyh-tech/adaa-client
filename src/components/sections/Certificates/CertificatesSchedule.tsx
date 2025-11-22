@@ -1,5 +1,6 @@
 import UserStateButton from '@/components/ui/extend/UserStateButton';
 import { formatPeriodInArabic, parsedDate } from '@/lib/utils';
+import { ROUTES } from '@/routes';
 import { getCertificatesSchedules } from '@/services/certificates/certificates-data';
 import { useQuery } from '@tanstack/react-query';
 
@@ -83,7 +84,7 @@ export default function CertificatesScheduleSection() {
           )}
 
           <div className="flex justify-center">
-            <UserStateButton to="/شهادات-اداء/تقييم" className="bg-secondary w-40">
+            <UserStateButton to={ROUTES.CERTIFICATES.ASSESSMENT} className="bg-secondary w-40">
               أبداء الآن
             </UserStateButton>
           </div>

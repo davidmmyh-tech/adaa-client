@@ -3,6 +3,7 @@ import { TCell, TRow } from '@/components/ui/extend/TableItems';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
 import SubmitButton from '@/components/ui/submit-button';
 import { CERTIFICATE_CLASSES } from '@/constants/data';
+import { ROUTES } from '@/routes';
 import type { CertificateClass, CertificateTrack } from '@/schemas/types';
 import { deleteCertificateSubmission, downloadTrackData } from '@/services/certificates/certificates-data';
 import type { CERTIFICATE_TRACKSummary } from '@/services/certificates/types';
@@ -82,7 +83,11 @@ export default function TracksTableRow({ title, icon, trackName, summary }: Prop
         )}
 
         {summary?.status === 'لم يبدأ بعد' && (
-          <UserStateButton to={`/شهادات-اداء/تقييم?tracks=${trackName}`} className="w-full" variant="secondary">
+          <UserStateButton
+            to={ROUTES.CERTIFICATES.ASSESSMENT + `?tracks=${trackName}`}
+            className="w-full"
+            variant="secondary"
+          >
             ابدأ الآن
           </UserStateButton>
         )}

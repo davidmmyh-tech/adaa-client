@@ -1,5 +1,6 @@
 import LinkButton from '@/components/ui/extend/LinkButton';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
+import { ROUTES } from '@/routes';
 
 type Props = {
   title: string;
@@ -20,7 +21,7 @@ export default function CertificatesHeroSection({ title, subtitle, isHome }: Pro
 
         {isHome && (
           <div className="space-x-4">
-            <UserStateButton to="/شهادات-اداء/تقييم" variant="secondary" className="w-40">
+            <UserStateButton to={ROUTES.CERTIFICATES.ASSESSMENT} variant="secondary" className="w-40">
               أبداء الآن
             </UserStateButton>
             <LinkButton to="#" variant="outline" className="w-40 border-2">

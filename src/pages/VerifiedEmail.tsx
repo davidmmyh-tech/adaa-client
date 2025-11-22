@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import Logo from '@/components/ui/extend/Logo';
 import { useNavigate } from 'react-router';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
+import { ROUTES } from '@/routes';
 
 export default function VerifiedEmailPage() {
   useDocumentHead({
@@ -16,7 +17,7 @@ export default function VerifiedEmailPage() {
       <Logo className="h-32 w-32" />
       <h2 className="text-4xl font-semibold">تم التحقق من البريد الإلكتروني</h2>
       <div>
-        <Button className="me-2" onClick={() => navigate('/تسجيل-دخول')}>
+        <Button className="me-2" onClick={() => navigate(ROUTES.AUTH.LOGIN)}>
           تسجيل الدخول
         </Button>
       </div>

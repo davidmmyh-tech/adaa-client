@@ -5,6 +5,7 @@ import UserStateButton from '@/components/ui/extend/UserStateButton';
 import { Label } from '@/components/ui/label';
 import { useUserState } from '@/context/UserProvider';
 import { cn } from '@/lib/utils';
+import { ROUTES } from '@/routes';
 import { useMemo, useState } from 'react';
 
 export default function CertificatePickTrackSection() {
@@ -77,7 +78,7 @@ export default function CertificatePickTrackSection() {
 
       <div className="flex justify-center">
         <LinkButton
-          to={`/شهادات-اداء/تقييم?${params}`}
+          to={ROUTES.CERTIFICATES.ASSESSMENT + (params ? `?${params}` : '')}
           variant="secondary"
           aria-disabled={selectedTracks.length === 0}
           className={
@@ -93,6 +94,17 @@ export default function CertificatePickTrackSection() {
   );
 }
 
+type CertificateTracksCardProps = {
+  hexColor: string;
+  name: string;
+  title: string;
+  description: string;
+  icon: string;
+  isSelected: boolean;
+  onSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  isDisabled: boolean;
+};
+
 function CertificateTrackCard({
   hexColor,
   name,
@@ -102,16 +114,7 @@ function CertificateTrackCard({
   isSelected,
   onSelect,
   isDisabled
-}: {
-  hexColor: string;
-  name: string;
-  title: string;
-  description: string;
-  icon: string;
-  isSelected: boolean;
-  onSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  isDisabled: boolean;
-}) {
+}: CertificateTracksCardProps) {
   return (
     <div
       className={cn('relative rounded-md p-4 md:w-80', isDisabled && 'pointer-events-none opacity-50')}
@@ -131,10 +134,18 @@ function CertificateTrackCard({
             <p>{description}</p>
           </div>
         </Label>
-        <UserStateButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="hidden md:flex">
+        <UserStateButton
+          to={ROUTES.CERTIFICATES.ASSESSMENT + `?tracks=${name}`}
+          variant="outline"
+          className="hidden md:flex"
+        >
           ابدأ هذا المسار
         </UserStateButton>
-        <UserStateButton to={`/شهادات-اداء/تقييم?tracks=${name}`} variant="outline" className="md:hidden">
+        <UserStateButton
+          to={ROUTES.CERTIFICATES.ASSESSMENT + `?tracks=${name}`}
+          variant="outline"
+          className="md:hidden"
+        >
           ابدأ
         </UserStateButton>
       </div>

@@ -1,4 +1,5 @@
 import { useUserState } from '@/context/UserProvider';
+import { ROUTES } from '@/routes';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 
@@ -7,7 +8,7 @@ export default function OrganizationGuard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!flags.has_organization) navigate('/تسجيل-منظمة', { replace: true });
+    if (!flags.has_organization) navigate(ROUTES.AUTH.REGISTER_ORGANIZATION, { replace: true });
   }, []);
 
   if (flags.organization_status === 'pending')

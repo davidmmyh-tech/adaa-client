@@ -31,11 +31,6 @@ export function remote(path: string | null | undefined) {
   return `${BASE_URL}/${path}`;
 }
 
-export function isHere(to: string, location: string) {
-  if (to === '/' && location === '/') return true;
-  return to !== '/' && decodeURIComponent(location) === to;
-}
-
 export function hideBodyScroll() {
   if (document === undefined) return;
   const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;

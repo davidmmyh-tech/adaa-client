@@ -1,4 +1,5 @@
 import { useUserState } from '@/context/UserProvider';
+import { ROUTES } from '@/routes';
 import type { Organization } from '@/schemas/types';
 import type { RegisterOrganizationForm } from '@/schemas/validation';
 import { registerOrganization } from '@/services/auth';
@@ -20,7 +21,7 @@ export default function useRegisterOrganizationMutation({ onSuccess, onError }: 
     onSuccess: (data) => {
       onSuccess?.(data.data.organization);
       setFlags((flags) => ({ ...flags, has_organization: true, organization_status: 'pending' }));
-      navigate('/درع-اداء');
+      navigate(ROUTES.ADAA_SHIELD.INDEX);
       // toast.success('تم ارسال طلبك بنجاح، سوف يتم مراجعة طلبك قريبا');
     },
     onError: (error) => {

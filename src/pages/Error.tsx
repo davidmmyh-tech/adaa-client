@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
+import { ROUTES } from '@/routes';
 import { ArrowLeftIcon, LucideHome } from 'lucide-react';
 import { useNavigate, useRouteError } from 'react-router';
 
@@ -34,7 +35,7 @@ export default function ErrorPage() {
           <Button className="me-2" onClick={() => navigate(-1)}>
             <ArrowLeftIcon /> رجوع
           </Button>
-          <Button onClick={() => navigate('/')}>
+          <Button onClick={() => navigate(ROUTES.HOME)}>
             <LucideHome /> الرئيسية
           </Button>
         </div>

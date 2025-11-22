@@ -1,4 +1,5 @@
 import { setSessionEmail } from '@/lib/storage';
+import { ROUTES } from '@/routes';
 import type { RegisterForm } from '@/schemas/validation';
 import { register } from '@/services/auth';
 import { useMutation } from '@tanstack/react-query';
@@ -19,7 +20,7 @@ export default function useRegisterMutation({
     onSuccess: (data) => {
       onSuccess?.(data.data);
       setSessionEmail(data.data.user.email);
-      navigate(`/تحقق-من-البريد-الالكتروني`);
+      navigate(ROUTES.AUTH.VERIFY_EMAIL);
     },
     onError: (error) => {
       if (isAxiosError(error)) onError?.(error);

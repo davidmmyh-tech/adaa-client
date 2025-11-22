@@ -1,5 +1,6 @@
 import LinkButton from '@/components/ui/extend/LinkButton';
 import { useUserState } from '@/context/UserProvider';
+import { ROUTES } from '@/routes';
 
 export default function Hero() {
   const { user } = useUserState();
@@ -13,7 +14,7 @@ export default function Hero() {
         {user ? (
           <p className="text-primary text-xg font-semibold md:text-2xl">أحصل على شهادة أداء الان</p>
         ) : (
-          <LinkButton to="/تسجيل-دخول" variant="secondary">
+          <LinkButton to={ROUTES.AUTH.LOGIN} variant="secondary">
             تسجيل الدخول
           </LinkButton>
         )}

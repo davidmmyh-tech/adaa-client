@@ -1,6 +1,7 @@
 import ServiceCard from '@/components/ui/extend/ServiceCard';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
 import { CreativityIcon, FinanceIcon, PeopleIcon, StratigyIcon } from '@/components/ui/icons';
+import { ROUTES } from '@/routes';
 
 const evaluationPoints = [
   {
@@ -45,7 +46,7 @@ export default function EvaluationSection() {
               />
             ))}
           </div>
-          <UserStateButton to="/درع-اداء/تقييم" variant="default" className="mx-auto flex h-14 w-52">
+          <UserStateButton to={ROUTES.ADAA_SHIELD.ASSESSMENT} variant="default" className="mx-auto flex h-14 w-52">
             أبداء الآن
           </UserStateButton>
         </div>

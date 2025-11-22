@@ -31,6 +31,7 @@ import ContactUsPage from './pages/ContactUs';
 import Logo from './components/ui/extend/Logo';
 import OrganizationGuard from './layouts/OrganizationGuard';
 import ReleasesPage from './pages/Releases';
+import { ROUTES, ROUTE_PATHS } from './routes';
 
 const AdaaPlusPage = lazy(() => import('./pages/AdaaPlus'));
 const AdaaShieldAssessmentPage = lazy(() => import('./pages/AdaaShieldAssessment'));
@@ -63,25 +64,25 @@ const router = createBrowserRouter([
             errorElement: <ErrorPage />, //handle pages error so keep the layout visable (error Boundry)
             children: [
               {
-                path: '',
+                path: ROUTE_PATHS.HOME,
                 element: <HomePage />
               },
               {
-                path: 'درع-اداء',
+                path: ROUTE_PATHS.ADAA_SHIELD,
                 children: [
                   { index: true, element: <AdaaShieldPage /> },
-                  { path: 'المنظمات', element: <AdaaShieldInformatics /> }
+                  { path: ROUTE_PATHS.ORGANIZATIONS, element: <AdaaShieldInformatics /> }
                 ]
               },
               {
-                path: 'شهادات-اداء',
+                path: ROUTE_PATHS.CERTIFICATES,
                 children: [
                   { index: true, element: <CertificatesPage /> },
-                  { path: 'المنظمات', element: <CertificatesInformaticsPage /> }
+                  { path: ROUTE_PATHS.ORGANIZATIONS, element: <CertificatesInformaticsPage /> }
                 ]
               },
               {
-                path: 'كرسي-اداء',
+                path: ROUTE_PATHS.PODCAST,
                 children: [
                   { index: true, element: <Podcast /> },
                   {
@@ -95,15 +96,15 @@ const router = createBrowserRouter([
                 ]
               },
               {
-                path: 'ادوات-اداء',
+                path: ROUTE_PATHS.TOOLS,
                 children: [{ index: true, element: <AdaaToolsPage /> }]
               },
               {
-                path: 'اصدارات-اداء',
+                path: ROUTE_PATHS.RELEASES,
                 children: [{ index: true, element: <ReleasesPage /> }]
               },
               {
-                path: 'مدونة-اداء',
+                path: ROUTE_PATHS.BLOG,
                 children: [
                   { index: true, element: <BlogsPage /> },
                   {
@@ -117,7 +118,7 @@ const router = createBrowserRouter([
                 ]
               },
               {
-                path: 'اتصل-بنا',
+                path: ROUTE_PATHS.CONTACT,
                 element: <ContactUsPage />
               }
             ]
@@ -137,30 +138,20 @@ const router = createBrowserRouter([
                         element: <OrganizationGuard />,
                         children: [
                           {
-                            path: 'درع-اداء',
-                            children: [
-                              {
-                                path: 'تقييم',
-                                element: (
-                                  <Suspense fallback={<FallbackScreen />}>
-                                    <AdaaShieldAssessmentPage />
-                                  </Suspense>
-                                )
-                              }
-                            ]
+                            path: ROUTES.ADAA_SHIELD.ASSESSMENT,
+                            element: (
+                              <Suspense fallback={<FallbackScreen />}>
+                                <AdaaShieldAssessmentPage />
+                              </Suspense>
+                            )
                           },
                           {
-                            path: 'شهادات-اداء',
-                            children: [
-                              {
-                                path: 'تقييم',
-                                element: (
-                                  <Suspense fallback={<FallbackScreen />}>
-                                    <CertificatesAssessmentPage />
-                                  </Suspense>
-                                )
-                              }
-                            ]
+                            path: ROUTES.CERTIFICATES.ASSESSMENT,
+                            element: (
+                              <Suspense fallback={<FallbackScreen />}>
+                                <CertificatesAssessmentPage />
+                              </Suspense>
+                            )
                           }
                         ]
                       }
@@ -184,7 +175,7 @@ const router = createBrowserRouter([
                 element: <OrganizationGuard />,
                 children: [
                   {
-                    path: 'اشتراك-اداء-المميز',
+                    path: ROUTES.ADAA_PLUS,
                     element: (
                       <Suspense fallback={<FallbackScreen />}>
                         <AdaaPlusPage />
@@ -200,15 +191,15 @@ const router = createBrowserRouter([
 
       //Auth Routes without layout **********************
       {
-        path: 'تسجيل-دخول',
+        path: ROUTE_PATHS.AUTH.LOGIN,
         element: <LoginPage />
       },
       {
-        path: 'حساب-جديد',
+        path: ROUTE_PATHS.AUTH.REGISTER,
         element: <RegisterPage />
       },
       {
-        path: 'تسجيل-منظمة',
+        path: ROUTE_PATHS.AUTH.REGISTER_ORGANIZATION,
         element: (
           <Suspense fallback={<FallbackScreen />}>
             <RegisterOrganizationPage />
@@ -216,11 +207,11 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: 'نسيت-كلمة-المرور',
+        path: ROUTE_PATHS.AUTH.FORGOT_PASSWORD,
         element: <ForgetPasswordPage />
       },
       {
-        path: 'reset-password',
+        path: ROUTE_PATHS.AUTH.RESET_PASSWORD,
         element: (
           <Suspense fallback={<FallbackScreen />}>
             <ChangePasswordPage />
@@ -228,7 +219,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: 'verified',
+        path: ROUTE_PATHS.AUTH.VERIFIED,
         element: (
           <Suspense fallback={<FallbackScreen />}>
             <VerifiedEmailPage />
@@ -236,7 +227,7 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: 'تحقق-من-البريد-الالكتروني',
+        path: ROUTE_PATHS.AUTH.VERIFY_EMAIL,
         element: (
           <Suspense fallback={<FallbackScreen />}>
             <VerifyYourMail />

@@ -1,5 +1,5 @@
 import { lgMenuItems, mdMenuItems } from '@/constants/menus';
-import { isHere } from '@/lib/utils';
+import { isActiveRoute } from '@/routes';
 import { ChevronDown, ChevronLeft, Play } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router';
@@ -23,7 +23,7 @@ export function MdMenuList() {
   return mdMenuItems.map((item) => (
     <li
       key={item.name}
-      className={`relative rounded-md px-2 py-2 font-semibold whitespace-nowrap ${item.to && isHere(item.to, location.pathname) ? 'text-primary bg-accent md:bg-secondary' : 'cursor-default'}`}
+      className={`relative rounded-md px-2 py-2 font-semibold whitespace-nowrap ${item.to && isActiveRoute(item.to, location.pathname) ? 'text-primary bg-accent md:bg-secondary' : 'cursor-default'}`}
       onMouseEnter={item.subMenu ? () => handleMouseEnter(item.name) : undefined}
       onMouseLeave={item.subMenu ? handleMouseLeave : undefined}
     >
@@ -37,7 +37,7 @@ export function MdMenuList() {
           <button
             type="button"
             onClick={() => toggleSubmenu(item.name)}
-            className="w-full touch-manipulation text-start"
+            className="w-full cursor-pointer touch-manipulation text-start"
           >
             {item.name}
             <ChevronDown size={18} className="me-1 inline-block" />
@@ -53,7 +53,7 @@ export function MdMenuList() {
             {item.subMenu.map((subItem) => (
               <li
                 key={subItem.name}
-                className={`hover:bg-secondary hover:text-secondary-foreground rounded-md px-2 py-2 font-semibold ${subItem.to && isHere(subItem.to, location.pathname) ? 'text-secondary-foreground bg-secondary' : ''}`}
+                className={`hover:bg-secondary hover:text-secondary-foreground rounded-md px-2 py-2 font-semibold ${subItem.to && isActiveRoute(subItem.to, location.pathname) ? 'text-secondary-foreground bg-secondary' : ''}`}
               >
                 <ChevronLeft size={18} className="me-3 mb-1 inline-block md:hidden" />
                 {subItem.to && <Link to={subItem.to}>{subItem.name}</Link>}
@@ -72,7 +72,7 @@ export function LgMenuList() {
   return lgMenuItems.map((item) => (
     <li
       key={item.name}
-      className={`rounded-md px-2 py-2 font-semibold whitespace-nowrap ${item.to && isHere(item.to, location.pathname) ? 'text-primary bg-accent lg:bg-secondary' : ''}`}
+      className={`rounded-md px-2 py-2 font-semibold whitespace-nowrap ${item.to && isActiveRoute(item.to, location.pathname) ? 'text-primary bg-accent lg:bg-secondary' : ''}`}
     >
       <ChevronLeft size={18} className="me-3 mb-1 inline-block lg:hidden" />
       {item.to ? <Link to={item.to}>{item.name}</Link> : item.name}

@@ -18,7 +18,8 @@ import { useDocumentHead } from '@/hooks/useDocumentHead';
 export default function CertificatesInformaticsPage() {
   useDocumentHead({
     title: 'معلومات شهادات أداء - المنظمات الحاصلة على الشهادات',
-    description: 'تصفح قائمة المنظمات غير الربحية الحاصلة على شهادات الأداء المؤسسي المعتمدة مع إحصائيات وتحليلات شاملة.',
+    description:
+      'تصفح قائمة المنظمات غير الربحية الحاصلة على شهادات الأداء المؤسسي المعتمدة مع إحصائيات وتحليلات شاملة.',
     ogTitle: 'معلومات شهادات أداء',
     ogDescription: 'قائمة المنظمات الحاصلة على شهادات أداء مع إحصائيات وتحليلات.'
   });
