@@ -1,5 +1,5 @@
 import type { CertificateAnswer, CertificateQuestion } from '@/services/certificates/types';
-import type { AxisAnswers, ShieldQuestion } from '@/services/shield';
+import type { ShieldAnswers, ShieldQuestion } from '@/services/shield';
 import type { Id } from './types';
 
 export function validateCertificateAnswers(
@@ -49,7 +49,7 @@ export function validateCertificateAnswers(
 
 export function validateShieldAnswers(
   axisQuestions: ShieldQuestion[],
-  answers: AxisAnswers
+  answers: ShieldAnswers
 ): { isValid: boolean; error: string | null } {
   // Check if all questions are answered
   for (const question of axisQuestions) {

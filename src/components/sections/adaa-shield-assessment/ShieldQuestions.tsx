@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import QuestionsLoading from '@/components/ui/loading/QuestionsLoading';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import SubmitButton from '@/components/ui/submit-button';
-import { type AxisAnswers } from '@/services/shield';
+import { type ShieldAnswers } from '@/services/shield';
 import { useState } from 'react';
 import type { Id } from 'react-toastify';
 import AxisProgress from './AxisProgress';
@@ -13,16 +13,16 @@ import useGetShieldQuestions from '@/hooks/queries/useGetShieldQuestionsQuery';
 import useSubmitAnswers from '@/hooks/mutations/useSubmitAnswersMutation';
 import DataWrapper from '@/layouts/DataWrapper';
 import { validateShieldAnswers } from '@/schemas/questions-validation';
+import { getLastShieldAxis, removeLastShieldAxis, setLastShieldAxis } from '@/lib/storage';
+import { ARABIC_NUMBER_NAMES } from '@/constants/data';
 
 type Props = {
   onSuccess?: () => void;
 };
 
-const axiesNumNames = ['المحور الأول', 'المحور الثاني', 'المحور الثالث', 'المحور الرابع'];
-
 export default function ShieldQuestionsSection({ onSuccess }: Props) {
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(0);
-  const [answers, setAnswers] = useState<AxisAnswers>();
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(getLastShieldAxis()?.index);
+  const [answers, setAnswers] = useState<ShieldAnswers>(getLastShieldAxis()?.answers);
   const [error, setError] = useState<string | null>(null);
 
   const setupAnswers = (axisId: Id) => {
@@ -51,9 +51,18 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       if (questions && questions.axes.length > currentAxisIndex + 1) {
         setCurrentAxisIndex((prev) => prev + 1);
         setupAnswers(questions.axes[currentAxisIndex + 1].id);
+        setLastShieldAxis(currentAxisIndex + 1, {
+          axis_id: questions.axes[currentAxisIndex + 1].id,
+          questions: [],
+          attachments: []
+        });
         return;
       }
-      if (currentAxisIndex === axiesQuestions.length - 1) onSuccess?.();
+
+      if (currentAxisIndex === axiesQuestions.length - 1) {
+        removeLastShieldAxis();
+        onSuccess?.();
+      }
     },
     onError: (err) => {
       if (err.response?.status === 422) setError('يرجى التأكد من الإجابة على جميع الأسئلة قبل المتابعة.');
@@ -63,7 +72,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
   const axiesQuestions = questions?.axes || [];
   const axies =
     questions?.axes.map((axis, i) => ({
-      name: axiesNumNames[i],
+      name: ARABIC_NUMBER_NAMES[i],
       title: axis.title
     })) || [];
 
@@ -79,8 +88,10 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       } else {
         updatedAxisAnswer.push({ question_id: questionId, answer });
       }
+
       const newAnswers = { ...prevAnswers };
       newAnswers.questions = updatedAxisAnswer;
+      setLastShieldAxis(currentAxisIndex, newAnswers);
       return newAnswers;
     });
   };
@@ -90,10 +101,10 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       if (!prevAnswers) return prevAnswers;
       const updatedAttachments = [...prevAnswers.attachments];
       updatedAttachments[index] = url;
-      return {
-        ...prevAnswers,
-        attachments: [...updatedAttachments]
-      };
+
+      const newAnswers = { ...prevAnswers, attachments: [...updatedAttachments] };
+      setLastShieldAxis(currentAxisIndex, newAnswers);
+      return newAnswers;
     });
   };
 
@@ -144,7 +155,11 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
                       </li>
                     ))}
                   </ol>
-                  <AttachmentsSection onFileUploaded={handleFileChange} axisId={axisItem.id} />
+                  <AttachmentsSection
+                    onFileUploaded={handleFileChange}
+                    axisId={axisItem.id}
+                    values={answers?.attachments || []}
+                  />
                 </form>
               ))}
             </div>

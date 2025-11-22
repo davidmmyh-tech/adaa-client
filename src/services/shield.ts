@@ -23,7 +23,7 @@ export type QuestionAnswer = {
   answer: boolean;
 };
 
-export type AxisAnswers = {
+export type ShieldAnswers = {
   axis_id: Id;
   questions: QuestionAnswer[];
   attachments: string[];
@@ -76,7 +76,7 @@ export async function getShieldQuestions() {
   return api.get<ShieldQuestionsResponse>('/api/shield/questions');
 }
 
-export async function submitShieldQuestions(payload: AxisAnswers) {
+export async function submitShieldQuestions(payload: ShieldAnswers) {
   return api.post<ShieldSubmitResponse>('/api/shield/submit', { submissions: [{ ...payload }] });
 }
 

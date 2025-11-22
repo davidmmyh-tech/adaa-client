@@ -1,112 +1,60 @@
-import ErrorMessage from '@/components/ui/extend/error-message';
-import { FileInput } from '@/components/ui/file-input';
-import { UploadIcon } from '@/components/ui/icons';
-import { uploadShieldAttachment } from '@/services/shield';
-import { useMutation } from '@tanstack/react-query';
 import { isAxiosError, type AxiosError } from 'axios';
-import { Loader2 } from 'lucide-react';
-import { useRef, useState } from 'react';
 import type { Id } from 'react-toastify';
+import { uploadShieldAttachment } from '@/services/shield';
+import { AttachmentInput } from '@/components/ui/attachment-input';
 
 type Props = {
   onFileUploaded: (url: string, index: number) => void;
   onUploadError?: (error: AxiosError) => void;
   axisId: Id;
+  values: string[];
 };
 
-export default function AttachmentsSection({ onFileUploaded, onUploadError, axisId }: Props) {
+export default function AttachmentsSection({ onFileUploaded, onUploadError, axisId, values }: Props) {
+  const handleUpload = async (file: File): Promise<string> => {
+    try {
+      const response = await uploadShieldAttachment(file);
+      return response.data.files[0].file_url;
+    } catch (error) {
+      if (isAxiosError(error) && onUploadError) {
+        onUploadError(error);
+      }
+      throw error;
+    }
+  };
+
   return (
     <>
       <p className="font-semibold">المرفقات</p>
       <div className="grid grid-cols-3">
         <div className="basis-1/3 px-2">
-          <AttachmentUploadInput
-            index={0}
-            onFileUpload={(url) => onFileUploaded(url, 0)}
-            onError={onUploadError}
+          <AttachmentInput
+            id={`attachment-0-${axisId}`}
             label="المرفق الأول"
-            axisId={axisId}
+            value={values[0]}
+            onFileUpload={(url) => onFileUploaded(url, 0)}
+            uploadFn={handleUpload}
           />
         </div>
         <div className="basis-1/3 px-2">
-          <AttachmentUploadInput
-            index={1}
-            onFileUpload={(url) => onFileUploaded(url, 1)}
-            onError={onUploadError}
+          <AttachmentInput
+            id={`attachment-1-${axisId}`}
             label="المرفق الثاني"
-            axisId={axisId}
+            value={values[1]}
+            onFileUpload={(url) => onFileUploaded(url, 1)}
+            uploadFn={handleUpload}
           />
         </div>
         <div className="basis-1/3 px-2">
-          <AttachmentUploadInput
-            index={2}
-            onError={onUploadError}
-            onFileUpload={(url) => onFileUploaded(url, 2)}
+          <AttachmentInput
+            id={`attachment-2-${axisId}`}
             label="المرفق الثالث"
-            axisId={axisId}
+            value={values[2]}
+            onFileUpload={(url) => onFileUploaded(url, 2)}
+            uploadFn={handleUpload}
           />
         </div>
       </div>
     </>
-  );
-}
-
-type AttachmentUploadInputProps = {
-  index: number;
-  onFileUpload: (url: string) => void;
-  onError?: (error: AxiosError) => void;
-  label: string;
-  axisId: Id;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onError'>;
-
-function AttachmentUploadInput({ index, onFileUpload, label, onError, axisId, ...props }: AttachmentUploadInputProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const { isPending, mutate } = useMutation({
-    mutationKey: ['shield-attachment-upload', `${index}-${axisId}`],
-    mutationFn: (data: { file: File; index: number }) => uploadShieldAttachment(data.file),
-    onSuccess: (data, variables) => {
-      onFileUpload(data.data.files[0].file_url);
-      setUploadedFileName(variables.file.name);
-    },
-    onError: (err) => {
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      setUploadedFileName(null);
-      if (isAxiosError(err)) onError?.(err);
-      setError('فشل رفع الملف. يرجى المحاولة مرة أخرى.');
-    }
-  });
-
-  const handleFileChange = (file: File | null) => {
-    if (file) mutate({ file, index });
-  };
-
-  return (
-    <div className="w-full space-y-2">
-      <p className="font-semibold">{label}</p>
-      <FileInput
-        ref={fileInputRef}
-        id={`attachment-${index}-${axisId}`}
-        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-        onFileChange={handleFileChange}
-        disabled={isPending}
-        {...props}
-      >
-        <div className="flex items-center gap-4">
-          <div className="shrink-0">
-            {isPending ? <Loader2 className="spinner" width={28} height={28} /> : <UploadIcon className="h-7 w-7" />}
-          </div>
-          <div className="min-w-0 flex-1 space-y-2">
-            <p className="truncate font-semibold text-ellipsis">
-              {isPending ? 'جاري الرفع...' : uploadedFileName || 'ارفع الملف'}
-            </p>
-            <p className="text-muted text-xs">PDF / Excel (حد أقصى 10 MB)</p>
-          </div>
-        </div>
-      </FileInput>
-      <ErrorMessage error={error} />
-    </div>
   );
 }

@@ -39,7 +39,6 @@ export default [
       'react/function-component-definition': 'warn',
       'react/jsx-props-no-multi-spaces': 'warn',
       'react/jsx-pascal-case': ['error', { allowNamespace: true }],
-      'react/boolean-prop-naming': ['error', { rule: '^(is|has|can|use|as|show)[A-Z]([A-Za-z0-9]?)+' }],
       'react/jsx-key': ['error', { checkFragmentShorthand: true }],
 
       // React Hooks rules

@@ -2,18 +2,16 @@ import QuestionsLoading from '@/components/ui/loading/QuestionsLoading';
 import DataWrapper from '@/layouts/DataWrapper';
 import type { Id } from '@/schemas/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { FileInput } from '@/components/ui/file-input';
-import { UploadIcon } from '@/components/ui/icons';
 import ErrorMessage from '@/components/ui/extend/error-message';
 import SubmitButton from '@/components/ui/submit-button';
 import Logo from '@/components/ui/extend/Logo';
-import { AxiosError, isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import { useUserState } from '@/context/UserProvider';
-import { Loader2 } from 'lucide-react';
 import type { CertificateAnswer } from '@/services/certificates/types';
+import { AttachmentInput } from '@/components/ui/attachment-input';
 import {
   certificateQuestions,
   submitCertificateQuestions,
@@ -22,24 +20,14 @@ import {
 } from '@/services/certificates/certificates-questions';
 import { validateCertificateAnswers } from '@/schemas/questions-validation';
 import { getLastHrAxis, removeLastHrAxis, setLastHrAxis } from '@/lib/storage';
+import { ARABIC_NUMBER_NAMES } from '@/constants/data';
 
 type Props = { isLast: boolean; onSuccess?: () => void };
-const axiesNumNames = [
-  'المحور الأول',
-  'المحور الثاني',
-  'المحور الثالث',
-  'المحور الرابع',
-  'المحور الخامس',
-  'المحور السادس',
-  'المحور السابع',
-  'المحور الثامن',
-  'المحور التاسع'
-];
 
 export default function HrModel({ onSuccess, isLast }: Props) {
-  const [answers, setAnswers] = useState<CertificateAnswer[]>([]);
+  const [answers, setAnswers] = useState<CertificateAnswer[]>(() => getLastHrAxis()?.answers);
   const [error, setError] = useState<string | null>(null);
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(() => getLastHrAxis() + 1);
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(() => getLastHrAxis()?.index);
   const { setFlags } = useUserState();
 
   const { data, isFetching, isError, refetch } = useQuery({
@@ -50,7 +38,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
   const { mutate: proceed, isPending: isProceeding } = useMutation({
     mutationFn: () => submitHrAxis(answers),
     onSuccess: () => {
-      setLastHrAxis(currentAxisIndex);
+      setLastHrAxis(currentAxisIndex + 1);
       setAnswers([]);
       if (currentAxisIndex < axies.length - 1) setCurrentAxisIndex(currentAxisIndex + 1);
       else {
@@ -87,7 +75,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
   const axies =
     data?.data.data.map((axis, i) => ({
       name: axis.name,
-      title: axiesNumNames[i]
+      title: ARABIC_NUMBER_NAMES[i]
     })) || [];
 
   const qs = data?.data.data[currentAxisIndex].questions || [];
@@ -104,6 +92,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
         updatedAnswer.push({ question_id: questionId, answer, attachment: null });
       }
 
+      setLastHrAxis(currentAxisIndex, updatedAnswer);
       return updatedAnswer;
     });
   };
@@ -119,6 +108,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
         updatedAnswer.push({ question_id: questionId, answer: '', attachment });
       }
 
+      setLastHrAxis(currentAxisIndex, updatedAnswer);
       return updatedAnswer;
     });
   };
@@ -126,12 +116,14 @@ export default function HrModel({ onSuccess, isLast }: Props) {
   const handleSubmit = () => {
     setError(null);
     const { isValid } = validateCertificateAnswers(data!.data.data[currentAxisIndex].questions, answers);
-    if (!isValid) {
-      setError('يرجى التأكد من تعبئة جميع البيانات المطلوبة');
-      return;
-    }
+    if (!isValid) return setError('يرجى التأكد من تعبئة جميع البيانات المطلوبة');
     proceed();
   };
+
+  async function handleUpload(file: File) {
+    const response = await uploadCertificateAttachment(file);
+    return response.data.data.attachment_url;
+  }
 
   return (
     <div className="space-y-8">
@@ -188,10 +180,11 @@ export default function HrModel({ onSuccess, isLast }: Props) {
 
                     {q.attachment_required && (
                       <div className="w-62">
-                        <AttachmentUploadInput
-                          index={index}
-                          onFileUpload={(url) => handleFileChange(q.id, url)}
+                        <AttachmentInput
+                          id={`attachment-${index}`}
                           label="ارفق الشاهد"
+                          onFileUpload={(url) => handleFileChange(q.id, url)}
+                          uploadFn={handleUpload}
                         />
                       </div>
                     )}
@@ -226,66 +219,6 @@ export default function HrModel({ onSuccess, isLast }: Props) {
           </SubmitButton>
         )}
       </div>
-    </div>
-  );
-}
-
-type AttachmentUploadInputProps = {
-  index: number;
-  onFileUpload: (url: string) => void;
-  onError?: (error: AxiosError) => void;
-  label: string;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onError'>;
-
-function AttachmentUploadInput({ index, onFileUpload, label, onError, ...props }: AttachmentUploadInputProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const { isPending, mutate } = useMutation({
-    mutationKey: ['shield-attachment-upload', index],
-    mutationFn: (data: { file: File; index: number }) => uploadCertificateAttachment(data.file),
-    onSuccess: (data, variables) => {
-      onFileUpload(data.data.data.attachment_url);
-      setUploadedFileName(variables.file.name);
-    },
-    onError: (err) => {
-      if (fileInputRef.current) fileInputRef.current.value = '';
-      setUploadedFileName(null);
-      if (isAxiosError(err)) onError?.(err);
-      setError('فشل رفع الملف. يرجى المحاولة مرة أخرى.');
-    }
-  });
-
-  const handleFileChange = (file: File | null) => {
-    setError(null);
-    if (file) mutate({ file, index });
-  };
-
-  return (
-    <div className="w-full space-y-2">
-      <p className="font-semibold">{label}</p>
-      <FileInput
-        ref={fileInputRef}
-        id={`attachment-${index}`}
-        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-        onFileChange={handleFileChange}
-        disabled={isPending}
-        {...props}
-      >
-        <div className="flex items-center gap-4">
-          <div className="shrink-0">
-            {isPending ? <Loader2 className="spinner" width={28} height={28} /> : <UploadIcon className="h-7 w-7" />}
-          </div>
-          <div className="min-w-0 flex-1 space-y-2">
-            <p className="truncate font-semibold text-ellipsis">
-              {isPending ? 'جاري الرفع...' : uploadedFileName || 'ارفع الملف'}
-            </p>
-            <p className="text-muted text-xs">PDF / Excel (حد أقصى 10 MB)</p>
-          </div>
-        </div>
-      </FileInput>
-      <ErrorMessage error={error} />
     </div>
   );
 }
