@@ -21,3 +21,16 @@ export function getSessionEmail() {
 export function removeSessionEmail() {
   return sessionStorage.removeItem('email');
 }
+
+export function setLastHrAxis(axis: number) {
+  return localStorage.setItem('lastHrAxis', axis.toString());
+}
+
+export function getLastHrAxis() {
+  const value = localStorage.getItem('lastHrAxis');
+  return value !== null ? Number(value) : -1;
+}
+
+export function removeLastHrAxis() {
+  return localStorage.removeItem('lastHrAxis');
+}

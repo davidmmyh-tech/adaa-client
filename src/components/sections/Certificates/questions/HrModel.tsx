@@ -21,6 +21,7 @@ import {
   uploadCertificateAttachment
 } from '@/services/certificates/certificates-questions';
 import { validateCertificateAnswers } from '@/schemas/questions-validation';
+import { getLastHrAxis, removeLastHrAxis, setLastHrAxis } from '@/lib/storage';
 
 type Props = { isLast: boolean; onSuccess?: () => void };
 const axiesNumNames = [
@@ -38,7 +39,7 @@ const axiesNumNames = [
 export default function HrModel({ onSuccess, isLast }: Props) {
   const [answers, setAnswers] = useState<CertificateAnswer[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(0);
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(() => getLastHrAxis() + 1);
   const { setFlags } = useUserState();
 
   const { data, isFetching, isError, refetch } = useQuery({
@@ -49,6 +50,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
   const { mutate: proceed, isPending: isProceeding } = useMutation({
     mutationFn: () => submitHrAxis(answers),
     onSuccess: () => {
+      setLastHrAxis(currentAxisIndex);
       setAnswers([]);
       if (currentAxisIndex < axies.length - 1) setCurrentAxisIndex(currentAxisIndex + 1);
       else {
@@ -69,6 +71,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
     mutationFn: () => submitCertificateQuestions('hr', answers),
     onSuccess: () => {
       onSuccess?.();
+      removeLastHrAxis();
       setFlags((prev) => ({ ...prev, completed_hr_certificate: true }));
     },
     onError: (err) => {
@@ -80,7 +83,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
     }
   });
 
-  //extracting axies from questions
+  //extracting axies list
   const axies =
     data?.data.data.map((axis, i) => ({
       name: axis.name,
