@@ -1,10 +1,10 @@
 import Img from '@/components/ui/extend/Img';
-import Logo from '@/components/ui/extend/Logo';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
+import DataWrapper from '@/layouts/DataWrapper';
 import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { Brackets, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { memo } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
@@ -13,9 +13,11 @@ import { Fragment } from 'react/jsx-runtime';
 type Props = {
   items: Tool[];
   isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
 };
 
-export default function DashboardsSection({ items, isLoading }: Props) {
+export default function DashboardsSection({ items, isLoading, refetch, isError }: Props) {
   return (
     <section className="bg-accent pt-8 pb-24">
       <div className="container space-y-12">
@@ -27,11 +29,7 @@ export default function DashboardsSection({ items, isLoading }: Props) {
           </p>
         </div>
 
-        {isLoading ? (
-          <div className="flex h-48 items-center justify-center">
-            <Logo isLoading />
-          </div>
-        ) : items.length > 0 ? (
+        <DataWrapper isEmpty={!items.length} isLoading={isLoading} isError={isError} retry={refetch}>
           <div className="mx-auto grid max-w-5xl gap-8 gap-y-18 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((t, index) => (
               <Fragment key={t.id}>
@@ -46,12 +44,7 @@ export default function DashboardsSection({ items, isLoading }: Props) {
               </Fragment>
             ))}
           </div>
-        ) : (
-          <div className="flex flex-col items-center gap-8 py-24">
-            <Brackets size={80} className="stroke-primary" />
-            <p className="text-primary text-center text-4xl font-semibold">لا توجد تصاميم متاحة حالياً.</p>
-          </div>
-        )}
+        </DataWrapper>
       </div>
     </section>
   );

@@ -1,11 +1,11 @@
 import { powerBiIcon } from '@/assets/icons';
 import Img from '@/components/ui/extend/Img';
-import Logo from '@/components/ui/extend/Logo';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
+import DataWrapper from '@/layouts/DataWrapper';
 import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { Brackets, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { memo } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
@@ -13,9 +13,11 @@ import { toast } from 'react-toastify';
 type Props = {
   items: Tool[];
   isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
 };
 
-export default function PoweBiSection({ items, isLoading }: Props) {
+export default function PoweBiSection({ items, isLoading, isError, refetch }: Props) {
   return (
     <section className="container">
       <div className="py-8">
@@ -30,11 +32,7 @@ export default function PoweBiSection({ items, isLoading }: Props) {
         </p>
       </div>
 
-      {isLoading ? (
-        <div className="flex h-48 items-center justify-center">
-          <Logo isLoading />
-        </div>
-      ) : items.length > 0 ? (
+      <DataWrapper isEmpty={!items.length} isLoading={isLoading} isError={isError} retry={refetch}>
         <div className="space-y-2">
           {items.map((t, index) => (
             <PowerBiCard
@@ -47,12 +45,7 @@ export default function PoweBiSection({ items, isLoading }: Props) {
             />
           ))}
         </div>
-      ) : (
-        <div className="flex flex-col items-center gap-8 py-24">
-          <Brackets size={80} className="stroke-primary" />
-          <p className="text-primary text-center text-4xl font-semibold">لا توجد نماذج متاحة حالياً.</p>
-        </div>
-      )}
+      </DataWrapper>
     </section>
   );
 }

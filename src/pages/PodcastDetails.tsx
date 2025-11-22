@@ -20,7 +20,7 @@ export default function PodcastDetailsPage() {
   });
 
   return (
-    <DataWrapper isPending={isLoading}>
+    <DataWrapper isLoading={isLoading}>
       <div className="mt-32 space-y-12">
         <PodcastDetailsHeader
           audioUrl={podcast?.audio_url || ''}

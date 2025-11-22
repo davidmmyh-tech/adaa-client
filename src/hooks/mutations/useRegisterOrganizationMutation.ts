@@ -22,7 +22,6 @@ export default function useRegisterOrganizationMutation({ onSuccess, onError }: 
       onSuccess?.(data.data.organization);
       setFlags((flags) => ({ ...flags, has_organization: true, organization_status: 'pending' }));
       navigate(ROUTES.ADAA_SHIELD.INDEX);
-      // toast.success('تم ارسال طلبك بنجاح، سوف يتم مراجعة طلبك قريبا');
     },
     onError: (error) => {
       if (isAxiosError(error)) onError?.(error);

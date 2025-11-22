@@ -1,13 +1,13 @@
 import Img from '@/components/ui/extend/Img';
-import Logo from '@/components/ui/extend/Logo';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
 import HSplit from '@/components/ui/h-split';
 import SubmitButton from '@/components/ui/submit-button';
+import DataWrapper from '@/layouts/DataWrapper';
 import { cn } from '@/lib/utils';
 import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { Brackets, Download, Eye } from 'lucide-react';
+import { Download, Eye } from 'lucide-react';
 import { Fragment, memo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
@@ -15,9 +15,11 @@ import { toast } from 'react-toastify';
 type Props = {
   items: Tool[];
   isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
 };
 
-export default function ExcelSheetsSection({ items, isLoading }: Props) {
+export default function ExcelSheetsSection({ items, isLoading, isError, refetch }: Props) {
   const [viewMore, setViewMore] = useState(false);
 
   const topItems = items.slice(0, 3);
@@ -33,11 +35,7 @@ export default function ExcelSheetsSection({ items, isLoading }: Props) {
       </div>
 
       <div className="bg-primary py-14">
-        {isLoading ? (
-          <div className="flex h-96 items-center justify-center">
-            <Logo isLoading className="h-28 w-28" />
-          </div>
-        ) : topItems.length > 0 ? (
+        <DataWrapper isEmpty={!items.length} isLoading={isLoading} isError={isError} retry={refetch} variant="light">
           <div className="text-primary-foreground container">
             {topItems.map((t, index) => (
               <Fragment key={t.id}>
@@ -68,12 +66,7 @@ export default function ExcelSheetsSection({ items, isLoading }: Props) {
                 </Fragment>
               ))}
           </div>
-        ) : (
-          <div className="flex flex-col items-center gap-8 py-24">
-            <Brackets size={80} className="stroke-primary-foreground" />
-            <p className="text-primary-foreground text-center text-4xl font-semibold">لا توجد نمازج متاحة حالياً.</p>
-          </div>
-        )}
+        </DataWrapper>
       </div>
 
       <div className="flex h-16 justify-center">

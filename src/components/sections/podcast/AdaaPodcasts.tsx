@@ -16,20 +16,10 @@ export default function AdaaPodcastsSection() {
   const { handlePrefetchPodcast } = usePrefetchPodcastDetails();
   const query = searchParams.get('query') || '';
 
-  const {
-    podcasts,
-    isPending,
-    isError,
-    isRefetching,
-    refetch,
-    fetchNextPage,
-    isFetchingNextPage,
-    isFetching,
-    isMounted,
-    hasNextPage
-  } = useGetPodcastsQuery({
-    params: { query, page: 1, limit: 6 }
-  });
+  const { podcasts, isError, refetch, fetchNextPage, isFetchingNextPage, isFetching, hasNextPage } =
+    useGetPodcastsQuery({
+      params: { query, page: 1, limit: 6 }
+    });
 
   const updateSearchParam = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
@@ -69,13 +59,7 @@ export default function AdaaPodcastsSection() {
         </div>
       </div>
 
-      <DataWrapper
-        isPending={isPending && !isMounted}
-        isError={isError}
-        isRefetching={isRefetching}
-        isEmpty={!podcasts.length}
-        retry={refetch}
-      >
+      <DataWrapper isLoading={isFetching} isError={isError} isEmpty={!podcasts.length} retry={refetch}>
         <div className="grid grid-cols-2 gap-8">
           {podcasts.map((podcast) => (
             <DetailsCard

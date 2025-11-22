@@ -1,6 +1,5 @@
 import { getPodcasts, type Podcast } from '@/services/podcasts';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 
 type Props = {
   onSuccess?: (data: Podcast[]) => void;
@@ -12,13 +11,10 @@ type Props = {
 };
 
 export default function useGetPodcastsQuery({ params = {}, onSuccess }: Props) {
-  const [isMounted, setIsMounted] = useState(false);
-
   const query = useInfiniteQuery({
     queryKey: ['podcasts', params.query, params.limit],
     queryFn: ({ pageParam }) =>
       getPodcasts({ page: pageParam, query: params.query, limit: params.limit }).then((res) => {
-        setIsMounted(true);
         onSuccess?.(res.data.podcasts);
         return res;
       }),
@@ -31,7 +27,6 @@ export default function useGetPodcastsQuery({ params = {}, onSuccess }: Props) {
   });
 
   const podcasts = query.data?.pages.flatMap((p) => p.data.podcasts) || [];
-  const isEmpty = query.data?.pages[0].data.podcasts.length === 0;
 
-  return { ...query, podcasts, isEmpty, isMounted };
+  return { ...query, podcasts };
 }

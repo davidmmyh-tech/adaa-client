@@ -1,14 +1,18 @@
 import { Table, TBody, TCell, THead, TRow } from '@/components/ui/extend/TableItems';
 import { TableLoading } from '@/components/ui/loading/TableLoading';
 import { CERTIFICATE_CLASSES, CERTIFICATE_TRACKS } from '@/constants/data';
+import DataWrapper from '@/layouts/DataWrapper';
 import type { CertificatesOrganization } from '@/services/certificates/types';
 
 type Props = {
   orgs: CertificatesOrganization[];
-  isLoading?: boolean;
+  isLoading: boolean;
+  isEmpty: boolean;
+  isError: boolean;
+  refetch: () => void;
 };
 
-export default function CertificatesOrgsTable({ orgs, isLoading = false }: Props) {
+export default function CertificatesOrgsTable({ orgs, isLoading, isEmpty, isError, refetch }: Props) {
   return (
     <div className="bg-muted/10">
       <div className="container space-y-6 py-4">
@@ -23,10 +27,14 @@ export default function CertificatesOrgsTable({ orgs, isLoading = false }: Props
               <THead className="col-span-3">الموقع الالكتروني</THead>
             </TRow>
 
-            {isLoading ? (
-              <TableLoading />
-            ) : (
-              orgs.map((org) => (
+            <DataWrapper
+              isEmpty={isEmpty}
+              isLoading={isLoading}
+              isError={isError}
+              retry={refetch}
+              LoadingFallback={TableLoading}
+            >
+              {orgs.map((org) => (
                 <TRow key={org.organization_id + org.path}>
                   <TCell className="col-span-3">{org.organization_name}</TCell>
                   <TCell className="col-span-2 flex items-center gap-2">
@@ -52,8 +60,8 @@ export default function CertificatesOrgsTable({ orgs, isLoading = false }: Props
                     )}
                   </TCell>
                 </TRow>
-              ))
-            )}
+              ))}
+            </DataWrapper>
           </TBody>
         </Table>
       </div>

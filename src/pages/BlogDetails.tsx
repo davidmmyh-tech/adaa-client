@@ -9,7 +9,7 @@ import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function BlogDetailsPage() {
   const { id = '' } = useParams<{ id: string }>();
-  const { data, isPending, refetch, isRefetching } = useQuery({
+  const { data, isFetching, refetch, isError } = useQuery({
     queryKey: [BLOG_DETAILS_QUERY_KEY, id],
     queryFn: () => getBlogDetails(id),
     throwOnError: true
@@ -25,7 +25,7 @@ export default function BlogDetailsPage() {
   });
 
   return (
-    <DataWrapper isPending={isPending} retry={refetch} isRefetching={isRefetching}>
+    <DataWrapper isError={isError} isLoading={isFetching} retry={refetch} isEmpty={!blog}>
       <header className="container mt-28 space-y-12">
         <Img src={blog?.image} alt={blog?.title} className="h-80 w-full rounded-2xl object-cover" />
         <h1 className="text-2xl font-semibold">{blog?.title}</h1>

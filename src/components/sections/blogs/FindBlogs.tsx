@@ -19,9 +19,8 @@ export default function FindBlogsSection() {
 
   const {
     data: blogs,
-    isLoading: isBlogsLoading,
     isFetching: isBlogsFetching,
-    isRefetching: isRefetchingBlogs,
+    isError: isBlogsFetchError,
     refetch
   } = useQuery({
     queryKey: ['find-blogs', currentPage, query, category],
@@ -60,13 +59,13 @@ export default function FindBlogsSection() {
       </div>
 
       <DataWrapper
-        isPending={isBlogsLoading && !blogs}
+        isLoading={isBlogsFetching}
         isEmpty={!blogs?.data.items.length}
+        isError={isBlogsFetchError}
         retry={refetch}
-        isRefetching={isRefetchingBlogs}
       >
         <div className="relative mt-8">
-          {isBlogsFetching && !isBlogsLoading && (
+          {isBlogsFetching && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60">
               <Logo isLoading className="h-20 w-20" />
             </div>

@@ -41,7 +41,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
   const [currentAxisIndex, setCurrentAxisIndex] = useState(0);
   const { setFlags } = useUserState();
 
-  const { data, isPending } = useQuery({
+  const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ['certificate-hr-model-questions'],
     queryFn: () => certificateQuestions('hr')
   });
@@ -155,56 +155,53 @@ export default function HrModel({ onSuccess, isLast }: Props) {
         </div>
       </div>
 
-      {isPending ? (
-        <QuestionsLoading />
-      ) : (
-        <DataWrapper isError={false} retry={() => {}} isRefetching={false}>
-          <div className="space-y-8">
-            <div className="relative w-full overflow-hidden">
-              {isSubmitting && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
-                  <Logo isLoading className="h-32 w-32" />
-                </div>
-              )}
+      <DataWrapper isError={isError} retry={refetch} isLoading={isFetching} LoadingFallback={QuestionsLoading}>
+        <div className="space-y-8">
+          <div className="relative w-full overflow-hidden">
+            {isSubmitting && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
+                <Logo isLoading className="h-32 w-32" />
+              </div>
+            )}
 
-              <form className="w-full shrink-0 space-y-12">
-                <ol className="list-decimal space-y-12 ps-6">
-                  {qs.map((q, index) => (
-                    <li key={q.id} className="flex flex-col items-start justify-between gap-8 md:flex-row">
-                      <div>
-                        <p className="font-semibold">{q.question_text}</p>
-                        <RadioGroup
-                          className="mt-4 flex flex-wrap justify-end gap-12"
-                          onValueChange={(value) => handleAnswerChange(q.id, value)}
-                        >
-                          {q.options.map((option) => (
-                            <Label className="flex items-center gap-4 select-none" key={option}>
-                              <span className="text-primary">{option}</span>
-                              <RadioGroupItem value={option} id={option} className="h-5 w-5 shrink-0" />
-                            </Label>
-                          ))}
-                        </RadioGroup>
+            <form className="w-full shrink-0 space-y-12">
+              <ol className="list-decimal space-y-12 ps-6">
+                {qs.map((q, index) => (
+                  <li key={q.id} className="flex flex-col items-start justify-between gap-8 md:flex-row">
+                    <div>
+                      <p className="font-semibold">{q.question_text}</p>
+                      <RadioGroup
+                        className="mt-4 flex flex-wrap justify-end gap-12"
+                        onValueChange={(value) => handleAnswerChange(q.id, value)}
+                      >
+                        {q.options.map((option) => (
+                          <Label className="flex items-center gap-4 select-none" key={option}>
+                            <span className="text-primary">{option}</span>
+                            <RadioGroupItem value={option} id={option} className="h-5 w-5 shrink-0" />
+                          </Label>
+                        ))}
+                      </RadioGroup>
+                    </div>
+
+                    {q.attachment_required && (
+                      <div className="w-62">
+                        <AttachmentUploadInput
+                          index={index}
+                          onFileUpload={(url) => handleFileChange(q.id, url)}
+                          label="ارفق الشاهد"
+                        />
                       </div>
-
-                      {q.attachment_required && (
-                        <div className="w-62">
-                          <AttachmentUploadInput
-                            index={index}
-                            onFileUpload={(url) => handleFileChange(q.id, url)}
-                            label="ارفق الشاهد"
-                          />
-                        </div>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              </form>
-            </div>
-
-            <ErrorMessage error={error} />
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </form>
           </div>
-        </DataWrapper>
-      )}
+
+          <ErrorMessage error={error} />
+        </div>
+      </DataWrapper>
+
       <div className="flex justify-center">
         {currentAxisIndex < axies.length ? (
           <SubmitButton

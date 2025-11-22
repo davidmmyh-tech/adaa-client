@@ -36,9 +36,24 @@ export default function AdaaToolsPage() {
   return (
     <>
       <ToolsHeroSection />
-      <ExcelSheetsSection items={toolsQueries[0]?.data?.data.data || []} isLoading={toolsQueries[0]?.isLoading} />
-      <DashboardsSection items={toolsQueries[1]?.data?.data.data || []} isLoading={toolsQueries[1]?.isLoading} />
-      <PoweBiSection items={toolsQueries[2]?.data?.data.data || []} isLoading={toolsQueries[2]?.isLoading} />
+      <ExcelSheetsSection
+        items={toolsQueries[0]?.data?.data.data || []}
+        isLoading={toolsQueries[0]?.isLoading}
+        isError={toolsQueries[0].isError}
+        refetch={toolsQueries[0].refetch}
+      />
+      <DashboardsSection
+        isError={toolsQueries[1].isError}
+        refetch={toolsQueries[1].refetch}
+        items={toolsQueries[1]?.data?.data.data || []}
+        isLoading={toolsQueries[1]?.isLoading}
+      />
+      <PoweBiSection
+        items={toolsQueries[2]?.data?.data.data || []}
+        isLoading={toolsQueries[2]?.isLoading}
+        isError={toolsQueries[2].isError}
+        refetch={toolsQueries[2].refetch}
+      />
       <ToolsGuideSection />
     </>
   );

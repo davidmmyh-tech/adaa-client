@@ -194,9 +194,9 @@ Page-specific component sections organized by feature:
 
 Application layout structure and route protection:
 
-- `AppWrapper.tsx` - Root wrapper with toast notifications
-- `Main.tsx` - Main layout with header/footer
-- `DataWrapper.tsx` - Data loading wrapper
+- `AppWrapper.tsx` - Root wrapper (add context or providers here)
+- `layouts/Main.tsx` - Main layout with nav/footer/aside
+- `DataWrapper.tsx` - Data loading, error handling wrapper (important)
 - `UserGuard.tsx` - Authenticated route guard
 - `OrganizationGuard.tsx` - Organization member guard
 - `UserInitRequiredGuard.tsx` - Profile completion guard

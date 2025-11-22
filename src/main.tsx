@@ -4,11 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { StrictMode, lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRoot } from 'react-dom/client';
-import { toast } from 'react-toastify';
-import { isAxiosError } from 'axios';
 
 import ErrorPage from './pages/Error';
 import MainLayout from './layouts/Main';
@@ -22,7 +18,6 @@ import ForgetPasswordPage from './pages/ForgetPassword';
 import AdaaShieldPage from './pages/AdaaShield';
 import AdaaShieldInformatics from './pages/AdaaShieldInformatics';
 import CertificatesPage from './pages/Certificates';
-import UserProvider from './context/UserProvider';
 import CertificatesInformaticsPage from './pages/CertificatesInformatics';
 import Podcast from './pages/Podcast';
 import AdaaToolsPage from './pages/AdaaTools';
@@ -53,11 +48,12 @@ function FallbackScreen() {
 
 const router = createBrowserRouter([
   {
-    //public routes **********************
     errorElement: <ErrorPage />, //if bug happend in the main layout (error Boundry)
-    element: <AppWrapper />,
+    element: <AppWrapper />, //where providers live
+
     children: [
       {
+        //public routes **********************
         element: <MainLayout />,
         children: [
           {
@@ -238,30 +234,8 @@ const router = createBrowserRouter([
   }
 ]);
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 10, //10 minutes
-      gcTime: 1000 * 60 * 15, //15 minutes
-      refetchOnWindowFocus: false,
-      retry: 1
-    },
-    mutations: {
-      onError: (error) => {
-        if (isAxiosError(error)) return error;
-        else toast.error('خطاء غير متوقع! ,حاول مرة اخرى');
-      }
-    }
-  }
-});
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <ReactQueryDevtools />
-        <RouterProvider router={router} />
-      </UserProvider>
-    </QueryClientProvider>
+    <RouterProvider router={router} />
   </StrictMode>
 );

@@ -1,45 +1,84 @@
 import Logo from '@/components/ui/extend/Logo';
 import SubmitButton from '@/components/ui/submit-button';
+import { cn } from '@/lib/utils';
 import { BadgeX, Brackets } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
+type Variant = 'light' | 'default';
 type Props = {
   isError?: boolean;
-  isEmpty?: boolean | null;
-  isPending?: boolean;
-  isRefetching?: boolean;
+  isEmpty?: boolean;
+  isLoading?: boolean;
   children: React.ReactNode;
   LoadingFallback?: React.ComponentType;
   retry?: () => void;
+  variant?: Variant;
 };
 
-function ErrorFetchingResource({ retry, isRetrying }: { retry: () => void; isRetrying: boolean }) {
+function ErrorFetchingResource({
+  retry,
+  isRetrying,
+  variant
+}: {
+  retry: () => void;
+  isRetrying: boolean;
+  variant: Variant;
+}) {
   return (
-    <div className="text-muted flex h-96 flex-col items-center justify-center gap-4 text-center text-4xl font-bold">
-      <BadgeX size={120} className="stroke-primary" />
+    <div
+      className={cn(
+        'text-muted flex h-96 flex-col items-center justify-center gap-4 text-center text-4xl font-bold',
+        variant === 'light' && 'text-primary-foreground'
+      )}
+    >
+      <BadgeX size={120} className={`stroke-primary ${variant === 'light' ? 'stroke-primary-foreground' : ''}`} />
       <span>خطاء في الحصول علي المحتوي !</span>
-      <SubmitButton isLoading={isRetrying} className="mt-4 block font-medium" onClick={retry}>
+      <SubmitButton
+        isLoading={isRetrying}
+        className="mt-4 block font-medium"
+        variant={variant === 'light' ? 'secondary' : 'default'}
+        onClick={retry}
+      >
         إعادة المحاولة
       </SubmitButton>
     </div>
   );
 }
 
-function NoResourceAvilable({ retry, isRetrying }: { retry: () => void; isRetrying: boolean }) {
+function NoResourceAvilable({
+  retry,
+  isRetrying,
+  variant
+}: {
+  retry: () => void;
+  isRetrying: boolean;
+  variant: Variant;
+}) {
   return (
-    <div className="text-muted flex h-96 flex-col items-center justify-center gap-8 text-center text-4xl font-bold">
-      <Brackets size={80} className="stroke-primary" />
-      <p>لا يوجد محتوي للعرض</p>
-      <SubmitButton isLoading={isRetrying} className="block font-medium" onClick={retry}>
+    <div
+      className={cn(
+        'text-muted flex h-96 flex-col items-center justify-center gap-8 text-center text-4xl font-bold',
+        variant === 'light' && 'text-primary-foreground'
+      )}
+    >
+      <Brackets size={80} className={`stroke-primary ${variant === 'light' ? 'stroke-primary-foreground' : ''}`} />
+      <p>لا يوجد محتوي متاح للعرض</p>
+      <SubmitButton
+        isLoading={isRetrying}
+        className="block font-medium"
+        variant={variant === 'light' ? 'secondary' : 'default'}
+        onClick={retry}
+      >
         إعادة المحاولة
       </SubmitButton>
     </div>
   );
 }
 
-function DefaultLoading() {
+function DefaultLoading({ theme }: { theme?: Variant }) {
   return (
     <div className="flex h-96 items-center justify-center">
-      <Logo isLoading className="h-24 w-24" />
+      <Logo isLoading className="h-24 w-24" variant={theme} />
     </div>
   );
 }
@@ -47,14 +86,29 @@ function DefaultLoading() {
 export default function DataWrapper({
   children,
   isError,
-  isPending,
+  isLoading,
   LoadingFallback = DefaultLoading,
   retry,
   isEmpty,
-  isRefetching
+  variant = 'default'
 }: Props) {
-  if (isPending) return <LoadingFallback />;
-  if (isError) return <ErrorFetchingResource retry={() => retry?.()} isRetrying={!!isRefetching} />;
-  if (isEmpty) return <NoResourceAvilable retry={() => retry?.()} isRetrying={!!isRefetching} />;
+  const [isMounted, setIsMounted] = useState(false);
+  const [error, setError] = useState<boolean | undefined>(isError);
+  const [empty, setEmpty] = useState<boolean | undefined>(isEmpty);
+
+  useEffect(() => {
+    if (!isLoading && !isMounted) setIsMounted(true);
+
+    if (isError) setError(true);
+    if (!isLoading && !isError) setError(false);
+
+    if (isEmpty && !isError && !isLoading) setEmpty(true);
+    if (!isEmpty) setEmpty(false);
+  }, [isEmpty, isError, isLoading]);
+
+  if (!isMounted && isLoading)
+    return LoadingFallback === DefaultLoading ? <DefaultLoading theme={variant} /> : <LoadingFallback />;
+  if (error) return <ErrorFetchingResource retry={() => retry?.()} isRetrying={!!isLoading} variant={variant} />;
+  if (empty) return <NoResourceAvilable retry={() => retry?.()} isRetrying={!!isLoading} variant={variant} />;
   return children;
 }

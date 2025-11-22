@@ -22,7 +22,7 @@ export default function StrategicModel({ onSuccess, isLast }: Props) {
   const [error, setError] = useState<string | null>(null);
   const { setFlags } = useUserState();
 
-  const { data, isPending } = useQuery({
+  const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ['certificate-strategic-model-questions'],
     queryFn: () => certificateQuestions('strategic')
   });
@@ -77,71 +77,65 @@ export default function StrategicModel({ onSuccess, isLast }: Props) {
 
   return (
     <>
-      {isPending ? (
-        <QuestionsLoading />
-      ) : (
-        <DataWrapper isError={false} retry={() => {}} isRefetching={false}>
-          <div className="space-y-8">
-            <div className="relative w-full overflow-hidden">
-              {isSubmitting && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
-                  <Logo isLoading className="h-32 w-32" />
-                </div>
-              )}
+      <DataWrapper isError={isError} isLoading={isFetching} retry={refetch} LoadingFallback={QuestionsLoading}>
+        <div className="space-y-8">
+          <div className="relative w-full overflow-hidden">
+            {isSubmitting && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
+                <Logo isLoading className="h-32 w-32" />
+              </div>
+            )}
 
-              <form className="w-full shrink-0 space-y-12">
-                <ol className="list-decimal space-y-12 ps-6">
-                  {qs.map((q) => (
-                    <li key={q.id} className="flex flex-col items-start justify-between gap-8 md:flex-row">
-                      <div>
-                        <p className="font-semibold">{q.question_text}</p>
-                        <RadioGroup
-                          className="mt-4 flex flex-wrap justify-end gap-12"
-                          onValueChange={(value) => handleAnswerChange(q.id, value)}
-                        >
-                          {q.options.map((option) => (
-                            <Label className="flex items-center gap-4 select-none" key={option}>
-                              <span className="text-primary">{option}</span>
-                              <RadioGroupItem value={option} id={option} className="h-5 w-5 shrink-0" />
-                            </Label>
-                          ))}
-                        </RadioGroup>
-                      </div>
+            <form className="w-full shrink-0 space-y-12">
+              <ol className="list-decimal space-y-12 ps-6">
+                {qs.map((q) => (
+                  <li key={q.id} className="flex flex-col items-start justify-between gap-8 md:flex-row">
+                    <div>
+                      <p className="font-semibold">{q.question_text}</p>
+                      <RadioGroup
+                        className="mt-4 flex flex-wrap justify-end gap-12"
+                        onValueChange={(value) => handleAnswerChange(q.id, value)}
+                      >
+                        {q.options.map((option) => (
+                          <Label className="flex items-center gap-4 select-none" key={option}>
+                            <span className="text-primary">{option}</span>
+                            <RadioGroupItem value={option} id={option} className="h-5 w-5 shrink-0" />
+                          </Label>
+                        ))}
+                      </RadioGroup>
+                    </div>
 
-                      {q.attachment_required && (
-                        <FileInput
-                          id={`attachment-${q.id}`}
-                          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                          onFileChange={(file) => handleFileChange(q.id, file)}
-                          disabled={isPending}
-                        >
-                          <div className="flex w-52 items-center gap-4">
-                            <div className="shrink-0">
-                              <UploadIcon className="h-7 w-7" />
-                            </div>
-
-                            <div className="min-w-0 flex-1 space-y-2">
-                              <p className="truncate font-semibold text-ellipsis">
-                                {isPending
-                                  ? 'جاري الرفع...'
-                                  : (answers.find((a) => a.question_id === q.id)?.attachment as File)?.name ||
-                                    'ارفع الملف'}
-                              </p>
-                              <p className="text-muted text-xs">PDF / Excel (حد أقصى 10 MB)</p>
-                            </div>
+                    {q.attachment_required && (
+                      <FileInput
+                        id={`attachment-${q.id}`}
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                        onFileChange={(file) => handleFileChange(q.id, file)}
+                        disabled={isSubmitting}
+                      >
+                        <div className="flex w-52 items-center gap-4">
+                          <div className="shrink-0">
+                            <UploadIcon className="h-7 w-7" />
                           </div>
-                        </FileInput>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              </form>
-            </div>
 
-            <ErrorMessage error={error} />
+                          <div className="min-w-0 flex-1 space-y-2">
+                            <p className="truncate font-semibold text-ellipsis">
+                              {(answers.find((a) => a.question_id === q.id)?.attachment as File)?.name || 'ارفع الملف'}
+                            </p>
+                            <p className="text-muted text-xs">PDF / Excel (حد أقصى 10 MB)</p>
+                          </div>
+                        </div>
+                      </FileInput>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </form>
           </div>
-        </DataWrapper>
-      )}
+
+          <ErrorMessage error={error} />
+        </div>
+      </DataWrapper>
+
       <div className="flex justify-center">
         <SubmitButton variant="secondary" className="mx-auto w-32" isLoading={isSubmitting} onClick={() => mutate()}>
           {isLast ? 'إنهاء' : 'التالي'}

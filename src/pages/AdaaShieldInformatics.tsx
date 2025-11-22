@@ -27,7 +27,7 @@ export default function AdaaShieldInformatics() {
   const region = searchParams.get('region') || '';
   const year = Number(searchParams.get('year')) || undefined;
 
-  const { data, isFetching } = useGetAdaaShieldOrganizationsQuery({
+  const { data, isFetching, isError, refetch } = useGetAdaaShieldOrganizationsQuery({
     params: { query, grade, region, year, page: ORGS_PAGE, limit: PAGE_ORG_LIMIT }
   });
 
@@ -84,7 +84,13 @@ export default function AdaaShieldInformatics() {
           </div>
         </div>
 
-        <AdaaShieldOrgsTable orgs={data?.data.data || []} isLoading={isFetching} />
+        <AdaaShieldOrgsTable
+          isError={isError}
+          refetch={refetch}
+          orgs={data?.data.data || []}
+          isLoading={isFetching}
+          isEmpty={!data?.data.data.length}
+        />
         <AdaaShieldAnalytics />
       </section>
     </div>

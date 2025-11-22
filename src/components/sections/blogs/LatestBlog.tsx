@@ -7,13 +7,13 @@ import { Link } from 'react-router';
 
 export default function LatestBlogSection() {
   const { handlePrefetchBlog } = usePrefetchBlogDetails();
-  const { data, isLoading, refetch, isRefetching } = useGetLatestBlogQuery();
+  const { data, refetch, isFetching, isError } = useGetLatestBlogQuery();
 
   return (
     <section className="container my-12">
       <h2 className="mb-8 text-2xl font-bold">المقالات الجديدة</h2>
 
-      <DataWrapper isPending={isLoading} isEmpty={!data} retry={refetch} isRefetching={isRefetching}>
+      <DataWrapper isError={isError} isLoading={isFetching} isEmpty={!data} retry={refetch}>
         <div
           className="flex flex-col items-start gap-8 lg:flex-row"
           onMouseEnter={() => data?.id && handlePrefetchBlog(data.id)}

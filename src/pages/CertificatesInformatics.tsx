@@ -14,6 +14,7 @@ import { Grid3x3 } from 'lucide-react';
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
+import DataWrapper from '@/layouts/DataWrapper';
 
 export default function CertificatesInformaticsPage() {
   useDocumentHead({
@@ -30,7 +31,7 @@ export default function CertificatesInformaticsPage() {
   const rank = searchParams.get('rank') || '';
   const year = Number(searchParams.get('year')) || undefined;
 
-  const { data, isPending } = useQuery({
+  const { data, isPending, isError, refetch, isFetching } = useQuery({
     queryKey: ['certificate-organizations', query, rank, year],
     queryFn: () => getOrganzations({ query, rank, year, page: 1, limit: 5 })
   });
@@ -100,9 +101,17 @@ export default function CertificatesInformaticsPage() {
         </div>
 
         {display === 'grid' ? (
-          <CertificateOrgsGrid orgs={organizations} />
+          <DataWrapper isEmpty={organizations.length === 0} isLoading={isFetching} isError={isError} retry={refetch}>
+            <CertificateOrgsGrid orgs={organizations} />
+          </DataWrapper>
         ) : (
-          <CertificatesOrgsTable orgs={organizations} isLoading={isPending} />
+          <CertificatesOrgsTable
+            orgs={organizations}
+            isLoading={isPending}
+            isEmpty={organizations.length === 0}
+            isError={isError}
+            refetch={refetch}
+          />
         )}
         <CertificatesAnalyticsSection />
       </section>

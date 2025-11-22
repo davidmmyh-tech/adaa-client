@@ -21,7 +21,7 @@ export default function ReleasesPage() {
   const category = searchParams.get('category') || '';
   const LIMIT = 6;
 
-  const { data, isLoading, isFetching, isPending, isError, isSuccess, refetch } = useQuery({
+  const { data, isFetching, isError, isSuccess, refetch } = useQuery({
     queryKey: ['find-releases', currentPage, query, category],
     queryFn: () => findReleases({ page: currentPage, limit: LIMIT, q: query, category }),
     placeholderData: (previousData) => previousData
@@ -86,15 +86,9 @@ export default function ReleasesPage() {
           />
         </div>
 
-        <DataWrapper
-          isPending={isPending}
-          isError={hasError}
-          isEmpty={!data?.data.items.length}
-          retry={refetch}
-          isRefetching={isFetching}
-        >
+        <DataWrapper isLoading={isFetching} isError={hasError} isEmpty={!data?.data.items.length} retry={refetch}>
           <div className="relative mt-8">
-            {isFetching && !isLoading && (
+            {isFetching && (
               <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60">
                 <Logo isLoading className="h-20 w-20" />
               </div>

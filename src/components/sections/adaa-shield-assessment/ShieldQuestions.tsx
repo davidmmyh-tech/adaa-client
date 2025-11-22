@@ -38,8 +38,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
     data: questions,
     isFetching,
     isError,
-    refetch,
-    isFetchedAfterMount
+    refetch
   } = useGetShieldQuestions({ onSuccess: (data) => setupAnswers(data.axes[0].id) });
   if (questions && !answers) setupAnswers(questions.axes[0].id);
 
@@ -110,69 +109,62 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
 
   return (
     <div className="container">
-      {!isFetchedAfterMount ? (
-        <QuestionsLoading />
-      ) : (
-        <DataWrapper isError={isError || isFetching} retry={refetch} isRefetching={isFetching}>
-          <div className="space-y-8">
-            <AxisProgress axies={axies} currentIndex={currentAxisIndex} />
+      <DataWrapper isError={isError} retry={refetch} isLoading={isFetching} LoadingFallback={QuestionsLoading}>
+        <div className="space-y-8">
+          <AxisProgress axies={axies} currentIndex={currentAxisIndex} />
 
-            <div className="relative w-full overflow-hidden">
-              {isSubmitting && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
-                  <Logo isLoading className="h-32 w-32" />
-                </div>
-              )}
-
-              <div
-                className="relative flex transition-all duration-500"
-                style={{ right: `-${currentAxisIndex * 100}%` }}
-              >
-                {axiesQuestions.map((axisItem) => (
-                  <form key={axisItem.id} className="w-full shrink-0 space-y-12">
-                    <p className="text-lg font-semibold">{axisItem.description}</p>
-                    <ol className="list-decimal space-y-12 ps-6">
-                      {axisItem.questions.map((q) => (
-                        <li key={q.id}>
-                          <p className="font-semibold">{q.question}</p>
-                          <RadioGroup
-                            className="mt-4 flex justify-end gap-24"
-                            onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
-                          >
-                            <Label htmlFor={'no' + q.id} className="flex items-center gap-4">
-                              <div className="text-primary">لا</div>
-                              <RadioGroupItem value="no" id={'no' + q.id} className="h-5 w-5" />
-                            </Label>
-                            <Label htmlFor={'yes' + q.id} className="flex items-center gap-4">
-                              <div className="text-primary">نعم</div>
-                              <RadioGroupItem value="yes" id={'yes' + q.id} className="h-5 w-5" />
-                            </Label>
-                          </RadioGroup>
-                        </li>
-                      ))}
-                    </ol>
-                    <AttachmentsSection onFileUploaded={handleFileChange} axisId={axisItem.id} />
-                  </form>
-                ))}
+          <div className="relative w-full overflow-hidden">
+            {isSubmitting && (
+              <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
+                <Logo isLoading className="h-32 w-32" />
               </div>
-            </div>
+            )}
 
-            <ErrorMessage error={error} />
-
-            <div className="mx-auto w-fit py-4 font-semibold">
-              {currentAxisIndex === axiesQuestions.length - 1 ? (
-                <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
-                  أتمام
-                </SubmitButton>
-              ) : (
-                <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
-                  التالي
-                </SubmitButton>
-              )}
+            <div className="relative flex transition-all duration-500" style={{ right: `-${currentAxisIndex * 100}%` }}>
+              {axiesQuestions.map((axisItem) => (
+                <form key={axisItem.id} className="w-full shrink-0 space-y-12">
+                  <p className="text-lg font-semibold">{axisItem.description}</p>
+                  <ol className="list-decimal space-y-12 ps-6">
+                    {axisItem.questions.map((q) => (
+                      <li key={q.id}>
+                        <p className="font-semibold">{q.question}</p>
+                        <RadioGroup
+                          className="mt-4 flex justify-end gap-24"
+                          onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
+                        >
+                          <Label htmlFor={'no' + q.id} className="flex items-center gap-4">
+                            <div className="text-primary">لا</div>
+                            <RadioGroupItem value="no" id={'no' + q.id} className="h-5 w-5" />
+                          </Label>
+                          <Label htmlFor={'yes' + q.id} className="flex items-center gap-4">
+                            <div className="text-primary">نعم</div>
+                            <RadioGroupItem value="yes" id={'yes' + q.id} className="h-5 w-5" />
+                          </Label>
+                        </RadioGroup>
+                      </li>
+                    ))}
+                  </ol>
+                  <AttachmentsSection onFileUploaded={handleFileChange} axisId={axisItem.id} />
+                </form>
+              ))}
             </div>
           </div>
-        </DataWrapper>
-      )}
+
+          <ErrorMessage error={error} />
+
+          <div className="mx-auto w-fit py-4 font-semibold">
+            {currentAxisIndex === axiesQuestions.length - 1 ? (
+              <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
+                أتمام
+              </SubmitButton>
+            ) : (
+              <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
+                التالي
+              </SubmitButton>
+            )}
+          </div>
+        </div>
+      </DataWrapper>
     </div>
   );
 }

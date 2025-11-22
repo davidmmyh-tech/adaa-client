@@ -1,3 +1,4 @@
+import { LOCATION_URL } from '@/constants/data';
 import { LocateFixedIcon, Mail, PhoneCall } from 'lucide-react';
 import { Link } from 'react-router';
 
@@ -13,7 +14,7 @@ export default function CompanyInfo() {
             </div>
             <span className="text-lg font-semibold">قم بزيارتنا</span>
           </div>
-          <Link to={''} target="_blank" className="">
+          <Link to={LOCATION_URL} target="_blank" className="hover:underline">
             مجمع ريفا للأعمال - حي النزهة بمدينة جدة- المملكة العربية السعودية
           </Link>
         </li>
