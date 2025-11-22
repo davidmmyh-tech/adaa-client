@@ -1,7 +1,7 @@
 import useOutsideClick from '@/hooks/useOutsideClick';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
-import { LgMenuList, MdMenuList } from './MenuLists';
+import { LgSideBarMenuList, MdSideBarMenuList } from './SideBarMenuList';
 import { X } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -30,11 +30,11 @@ export default function SideBar({ isOpen, onClose }: Props) {
             <X />
           </Button>
         </div>
-        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col space-y-4 md:hidden">
-          <MdMenuList />
+        <ul className="text-primary flex flex-col space-y-4 md:hidden">
+          <MdSideBarMenuList onClose={onClose} />
         </ul>
-        <ul className="text-primary [&>li]:hover:bg-secondary [&>li]:hover:text-primary-foreground flex flex-col space-y-4 lg:hidden">
-          <LgMenuList />
+        <ul className="text-primary flex flex-col space-y-4 lg:hidden">
+          <LgSideBarMenuList onClose={onClose} />
         </ul>
       </aside>
     </>

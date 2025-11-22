@@ -1,7 +1,7 @@
 import Logo from '../ui/extend/Logo';
 import { Menu } from 'lucide-react';
 import { Button } from '../ui/button';
-import { MdMenuList, LgMenuList } from './MenuLists';
+import { MdNavBarMenuList, LgNavBarMenuList } from './NavBarMenuList';
 import { useUserState } from '@/context/UserProvider';
 import useScrollEffect from '@/hooks/useScrollEffect';
 
@@ -36,10 +36,10 @@ function UserMenu({ onOpenSideBar }: Props) {
     <div className="flex w-full justify-between">
       <div className="flex items-center gap-1">
         <ul className="text-primary-foreground hidden md:inline-flex">
-          <MdMenuList />
+          <MdNavBarMenuList />
         </ul>
         <ul className="text-primary-foreground hidden lg:inline-flex">
-          <LgMenuList />
+          <LgNavBarMenuList />
         </ul>
       </div>
       <Button variant="link" onClick={onOpenSideBar} className="ms-4 h-8 w-8 p-0 lg:hidden">
