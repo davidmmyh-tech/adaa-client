@@ -1,6 +1,6 @@
 import { TEMP_FLAGS } from '@/constants/data';
 import { useUserState } from '@/context/UserProvider';
-import { setToken } from '@/lib/storage';
+import { setSessionEmail, setToken } from '@/lib/storage';
 import { ROUTES } from '@/routes';
 import type { User } from '@/schemas/types';
 import type { LoginForm } from '@/schemas/validation';
@@ -31,8 +31,14 @@ export default function useLoginMutation({ onSuccess, onError }: Props) {
       if (flags.has_organization) navigate(ROUTES.HOME);
       else navigate(ROUTES.AUTH.REGISTER_ORGANIZATION);
     },
-    onError: (err) => {
-      if (isAxiosError(err)) onError?.(err);
+    onError: (err, { email }) => {
+      if (isAxiosError(err)) {
+        if (err.response?.status === 403) {
+          setSessionEmail(email);
+          navigate(ROUTES.AUTH.VERIFY_EMAIL);
+        }
+        onError?.(err);
+      }
     }
   });
 }
