@@ -3,7 +3,7 @@ import ExcelSheetsSection from '@/components/sections/adaa-tools/ExcelSheets';
 import PoweBiSection from '@/components/sections/adaa-tools/PoweBi';
 import ToolsGuideSection from '@/components/sections/adaa-tools/ToolsGuide';
 import ToolsHeroSection from '@/components/sections/adaa-tools/ToolsHero';
-import { getTools } from '@/services/tools';
+import { getPBTools, getTools } from '@/services/tools';
 import { useQueries } from '@tanstack/react-query';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
 
@@ -20,7 +20,7 @@ export default function AdaaToolsPage() {
       },
       {
         queryKey: ['adaa-powerbi-templates'],
-        queryFn: () => getTools('tools') //fetchPowerBiTemplates()
+        queryFn: () => getPBTools() //fetchPowerBiTemplates()
       }
     ]
   });
@@ -49,7 +49,7 @@ export default function AdaaToolsPage() {
         isLoading={toolsQueries[1]?.isLoading}
       />
       <PoweBiSection
-        items={toolsQueries[2]?.data?.data.data || []}
+        items={toolsQueries[2]?.data?.data.data.data || []}
         isLoading={toolsQueries[2]?.isLoading}
         isError={toolsQueries[2].isError}
         refetch={toolsQueries[2].refetch}

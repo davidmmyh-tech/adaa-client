@@ -4,6 +4,7 @@ import { Button } from '../ui/button';
 import { MdNavBarMenuList, LgNavBarMenuList } from './NavBarMenuList';
 import { useUserState } from '@/context/UserProvider';
 import useScrollEffect from '@/hooks/useScrollEffect';
+import LogoutButton from '../ui/extend/LogoutButton';
 
 type Props = { onOpenSideBar: () => void };
 
@@ -42,9 +43,12 @@ function UserMenu({ onOpenSideBar }: Props) {
           <LgNavBarMenuList />
         </ul>
       </div>
-      <Button variant="link" onClick={onOpenSideBar} className="ms-4 h-8 w-8 p-0 lg:hidden">
-        <Menu size={20} />
-      </Button>
+      <div>
+        <LogoutButton />
+        <Button variant="link" onClick={onOpenSideBar} className="ms-4 h-8 w-8 p-0 lg:hidden">
+          <Menu size={20} />
+        </Button>
+      </div>
     </div>
   );
 }

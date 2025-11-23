@@ -36,6 +36,10 @@ export function getTools(type: 'models' | 'dashboards' | 'tools') {
   return api.get<ToolsResponse>(`/api/${type}`);
 }
 
+export function getPBTools() {
+  return api.get<{ data: ToolsResponse }>('/api/tools');
+}
+
 export async function downloadTool(id: number, type: 'models' | 'dashboards' | 'tools') {
   const res = await api.get<Blob>(`/api/${type}/${id}/download`, {
     responseType: 'blob'

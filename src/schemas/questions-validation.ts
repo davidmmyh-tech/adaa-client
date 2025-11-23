@@ -31,14 +31,6 @@ export function validateCertificateAnswers(
         error: 'يرجى التأكد من تعبئة جميع البيانات المطلوبة'
       };
     }
-
-    // Check if attachment is required and provided
-    if (question.attachment_required && !answer.attachment) {
-      return {
-        isValid: false,
-        error: 'يرجى التأكد من تعبئة جميع البيانات المطلوبة'
-      };
-    }
   }
 
   return {

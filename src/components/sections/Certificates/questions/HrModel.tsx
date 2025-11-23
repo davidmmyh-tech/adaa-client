@@ -99,11 +99,9 @@ export default function HrModel({ onSuccess, isLast }: Props) {
       if (!prevAnswers) return prevAnswers;
       const updatedAnswer = [...prevAnswers];
       const questionIndex = updatedAnswer.findIndex((q) => q.question_id === questionId);
-      if (questionIndex !== -1) {
-        updatedAnswer[questionIndex].attachment = attachment;
-      } else {
-        updatedAnswer.push({ question_id: questionId, answer: '', attachment });
-      }
+
+      if (questionIndex !== -1) updatedAnswer[questionIndex].attachment = attachment;
+      else updatedAnswer.push({ question_id: questionId, answer: '', attachment });
 
       setLastHrAxis(currentAxisIndex, updatedAnswer);
       return updatedAnswer;
@@ -111,9 +109,9 @@ export default function HrModel({ onSuccess, isLast }: Props) {
   };
 
   const handleSubmit = () => {
-    setError(null);
     const { isValid } = validateCertificateAnswers(data!.data.data[currentAxisIndex].questions, answers);
     if (!isValid) return setError('يرجى التأكد من تعبئة جميع البيانات المطلوبة');
+    setError(null);
     proceed();
   };
 
