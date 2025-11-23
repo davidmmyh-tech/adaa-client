@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 
 export default function LogoutButton() {
   const navigate = useNavigate();
-  const { setUser, setFlags, setOrganization } = useUserState();
+  const { user, setUser, setFlags, setOrganization } = useUserState();
   const { mutate: logout } = useMutation({
     mutationFn: () => logoutUser(),
     onSuccess: () => {
@@ -17,9 +17,10 @@ export default function LogoutButton() {
       navigate('/login');
     }
   });
-  return (
-    <SubmitButton className="h-10" onClick={() => logout()}>
-      تسجيل خروج
-    </SubmitButton>
-  );
+  if (user)
+    return (
+      <SubmitButton className="h-10" onClick={() => logout()}>
+        تسجيل خروج
+      </SubmitButton>
+    );
 }
