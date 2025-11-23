@@ -15,7 +15,7 @@ import { useUserState } from '@/context/UserProvider';
 import { certificateQuestions, submitCertificateQuestions } from '@/services/certificates/certificates-questions';
 import type { CertificateAnswer } from '@/services/certificates/types';
 
-type Props = { isLast: boolean; onSuccess?: () => void };
+type Props = { onSuccess?: () => void; isLast?: boolean };
 
 export default function OperationalModel({ onSuccess, isLast }: Props) {
   const [answers, setAnswers] = useState<CertificateAnswer[]>([]);

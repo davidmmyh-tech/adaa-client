@@ -1,6 +1,6 @@
 import CertificatesHeroSection from '@/components/sections/Certificates/CertificatesHero';
 import { CERTIFICATE_TRACKS } from '@/constants/data';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import StrategicModel from '@/components/sections/Certificates/questions/StrategicModel';
 import OperationalModel from '@/components/sections/Certificates/questions/OperationalModel';
@@ -11,6 +11,32 @@ import type { CertificateTrack } from '@/schemas/types';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
 
 export default function CertificatesAssessmentPage() {
+  const { flags } = useUserState();
+  const [searchParams] = useSearchParams();
+  const trackParam = searchParams.getAll('tracks');
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [success, setSuccess] = useState(false);
+
+  const tracks = useMemo(() => {
+    let tempTracks = trackParam && trackParam?.length > 0 ? [...trackParam] : ['hr', 'strategic', 'operational'];
+    if (flags.completed_hr_certificate) tempTracks = tempTracks.filter((t) => t !== 'hr');
+    if (flags.completed_strategic_certificate) tempTracks = tempTracks.filter((t) => t !== 'strategic');
+    if (flags.completed_operational_certificate) tempTracks = tempTracks.filter((t) => t !== 'operational');
+    return [...tempTracks] as CertificateTrack[];
+  }, []);
+  const isLastTrack = currentTrackIndex === tracks.length - 1;
+
+  const handleSuccessSubmission = () => {
+    if (isLastTrack) setSuccess(true);
+    else setCurrentTrackIndex(currentTrackIndex + 1);
+  };
+
+  const trackFormMap = {
+    strategic: <StrategicModel onSuccess={handleSuccessSubmission} isLast={isLastTrack} />,
+    operational: <OperationalModel onSuccess={handleSuccessSubmission} isLast={isLastTrack} />,
+    hr: <HrModel onSuccess={handleSuccessSubmission} isLast={isLastTrack} />
+  };
+
   useDocumentHead({
     title: 'تقييم شهادات أداء - الأداء المؤسسي',
     description:
@@ -18,37 +44,6 @@ export default function CertificatesAssessmentPage() {
     ogTitle: 'تقييم شهادات أداء',
     ogDescription: 'نموذج تقييم الأداء المؤسسي للحصول على شهادة معتمدة في المسارات الثلاثة.'
   });
-
-  const [searchParams] = useSearchParams();
-  const trackParam = searchParams.getAll('tracks');
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [success, setSuccess] = useState(false);
-  const { flags } = useUserState();
-
-  const tracks = useMemo(() => {
-    let tempTracks = trackParam && trackParam?.length > 0 ? [...trackParam] : ['hr', 'strategic', 'operational'];
-
-    if (flags.completed_hr_certificate) tempTracks = tempTracks.filter((t) => t !== 'hr');
-    if (flags.completed_strategic_certificate) tempTracks = tempTracks.filter((t) => t !== 'strategic');
-    if (flags.completed_operational_certificate) tempTracks = tempTracks.filter((t) => t !== 'operational');
-    if (tempTracks.length === 0) setSuccess(true);
-
-    return [...tempTracks] as CertificateTrack[];
-  }, []);
-
-  const handleSuccessSubmission = useCallback(() => {
-    if (currentTrackIndex >= tracks.length - 1) setSuccess(true);
-    else setCurrentTrackIndex(currentTrackIndex + 1);
-  }, [currentTrackIndex, tracks.length]);
-
-  const trackFormMap = useMemo(
-    () => ({
-      strategic: <StrategicModel onSuccess={handleSuccessSubmission} isLast={false} />,
-      operational: <OperationalModel onSuccess={handleSuccessSubmission} isLast={false} />,
-      hr: <HrModel onSuccess={handleSuccessSubmission} isLast={true} />
-    }),
-    [handleSuccessSubmission]
-  );
 
   return (
     <>
@@ -59,7 +54,7 @@ export default function CertificatesAssessmentPage() {
       />
 
       <div className="container">
-        {success ? (
+        {success || tracks.length === 0 ? (
           <SuccessScreen>
             <div>
               <p className="mb-4 text-2xl font-semibold">تهانينا! لقد أكملت جميع نماذج التقييم بنجاح.</p>

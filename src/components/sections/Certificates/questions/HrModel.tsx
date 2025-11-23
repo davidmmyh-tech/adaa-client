@@ -22,7 +22,7 @@ import { validateCertificateAnswers } from '@/schemas/questions-validation';
 import { getLastHrAxis, removeLastHrAxis, setLastHrAxis } from '@/lib/storage';
 import { ARABIC_NUMBER_NAMES } from '@/constants/data';
 
-type Props = { isLast: boolean; onSuccess?: () => void };
+type Props = { onSuccess?: () => void; isLast?: boolean };
 
 export default function HrModel({ onSuccess, isLast }: Props) {
   const [answers, setAnswers] = useState<CertificateAnswer[]>(() => getLastHrAxis()?.answers);
@@ -41,10 +41,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
       setLastHrAxis(currentAxisIndex + 1);
       setAnswers([]);
       if (currentAxisIndex < axies.length - 1) setCurrentAxisIndex(currentAxisIndex + 1);
-      else {
-        onSuccess?.();
-        mutate();
-      }
+      else submit();
     },
     onError: (err) => {
       if (isAxiosError(err)) {
@@ -55,7 +52,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
     }
   });
 
-  const { mutate, isPending: isSubmitting } = useMutation({
+  const { mutate: submit, isPending: isSubmitting } = useMutation({
     mutationFn: () => submitCertificateQuestions('hr', answers),
     onSuccess: () => {
       onSuccess?.();
@@ -185,6 +182,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
                           label="ارفق الشاهد"
                           onFileUpload={(url) => handleFileChange(q.id, url)}
                           uploadFn={handleUpload}
+                          value={(answers.find((ans) => ans.question_id === q.id)?.attachment as string) || ''}
                         />
                       </div>
                     )}
@@ -199,25 +197,14 @@ export default function HrModel({ onSuccess, isLast }: Props) {
       </DataWrapper>
 
       <div className="flex justify-center">
-        {currentAxisIndex < axies.length ? (
-          <SubmitButton
-            variant="secondary"
-            className="mx-auto w-32"
-            isLoading={isProceeding || isSubmitting}
-            onClick={handleSubmit}
-          >
-            التالي
-          </SubmitButton>
-        ) : (
-          <SubmitButton
-            variant="secondary"
-            className="mx-auto w-32"
-            isLoading={isProceeding || isSubmitting}
-            onClick={handleSubmit}
-          >
-            {isLast ? 'إنهاء' : 'التالي'}
-          </SubmitButton>
-        )}
+        <SubmitButton
+          variant="secondary"
+          className="mx-auto w-32"
+          isLoading={isProceeding || isSubmitting}
+          onClick={handleSubmit}
+        >
+          {currentAxisIndex < axies.length - 1 || isLast ? 'التالي' : 'إنهاء'}
+        </SubmitButton>
       </div>
     </div>
   );
