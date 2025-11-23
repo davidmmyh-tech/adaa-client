@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 type AttachmentInputProps = {
   id: string;
   label?: string;
-  value?: string;
+  value?: string | null;
   onFileUpload: (url: string) => void;
   onError?: (error: Error) => void;
   uploadFn: (file: File) => Promise<string>;
@@ -87,7 +87,7 @@ export function AttachmentInput({
         >
           <div className="flex min-w-0 flex-1 items-center gap-3">
             <File className="strock-primary h-6 w-6 shrink-0" />
-            <div className="space-y-2">
+            <div className="min-w-0 flex-1 space-y-2">
               <p className="truncate font-semibold text-ellipsis">{displayName}</p>
               <p className="text-muted text-xs">PDF / Excel (حد أقصى 10 MB)</p>
             </div>

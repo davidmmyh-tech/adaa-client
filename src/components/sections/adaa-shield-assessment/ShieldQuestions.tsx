@@ -21,8 +21,8 @@ type Props = {
 };
 
 export default function ShieldQuestionsSection({ onSuccess }: Props) {
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(getLastShieldAxis()?.index);
-  const [answers, setAnswers] = useState<ShieldAnswers>(getLastShieldAxis()?.answers);
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(getLastShieldAxis().index);
+  const [answers, setAnswers] = useState<ShieldAnswers>(getLastShieldAxis().answers);
   const [error, setError] = useState<string | null>(null);
 
   const setupAnswers = (axisId: Id) => {
@@ -40,7 +40,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
     isError,
     refetch
   } = useGetShieldQuestions({ onSuccess: (data) => setupAnswers(data.axes[0].id) });
-  if (questions && !answers) setupAnswers(questions.axes[0].id);
+  if (questions && !answers.axis_id) setupAnswers(questions.axes[0].id);
 
   //Submit Answers request ---------
   const { mutate, isPending: isSubmitting } = useSubmitAnswers({
@@ -142,6 +142,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
                         <RadioGroup
                           className="mt-4 flex justify-end gap-24"
                           onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
+                          value={answers.questions.find((target) => target.question_id === q.id)?.answer ? 'yes' : 'no'}
                         >
                           <Label htmlFor={'no' + q.id} className="flex items-center gap-4">
                             <div className="text-primary">لا</div>

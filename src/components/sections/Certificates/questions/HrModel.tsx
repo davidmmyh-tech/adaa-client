@@ -83,11 +83,9 @@ export default function HrModel({ onSuccess, isLast }: Props) {
       if (!prevAnswers) return prevAnswers;
       const updatedAnswer = [...prevAnswers];
       const questionIndex = updatedAnswer.findIndex((q) => q.question_id === questionId);
-      if (questionIndex !== -1) {
-        updatedAnswer[questionIndex].answer = answer;
-      } else {
-        updatedAnswer.push({ question_id: questionId, answer, attachment: null });
-      }
+
+      if (questionIndex !== -1) updatedAnswer[questionIndex].answer = answer;
+      else updatedAnswer.push({ question_id: questionId, answer, attachment: null });
 
       setLastHrAxis(currentAxisIndex, updatedAnswer);
       return updatedAnswer;
@@ -163,6 +161,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
                       <RadioGroup
                         className="mt-4 flex flex-wrap justify-end gap-12"
                         onValueChange={(value) => handleAnswerChange(q.id, value)}
+                        value={answers.find((target) => target.question_id === q.id)?.answer}
                       >
                         {q.options.map((option) => (
                           <Label className="flex items-center gap-4 select-none" key={option}>
@@ -180,7 +179,9 @@ export default function HrModel({ onSuccess, isLast }: Props) {
                           label="ارفق الشاهد"
                           onFileUpload={(url) => handleFileChange(q.id, url)}
                           uploadFn={handleUpload}
-                          value={(answers.find((ans) => ans.question_id === q.id)?.attachment as string) || ''}
+                          value={
+                            (answers.find((ans) => ans.question_id === q.id)?.attachment as string | undefined) || null
+                          }
                         />
                       </div>
                     )}

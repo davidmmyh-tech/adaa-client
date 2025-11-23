@@ -1,3 +1,4 @@
+import { setSessionEmail } from '@/lib/storage';
 import { forgetPassword } from '@/services/auth';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError, isAxiosError } from 'axios';
@@ -10,7 +11,10 @@ type Props = {
 export default function useForgetPasswordMutation({ onSuccess, onError }: Props) {
   return useMutation({
     mutationFn: (email: string) => forgetPassword(email),
-    onSuccess: (data) => onSuccess?.(data.data.success),
+    onSuccess: (data, email) => {
+      setSessionEmail(email);
+      onSuccess?.(data.data.success);
+    },
     onError: (error) => {
       if (isAxiosError(error)) onError?.(error);
     }

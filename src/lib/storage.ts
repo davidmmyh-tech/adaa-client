@@ -50,7 +50,7 @@ export function setLastShieldAxis(
 
 export function getLastShieldAxis() {
   const data: ShieldAxisMilestone | null = JSON.parse(localStorage.getItem('lastShieldAxis') || 'null');
-  return data || { index: 0, answers: { axis_id: '', questions: [], attachments: [] } };
+  return data || { index: 0, answers: { axis_id: 0, questions: [], attachments: [] } };
 }
 
 export function removeLastShieldAxis() {

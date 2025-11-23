@@ -47,18 +47,9 @@ export default function CertificateSimpleModel({ track, onSuccess, isLast }: Pro
     },
     onError: (err) => {
       if (isAxiosError(err)) {
-        if (err.response?.status === 400) {
-          setError('يرجى التأكد من جميع المرفقات المطلوبة.');
-          return;
-        }
-        if (err.response?.status === 422) {
-          setError('يرجى التأكد من الإجابة على جميع الأسئلة قبل المتابعة.');
-          return;
-        }
-        if (err.response?.status === 409) {
-          setError('تم إرسال هذا النموذج مسبقًا.');
-          return;
-        }
+        if (err.response?.status === 400) return setError('يرجى التأكد من جميع المرفقات المطلوبة.');
+        if (err.response?.status === 422) return setError('يرجى التأكد من الإجابة على جميع الأسئلة قبل المتابعة.');
+        if (err.response?.status === 409) return setError('تم إرسال هذا النموذج مسبقًا.');
       }
       setError('حدث خطأ أثناء إرسال الإجابات. يرجى المحاولة مرة أخرى.');
     }
