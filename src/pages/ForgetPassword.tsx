@@ -32,34 +32,38 @@ export default function ForgetPasswordPage() {
   });
 
   return (
-    <form className="mx-auto mt-28 flex w-full max-w-2xl flex-col space-y-4 px-8" onSubmit={handleSubmit}>
+    <div className="mx-auto mt-28 w-full max-w-2xl space-y-8 px-8">
       <div className="w-full">
         <div className="bg-secondary mx-auto block w-fit rounded-full p-8">
           <Logo className="h-24 w-24" variant="light" />
         </div>
       </div>
-      {isSuccess ? (
-        <p className="my-4 text-2xl font-semibold">تم ارسال رابط استعادة كلمة السر الى بريدك الالكتروني!</p>
-      ) : (
-        <>
-          <h1 className="mb-4 text-center text-2xl font-bold">اعادة تعيين كلمة السر</h1>
-          <p className="text-muted text-center">ادخل بريدك الالكتروني لاستعادة كلمة السر</p>
-          <FormInput
-            label="البريد الالكتروني"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={error}
-          />
-          <div className="flex flex-col items-center gap-4">
-            <SubmitButton onClick={handleSubmit} isLoading={isPending} disabled={isCounting || isPending}>
-              {isCounting ? `إعادة الإرسال ${countdown} ثانية` : 'إعادة تعيين كلمة السر'}
-            </SubmitButton>
 
-            {!isCounting && <p className="text-muted text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
-          </div>
-        </>
-      )}
-    </form>
+      <div className="space-y-4">
+        <h1 className="text-center text-2xl font-bold">اعادة تعيين كلمة السر</h1>
+        <p className="text-muted text-center">ادخل بريدك الالكتروني لاستعادة كلمة السر</p>
+      </div>
+
+      <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+        <FormInput
+          label="البريد الالكتروني"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={error}
+        />
+        <div className="flex flex-col items-center gap-4 pt-4">
+          {isSuccess && (
+            <p className="text-success text-center text-xl font-semibold">
+              تم ارسال رابط استعادة كلمة السر الى بريدك الالكتروني!
+            </p>
+          )}
+          <SubmitButton onClick={handleSubmit} isLoading={isPending} disabled={isCounting || isPending}>
+            {isCounting ? `إعادة الإرسال ${countdown} ثانية` : 'إعادة تعيين كلمة السر'}
+          </SubmitButton>
+          {isCounting && <p className="text-muted text-center text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
+        </div>
+      </form>
+    </div>
   );
 }

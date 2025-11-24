@@ -1,7 +1,6 @@
 import type { LoginForm, RegisterForm, RegisterOrganizationForm } from '@/schemas/validation';
 import api from './api';
 import type { Flags, Organization, User } from '@/schemas/types';
-import { getSessionEmail } from '@/lib/storage';
 
 type CurrentUserResponse = {
   success: boolean;
@@ -98,8 +97,13 @@ export function forgetPassword(email: string) {
   return api.post<ForgetPasswordResponse>('/api/password/forgot', { email });
 }
 
-export function resetPassword(payload: { password: string; password_confirmation: string; token: string }) {
-  return api.post<ResetPasswordResponse>('/api/password/reset', { ...payload, email: getSessionEmail() });
+export function resetPassword(payload: {
+  password: string;
+  password_confirmation: string;
+  token: string;
+  email: string;
+}) {
+  return api.post<ResetPasswordResponse>('/api/password/reset', { ...payload });
 }
 
 export function resendEmailVerification(payload: { email: string }) {

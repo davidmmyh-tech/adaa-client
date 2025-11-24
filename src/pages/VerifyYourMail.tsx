@@ -37,7 +37,7 @@ export default function VerifyYourMail() {
         <BackgroundElement2 />
       </div>
 
-      <div className="relative z-20 container mx-auto my-20 grow space-y-8 px-8">
+      <div className="relative z-20 container mx-auto my-20 w-full max-w-2xl grow space-y-8 px-8">
         <div className="w-full">
           <div className="bg-secondary mx-auto block w-fit rounded-full p-8">
             <Logo className="h-24 w-24" variant="light" />
@@ -48,14 +48,16 @@ export default function VerifyYourMail() {
           "شكرًا لانضمامك إلى منصة اداء . يرجى تفعيل حسابك من خلال الرابط المرسل لبريدك."
         </h1>
 
-        <ErrorMessage error={error} />
+        <div className="space-y-4">
+          <ErrorMessage error={error} />
 
-        <div className="flex flex-col items-center gap-4">
-          <SubmitButton onClick={() => mutate()} isLoading={isPending} disabled={isCounting || isPending}>
-            {isCounting ? `إعادة الإرسال ${countdown} ثانية` : 'إعادة ارسال التفعيل'}
-          </SubmitButton>
+          <div className="flex flex-col items-center gap-4">
+            <SubmitButton onClick={() => mutate()} isLoading={isPending} disabled={isCounting || isPending}>
+              {isCounting ? `إعادة الإرسال ${countdown} ثانية` : 'إعادة ارسال التفعيل'}
+            </SubmitButton>
 
-          {!isCounting && <p className="text-muted text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
+            {!isCounting && <p className="text-muted text-center text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
+          </div>
         </div>
       </div>
     </>

@@ -5,6 +5,7 @@ import { useUserState } from '@/context/UserProvider';
 import { TEMP_FLAGS } from '@/constants/data';
 import { useNavigate } from 'react-router';
 import { removeSessionEmail } from '@/lib/storage';
+import { ROUTES } from '@/routes';
 
 export default function LogoutButton() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function LogoutButton() {
       setUser(null);
       setOrganization(null);
       setFlags(TEMP_FLAGS);
-      navigate('/login');
+      navigate(ROUTES.AUTH.LOGIN);
       removeSessionEmail();
       queryClient.clear();
     }

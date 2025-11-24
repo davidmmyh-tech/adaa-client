@@ -90,7 +90,7 @@ export function getBlogs({ page, limit }: { page: number; limit: number }) {
 }
 
 export function findBlogs(params: { page: number; limit: number; q?: string; category?: string }) {
-  return api.get<FindBlogsResponse>('/api/search', { params });
+  return api.get<FindBlogsResponse>('/api/search/blogs', { params });
 }
 
 export function getBlogDetails(id: Id) {
