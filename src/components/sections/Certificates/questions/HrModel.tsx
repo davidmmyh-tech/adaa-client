@@ -38,10 +38,11 @@ export default function HrModel({ onSuccess, isLast }: Props) {
   const { mutate: proceed, isPending: isProceeding } = useMutation({
     mutationFn: () => submitHrAxis(answers),
     onSuccess: () => {
-      setLastHrAxis(currentAxisIndex + 1);
-      setAnswers([]);
-      if (currentAxisIndex < axies.length - 1) setCurrentAxisIndex(currentAxisIndex + 1);
-      else submit();
+      if (currentAxisIndex < axies.length - 1) {
+        setCurrentAxisIndex(currentAxisIndex + 1);
+        setLastHrAxis(currentAxisIndex + 1);
+        setAnswers([]);
+      } else submit();
     },
     onError: (err) => {
       if (isAxiosError(err)) {

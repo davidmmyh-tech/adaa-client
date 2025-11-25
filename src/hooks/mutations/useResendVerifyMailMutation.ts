@@ -5,7 +5,7 @@ import { isAxiosError, type AxiosError } from 'axios';
 
 type Props = {
   onSuccess?: () => void;
-  onError?: (error: AxiosError) => void;
+  onError?: (error: AxiosError<{ success: boolean; message: string }>) => void;
 };
 
 export default function useResendVerifyMailMutation({ onError, onSuccess }: Props) {

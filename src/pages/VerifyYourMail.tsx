@@ -6,6 +6,8 @@ import useResendVerifyMailMutation from '@/hooks/mutations/useResendVerifyMailMu
 import useCountDown from '@/hooks/useCountDown';
 import { useState } from 'react';
 import { useDocumentHead } from '@/hooks/useDocumentHead';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '@/routes';
 
 export default function VerifyYourMail() {
   useDocumentHead({
@@ -14,6 +16,7 @@ export default function VerifyYourMail() {
   });
 
   const { countdown, isCounting, restart } = useCountDown({ initial: 60 });
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   const { mutate, isPending } = useResendVerifyMailMutation({
@@ -22,8 +25,16 @@ export default function VerifyYourMail() {
       setError(null);
     },
     onError: (err) => {
-      if (err.response?.status === 400) setError('البريد تم تفعيلة بالفعل');
-      else setError('حدث خطأ ما، يرجى المحاولة مرة أخرى.');
+      if (err.response?.status === 400) {
+        if (err.response.data.message === 'Email is already verified') {
+          setError('تم تفعيل بريدك الإلكتروني مسبقًا, سيتم تحويلك لتسجيل الدخول خلال ثوانٍ.');
+          setTimeout(() => {
+            navigate(ROUTES.AUTH.LOGIN);
+          }, 3000);
+          return;
+        } else return setError('لا يمكن تكرار الطلب في الوقت الحالي. يرجى المحاولة لاحقًا.');
+      }
+      setError('حدث خطأ ما، يرجى المحاولة مرة أخرى.');
     }
   });
 
