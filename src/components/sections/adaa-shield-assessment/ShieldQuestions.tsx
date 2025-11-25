@@ -144,7 +144,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
                           <RadioGroup
                             className="mt-4 flex justify-end gap-24"
                             onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
-                            value={qAnswer !== undefined && qAnswer ? 'yes' : 'no'}
+                            value={qAnswer === undefined ? undefined : qAnswer ? 'yes' : 'no'}
                           >
                             <Label htmlFor={'no' + q.id} className="flex items-center gap-4">
                               <div className="text-primary">لا</div>
