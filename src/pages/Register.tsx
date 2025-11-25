@@ -27,10 +27,8 @@ export default function RegisterPage() {
     onError: (error) => {
       if (error.response?.status === 405) return setError('البريد مستخدم من قبل');
       if (error.response?.status === 422) {
-        if (error.response.data?.errors.email)
-          return setFormError('email', { message: error.response.data.errors.email[0] });
-        if (error.response.data?.errors.phone)
-          return setFormError('phone', { message: error.response.data.errors.phone[0] });
+        if (error.response.data?.errors.email) return setFormError('email', { message: 'البريد مستخدم من قبل' });
+        if (error.response.data?.errors.phone) return setFormError('phone', { message: 'الرقم مستخدم من قبل' });
         return setError('خطاء في التحقق من البيانات المدخلة, تحقق منها وحاول مرة اخرى');
       }
       setError('خطاء غير معروف حاول لاحقا');
