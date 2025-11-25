@@ -136,25 +136,28 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
                 <form key={axisItem.id} className="w-full shrink-0 space-y-12">
                   <p className="text-lg font-semibold">{axisItem.description}</p>
                   <ol className="list-decimal space-y-12 ps-6">
-                    {axisItem.questions.map((q) => (
-                      <li key={q.id}>
-                        <p className="font-semibold">{q.question}</p>
-                        <RadioGroup
-                          className="mt-4 flex justify-end gap-24"
-                          onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
-                          value={answers.questions.find((target) => target.question_id === q.id)?.answer ? 'yes' : 'no'}
-                        >
-                          <Label htmlFor={'no' + q.id} className="flex items-center gap-4">
-                            <div className="text-primary">لا</div>
-                            <RadioGroupItem value="no" id={'no' + q.id} className="h-5 w-5" />
-                          </Label>
-                          <Label htmlFor={'yes' + q.id} className="flex items-center gap-4">
-                            <div className="text-primary">نعم</div>
-                            <RadioGroupItem value="yes" id={'yes' + q.id} className="h-5 w-5" />
-                          </Label>
-                        </RadioGroup>
-                      </li>
-                    ))}
+                    {axisItem.questions.map((q) => {
+                      const qAnswer = answers.questions.find((target) => target.question_id === q.id)?.answer;
+                      return (
+                        <li key={q.id}>
+                          <p className="font-semibold">{q.question}</p>
+                          <RadioGroup
+                            className="mt-4 flex justify-end gap-24"
+                            onValueChange={(value) => handleAnswerChange(q.id, value === 'yes')}
+                            value={qAnswer !== undefined && qAnswer ? 'yes' : 'no'}
+                          >
+                            <Label htmlFor={'no' + q.id} className="flex items-center gap-4">
+                              <div className="text-primary">لا</div>
+                              <RadioGroupItem value="no" id={'no' + q.id} className="h-5 w-5" />
+                            </Label>
+                            <Label htmlFor={'yes' + q.id} className="flex items-center gap-4">
+                              <div className="text-primary">نعم</div>
+                              <RadioGroupItem value="yes" id={'yes' + q.id} className="h-5 w-5" />
+                            </Label>
+                          </RadioGroup>
+                        </li>
+                      );
+                    })}
                   </ol>
                   <AttachmentsSection
                     onFileUploaded={handleFileChange}
