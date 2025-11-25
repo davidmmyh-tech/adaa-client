@@ -11,7 +11,7 @@ export default function useRegisterMutation({
   onError
 }: {
   onSuccess?: (data: unknown) => void;
-  onError?: (error: AxiosError) => void;
+  onError?: (error: AxiosError<{ errors: Record<string, string[]> }>) => void;
 }) {
   const navigate = useNavigate();
   return useMutation({

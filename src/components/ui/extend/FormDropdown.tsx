@@ -4,7 +4,12 @@ import Dropdown from './Dropdown';
 
 type Props = {
   onChange: (value: string) => void;
-  values: string[];
+  values:
+    | string[]
+    | {
+        value: string;
+        label: string;
+      }[];
   label?: string;
   selectLabel?: string;
   error?: string | null;
