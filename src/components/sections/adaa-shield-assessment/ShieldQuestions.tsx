@@ -138,6 +138,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
                   <ol className="list-decimal space-y-12 ps-6">
                     {axisItem.questions.map((q) => {
                       const qAnswer = answers.questions.find((target) => target.question_id === q.id)?.answer;
+
                       return (
                         <li key={q.id}>
                           <p className="font-semibold">{q.question}</p>

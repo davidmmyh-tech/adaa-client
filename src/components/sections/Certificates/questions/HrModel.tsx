@@ -146,11 +146,12 @@ export default function HrModel({ onSuccess, isLast }: Props) {
       <DataWrapper isError={isError} retry={refetch} isLoading={isFetching} LoadingFallback={QuestionsLoading}>
         <div className="space-y-8">
           <div className="relative w-full overflow-hidden">
-            {isSubmitting && (
-              <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
-                <Logo isLoading className="h-32 w-32" />
-              </div>
-            )}
+            {isSubmitting ||
+              (isProceeding && (
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/70">
+                  <Logo isLoading className="h-32 w-32" />
+                </div>
+              ))}
 
             <form className="w-full shrink-0 space-y-12">
               <ol className="list-decimal space-y-12 ps-6">
