@@ -22,7 +22,6 @@ export default function useCurrentUserQuery({ onSuccess, onError }: Props) {
           if (isAxiosError(err)) onError?.(err);
         }),
 
-    refetchInterval: 1000 * 60 * 20, // Refetch every 20 minutes
     retry: false,
     retryOnMount: false,
     enabled: !!getToken(),
