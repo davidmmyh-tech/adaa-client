@@ -22,17 +22,25 @@ type Props = {
 };
 
 export default function ShieldQuestionsSection({ onSuccess }: Props) {
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(getLastShieldAxis().index);
-  const [answers, setAnswers] = useState<ShieldAnswers>(getLastShieldAxis().answers);
-  const [error, setError] = useState<string | null>(null);
+  const savedAnswers = getLastShieldAxis();
   const { user } = useUserState();
+  const [error, setError] = useState<string | null>(null);
+
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(() =>
+    savedAnswers.userId === user?.id ? savedAnswers.index : 0
+  );
+  const [answers, setAnswers] = useState<ShieldAnswers>(
+    savedAnswers.userId === user?.id ? savedAnswers.answers : { axis_id: '', questions: [], attachments: [] }
+  );
 
   const setupAnswers = (axisId: Id) => {
-    setAnswers({
+    const freshAnswers = {
       axis_id: axisId,
       questions: [],
       attachments: []
-    });
+    };
+    setAnswers({ ...freshAnswers });
+    return freshAnswers;
   };
 
   //Get Questions request ---------
@@ -51,17 +59,9 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       window.scrollTo({ top: 120, behavior: 'smooth' });
 
       if (questions && questions.axes.length > currentAxisIndex + 1) {
+        const freshAnswers = setupAnswers(questions.axes[currentAxisIndex + 1].id);
         setCurrentAxisIndex((prev) => prev + 1);
-        setupAnswers(questions.axes[currentAxisIndex + 1].id);
-        setLastShieldAxis(
-          currentAxisIndex + 1,
-          {
-            axis_id: questions.axes[currentAxisIndex + 1].id,
-            questions: [],
-            attachments: []
-          },
-          user?.id || 0
-        );
+        setLastShieldAxis(currentAxisIndex + 1, freshAnswers, user?.id || 0);
         return;
       }
 
@@ -71,7 +71,8 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       }
     },
     onError: (err) => {
-      if (err.response?.status === 422) setError('يرجى التأكد من الإجابة على جميع الأسئلة قبل المتابعة.');
+      if (err.response?.status === 422) return setError('يرجى التأكد من الإجابة على جميع الأسئلة قبل المتابعة.');
+      setError('حدث خطأ أثناء إرسال الإجابات. يرجى المحاولة مرة أخرى.');
     }
   });
 
