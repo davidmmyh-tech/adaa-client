@@ -15,6 +15,7 @@ import DataWrapper from '@/layouts/DataWrapper';
 import { validateShieldAnswers } from '@/schemas/questions-validation';
 import { getLastShieldAxis, removeLastShieldAxis, setLastShieldAxis } from '@/lib/storage';
 import { ARABIC_NUMBER_NAMES } from '@/constants/data';
+import { useUserState } from '@/context/UserProvider';
 
 type Props = {
   onSuccess?: () => void;
@@ -24,6 +25,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
   const [currentAxisIndex, setCurrentAxisIndex] = useState(getLastShieldAxis().index);
   const [answers, setAnswers] = useState<ShieldAnswers>(getLastShieldAxis().answers);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useUserState();
 
   const setupAnswers = (axisId: Id) => {
     setAnswers({
@@ -51,11 +53,15 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       if (questions && questions.axes.length > currentAxisIndex + 1) {
         setCurrentAxisIndex((prev) => prev + 1);
         setupAnswers(questions.axes[currentAxisIndex + 1].id);
-        setLastShieldAxis(currentAxisIndex + 1, {
-          axis_id: questions.axes[currentAxisIndex + 1].id,
-          questions: [],
-          attachments: []
-        });
+        setLastShieldAxis(
+          currentAxisIndex + 1,
+          {
+            axis_id: questions.axes[currentAxisIndex + 1].id,
+            questions: [],
+            attachments: []
+          },
+          user?.id || 0
+        );
         return;
       }
 
@@ -91,7 +97,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
 
       const newAnswers = { ...prevAnswers };
       newAnswers.questions = updatedAxisAnswer;
-      setLastShieldAxis(currentAxisIndex, newAnswers);
+      setLastShieldAxis(currentAxisIndex, newAnswers, user?.id || 0);
       return newAnswers;
     });
   };
@@ -103,7 +109,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
       updatedAttachments[index] = url;
 
       const newAnswers = { ...prevAnswers, attachments: [...updatedAttachments] };
-      setLastShieldAxis(currentAxisIndex, newAnswers);
+      setLastShieldAxis(currentAxisIndex, newAnswers, user?.id || 0);
       return newAnswers;
     });
   };

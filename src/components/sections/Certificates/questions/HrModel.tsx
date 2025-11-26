@@ -25,10 +25,17 @@ import { ARABIC_NUMBER_NAMES } from '@/constants/data';
 type Props = { onSuccess?: () => void; isLast?: boolean };
 
 export default function HrModel({ onSuccess, isLast }: Props) {
-  const [answers, setAnswers] = useState<CertificateAnswer[]>(() => getLastHrAxis()?.answers);
+  const savedData = getLastHrAxis();
+  const { setFlags, user } = useUserState();
   const [error, setError] = useState<string | null>(null);
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(() => getLastHrAxis()?.index);
-  const { setFlags } = useUserState();
+
+  const [answers, setAnswers] = useState<CertificateAnswer[]>(() =>
+    savedData.userId === user?.id ? savedData?.answers : []
+  );
+
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(() =>
+    savedData.userId === user?.id ? savedData?.index : 0
+  );
 
   const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ['certificate-hr-model-questions'],
@@ -40,7 +47,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
     onSuccess: () => {
       if (currentAxisIndex < axies.length - 1) {
         setCurrentAxisIndex(currentAxisIndex + 1);
-        setLastHrAxis(currentAxisIndex + 1);
+        setLastHrAxis(currentAxisIndex + 1, answers, user?.id || 0);
         setAnswers([]);
       } else submit();
     },
@@ -88,7 +95,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
       if (questionIndex !== -1) updatedAnswer[questionIndex].answer = answer;
       else updatedAnswer.push({ question_id: questionId, answer, attachment: null });
 
-      setLastHrAxis(currentAxisIndex, updatedAnswer);
+      setLastHrAxis(currentAxisIndex, updatedAnswer, user?.id || 0);
       return updatedAnswer;
     });
   };
@@ -102,7 +109,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
       if (questionIndex !== -1) updatedAnswer[questionIndex].attachment = attachment;
       else updatedAnswer.push({ question_id: questionId, answer: '', attachment });
 
-      setLastHrAxis(currentAxisIndex, updatedAnswer);
+      setLastHrAxis(currentAxisIndex, updatedAnswer, user?.id || 0);
       return updatedAnswer;
     });
   };

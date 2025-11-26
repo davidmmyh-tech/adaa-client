@@ -40,7 +40,7 @@ export default function UserProvider({ children }: Props) {
       }
     }
   });
-  const isLoading = verifyQuery.isPending && !user;
+  const isLoading = !verifyQuery.isFetchedAfterMount && verifyQuery.isPending && !user;
 
   return (
     <userContext.Provider value={{ user, setUser, flags, setFlags, organization, setOrganization, isLoading }}>
