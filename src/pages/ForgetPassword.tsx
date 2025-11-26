@@ -9,7 +9,7 @@ import { useDocumentHead } from '@/hooks/useDocumentHead';
 export default function ForgetPasswordPage() {
   const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string | null>();
-  const { countdown, isCounting, restart } = useCountDown({ initial: 0 });
+  const { countdown, isCounting, restart } = useCountDown({ initial: 0, interval: 120 });
 
   const { mutate, isPending, isSuccess } = useForgetPasswordMutation({
     onSuccess: () => restart(),

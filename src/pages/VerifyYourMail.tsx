@@ -15,7 +15,7 @@ export default function VerifyYourMail() {
     description: 'يرجى التحقق من بريدك الإلكتروني لتفعيل حسابك في منصة أداء.'
   });
 
-  const { countdown, isCounting, restart } = useCountDown({ initial: 60 });
+  const { countdown, isCounting, restart } = useCountDown({ initial: 120, interval: 120 });
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -67,7 +67,7 @@ export default function VerifyYourMail() {
               {isCounting ? `إعادة الإرسال ${countdown} ثانية` : 'إعادة ارسال التفعيل'}
             </SubmitButton>
 
-            {!isCounting && <p className="text-muted text-center text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
+            {isCounting && <p className="text-muted text-center text-sm">يمكنك طلب إعادة الإرسال بعد انتهاء العداد</p>}
           </div>
         </div>
       </div>
