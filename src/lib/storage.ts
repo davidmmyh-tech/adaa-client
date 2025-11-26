@@ -2,7 +2,6 @@ import type { Id } from '@/schemas/types';
 import type { CertificateAnswer } from '@/services/certificates/types';
 import type { ShieldAnswers } from '@/services/shield';
 
-type CertificateHrAxisMilestone = { index: number; answers: CertificateAnswer[]; userId: Id };
 type ShieldAxisMilestone = { index: number; answers: ShieldAnswers; userId: Id };
 
 export function setToken(token: string) {
@@ -29,17 +28,37 @@ export function removeSessionEmail() {
   return sessionStorage.removeItem('email');
 }
 
-export function setLastHrAxis(axis: number, answers: CertificateAnswer[] = [], userId: Id) {
-  return localStorage.setItem('lastHrAxis', JSON.stringify({ index: axis, answers, userId }));
+export function setCurrentHrAxisIndex(index: number, userId: Id) {
+  const key = `hrAxisIndex_user_${userId}`;
+  return localStorage.setItem(key, JSON.stringify(index));
 }
 
-export function getLastHrAxis() {
-  const data: CertificateHrAxisMilestone | null = JSON.parse(localStorage.getItem('lastHrAxis') || 'null');
-  return data || { index: 0, answers: [], userId: 0 };
+export function getCurrentHrAxisIndex(userId: Id): number {
+  const key = `hrAxisIndex_user_${userId}`;
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : 0;
 }
 
-export function removeLastHrAxis() {
-  return localStorage.removeItem('lastHrAxis');
+export function setHrAxisAnswers(axisIndex: number, answers: CertificateAnswer[], userId: Id) {
+  const key = `hrAxis_${axisIndex}_user_${userId}`;
+  return localStorage.setItem(key, JSON.stringify(answers));
+}
+
+export function getHrAxisAnswers(axisIndex: number, userId: Id): CertificateAnswer[] {
+  const key = `hrAxis_${axisIndex}_user_${userId}`;
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : [];
+}
+
+export function removeAllHrAxisAnswers(userId: Id) {
+  const keys = Object.keys(localStorage);
+  const prefix = `hrAxis`;
+  const suffix = `_user_${userId}`;
+  keys.forEach((key) => {
+    if (key.startsWith(prefix) && key.endsWith(suffix)) {
+      localStorage.removeItem(key);
+    }
+  });
 }
 
 export function setLastShieldAxis(
@@ -57,4 +76,37 @@ export function getLastShieldAxis() {
 
 export function removeLastShieldAxis() {
   return localStorage.removeItem('lastShieldAxis');
+}
+
+export function setCurrentShieldAxisIndex(index: number, userId: Id) {
+  const key = `shieldAxisIndex_user_${userId}`;
+  return localStorage.setItem(key, JSON.stringify(index));
+}
+
+export function getCurrentShieldAxisIndex(userId: Id): number {
+  const key = `shieldAxisIndex_user_${userId}`;
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : 0;
+}
+
+export function setShieldAxisAnswers(axisIndex: number, answers: ShieldAnswers, userId: Id) {
+  const key = `shieldAxis_${axisIndex}_user_${userId}`;
+  return localStorage.setItem(key, JSON.stringify(answers));
+}
+
+export function getShieldAxisAnswers(axisIndex: number, userId: Id): ShieldAnswers {
+  const key = `shieldAxis_${axisIndex}_user_${userId}`;
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : { axis_id: '', questions: [], attachments: [] };
+}
+
+export function removeAllShieldAxisAnswers(userId: Id) {
+  const keys = Object.keys(localStorage);
+  const prefix = `shieldAxis`;
+  const suffix = `_user_${userId}`;
+  keys.forEach((key) => {
+    if (key.startsWith(prefix) && key.endsWith(suffix)) {
+      localStorage.removeItem(key);
+    }
+  });
 }

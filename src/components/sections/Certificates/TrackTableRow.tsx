@@ -8,6 +8,7 @@ import type { CertificateClass, CertificateTrack } from '@/schemas/types';
 import { deleteCertificateSubmission, downloadTrackData } from '@/services/certificates/certificates-data';
 import type { CERTIFICATE_TRACKSummary } from '@/services/certificates/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import { Download, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 
@@ -22,7 +23,12 @@ export default function TracksTableRow({ title, icon, trackName, summary }: Prop
   const queryClient = useQueryClient();
   const { mutate: download, isPending } = useMutation({
     mutationFn: () => downloadTrackData(trackName),
-    onError: () => toast.error('حدث خطأ أثناء تحميل الشهادة. يرجى المحاولة مرة لاحقا.')
+    onError: (err) => {
+      if (isAxiosError(err)) {
+        if (err.response?.status === 403) return toast.error('لا يمكنك تحميل الشهادة قبل الانتهاء من تقييم اجاباتك.');
+      }
+      toast.error('حدث خطأ أثناء تحميل الشهادة. يرجى المحاولة مرة لاحقا.');
+    }
   });
 
   const { mutate: deleteSubmission, isPending: isDeleting } = useMutation({

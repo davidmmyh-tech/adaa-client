@@ -6,14 +6,20 @@ import QuestionsLoading from '@/components/ui/loading/QuestionsLoading';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import SubmitButton from '@/components/ui/submit-button';
 import { type ShieldAnswers } from '@/services/shield';
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { Id } from 'react-toastify';
 import AxisProgress from './AxisProgress';
 import useGetShieldQuestions from '@/hooks/queries/useGetShieldQuestionsQuery';
 import useSubmitAnswers from '@/hooks/mutations/useSubmitAnswersMutation';
 import DataWrapper from '@/layouts/DataWrapper';
 import { validateShieldAnswers } from '@/schemas/questions-validation';
-import { getLastShieldAxis, removeLastShieldAxis, setLastShieldAxis } from '@/lib/storage';
+import {
+  getCurrentShieldAxisIndex,
+  setCurrentShieldAxisIndex,
+  getShieldAxisAnswers,
+  setShieldAxisAnswers,
+  removeAllShieldAxisAnswers
+} from '@/lib/storage';
 import { ARABIC_NUMBER_NAMES } from '@/constants/data';
 import { useUserState } from '@/context/UserProvider';
 
@@ -22,26 +28,16 @@ type Props = {
 };
 
 export default function ShieldQuestionsSection({ onSuccess }: Props) {
-  const savedAnswers = getLastShieldAxis();
   const { user } = useUserState();
   const [error, setError] = useState<string | null>(null);
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(() => getCurrentShieldAxisIndex(user?.id || 0));
+  const [answers, setAnswers] = useState<ShieldAnswers>({ axis_id: '', questions: [], attachments: [] });
 
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(() =>
-    savedAnswers.userId === user?.id ? savedAnswers.index : 0
-  );
-  const [answers, setAnswers] = useState<ShieldAnswers>(
-    savedAnswers.userId === user?.id ? savedAnswers.answers : { axis_id: '', questions: [], attachments: [] }
-  );
-
-  const setupAnswers = (axisId: Id) => {
-    const freshAnswers = {
-      axis_id: axisId,
-      questions: [],
-      attachments: []
-    };
-    setAnswers({ ...freshAnswers });
+  const setupAnswers = useCallback((axisId: Id) => {
+    const freshAnswers = { axis_id: axisId, questions: [], attachments: [] };
+    setAnswers(freshAnswers);
     return freshAnswers;
-  };
+  }, []);
 
   //Get Questions request ---------
   const {
@@ -52,21 +48,36 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
   } = useGetShieldQuestions({ onSuccess: (data) => setupAnswers(data.axes[0].id) });
   if (questions && !answers.axis_id) setupAnswers(questions.axes[0].id);
 
+  // Load answers when axis changes
+  useEffect(() => {
+    if (questions?.axes[currentAxisIndex]) {
+      const savedAxisAnswers = getShieldAxisAnswers(currentAxisIndex, user?.id || 0);
+      if (savedAxisAnswers.axis_id) {
+        setAnswers(savedAxisAnswers);
+      } else {
+        setupAnswers(questions.axes[currentAxisIndex].id);
+      }
+    }
+  }, [currentAxisIndex, user?.id, questions, setupAnswers]);
+
+  const navigateToAxis = useCallback(
+    (targetIndex: number) => {
+      setCurrentAxisIndex(targetIndex);
+      setCurrentShieldAxisIndex(targetIndex, user?.id || 0);
+      setError(null);
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    },
+    [user?.id]
+  );
+
   //Submit Answers request ---------
   const { mutate, isPending: isSubmitting } = useSubmitAnswers({
     axisIndex: currentAxisIndex,
     onSuccess: () => {
-      window.scrollTo({ top: 120, behavior: 'smooth' });
-
-      if (questions && questions.axes.length > currentAxisIndex + 1) {
-        const freshAnswers = setupAnswers(questions.axes[currentAxisIndex + 1].id);
-        setCurrentAxisIndex((prev) => prev + 1);
-        setLastShieldAxis(currentAxisIndex + 1, freshAnswers, user?.id || 0);
-        return;
-      }
-
+      setShieldAxisAnswers(currentAxisIndex, answers, user?.id || 0);
+      if (questions && questions.axes.length > currentAxisIndex + 1) return navigateToAxis(currentAxisIndex + 1);
       if (currentAxisIndex === axiesQuestions.length - 1) {
-        removeLastShieldAxis();
+        removeAllShieldAxisAnswers(user?.id || 0);
         onSuccess?.();
       }
     },
@@ -84,38 +95,42 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
     })) || [];
 
   //change answer for question ---------
-  const handleAnswerChange = (questionId: Id, answer: boolean) => {
-    setError(null);
-    setAnswers((prevAnswers) => {
-      if (!prevAnswers) return prevAnswers;
-      const updatedAxisAnswer = [...prevAnswers.questions];
-      const questionIndex = updatedAxisAnswer.findIndex((q) => q.question_id === questionId);
-      if (questionIndex !== -1) {
-        updatedAxisAnswer[questionIndex].answer = answer;
-      } else {
-        updatedAxisAnswer.push({ question_id: questionId, answer });
-      }
+  const handleAnswerChange = useCallback(
+    (questionId: Id, answer: boolean) => {
+      setAnswers((prevAnswers) => {
+        const updatedQuestions = [...prevAnswers.questions];
+        const questionIndex = updatedQuestions.findIndex((q) => q.question_id === questionId);
 
-      const newAnswers = { ...prevAnswers };
-      newAnswers.questions = updatedAxisAnswer;
-      setLastShieldAxis(currentAxisIndex, newAnswers, user?.id || 0);
-      return newAnswers;
-    });
-  };
+        if (questionIndex !== -1) {
+          updatedQuestions[questionIndex].answer = answer;
+        } else {
+          updatedQuestions.push({ question_id: questionId, answer });
+        }
 
-  const handleFileChange = (url: string, index: number) => {
-    setAnswers((prevAnswers) => {
-      if (!prevAnswers) return prevAnswers;
-      const updatedAttachments = [...prevAnswers.attachments];
-      updatedAttachments[index] = url;
+        const newAnswers = { ...prevAnswers, questions: updatedQuestions };
+        setShieldAxisAnswers(currentAxisIndex, newAnswers, user?.id || 0);
+        setError(null);
+        return newAnswers;
+      });
+    },
+    [currentAxisIndex, user?.id]
+  );
 
-      const newAnswers = { ...prevAnswers, attachments: [...updatedAttachments] };
-      setLastShieldAxis(currentAxisIndex, newAnswers, user?.id || 0);
-      return newAnswers;
-    });
-  };
+  const handleFileChange = useCallback(
+    (url: string, index: number) => {
+      setAnswers((prevAnswers) => {
+        const updatedAttachments = [...prevAnswers.attachments];
+        updatedAttachments[index] = url;
 
-  const handleSubmit = () => {
+        const newAnswers = { ...prevAnswers, attachments: updatedAttachments };
+        setShieldAxisAnswers(currentAxisIndex, newAnswers, user?.id || 0);
+        return newAnswers;
+      });
+    },
+    [currentAxisIndex, user?.id]
+  );
+
+  const handleSubmit = useCallback(() => {
     if (!answers || !questions) return;
     const currentAxisQuestions = questions.axes[currentAxisIndex].questions;
     const validation = validateShieldAnswers(currentAxisQuestions, answers);
@@ -123,7 +138,12 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
     if (!validation.isValid) {
       setError('تأكد من الإجابة على جميع الأسئلة و ارفاق جميع المرفقات قبل التأكيد.');
     } else mutate(answers);
-  };
+  }, [answers, questions, currentAxisIndex, mutate]);
+
+  const handlePreviousClick = useCallback(() => {
+    setShieldAxisAnswers(currentAxisIndex, answers, user?.id || 0);
+    navigateToAxis(currentAxisIndex - 1);
+  }, [currentAxisIndex, answers, user?.id, navigateToAxis]);
 
   return (
     <div className="container">
@@ -179,14 +199,14 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
 
           <ErrorMessage error={error} />
 
-          <div className="mx-auto w-fit py-4 font-semibold">
-            {currentAxisIndex === axiesQuestions.length - 1 ? (
-              <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
-                أتمام
-              </SubmitButton>
-            ) : (
-              <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
-                التالي
+          <div className="flex justify-center gap-2 py-4 font-semibold">
+            <SubmitButton variant="secondary" className="w-32" onClick={handleSubmit} isLoading={isSubmitting}>
+              {currentAxisIndex === axiesQuestions.length - 1 ? 'أتمام' : 'التالي'}
+            </SubmitButton>
+
+            {currentAxisIndex > 0 && (
+              <SubmitButton variant="secondary" disabled={isSubmitting} onClick={handlePreviousClick}>
+                السابق
               </SubmitButton>
             )}
           </div>
