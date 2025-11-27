@@ -33,7 +33,7 @@ type AdaaShieldDownloadResponse = Blob; // PDF file
 //TODO: api/shield/questions
 type AdaaShieldQuestionsResponse = {
   success: boolean;
-  axies: [
+  axes: [
     {
       id: Id;
       title: string;

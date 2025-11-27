@@ -1,13 +1,13 @@
 type Props = {
-  axies: { name: string; title: string }[];
+  axes: { name: string; title: string }[];
   currentIndex: number;
 };
 
-export default function AxisProgress({ axies, currentIndex }: Props) {
+export default function AxisProgress({ axes, currentIndex }: Props) {
   return (
     <>
       <div className="text-muted flex w-full text-center text-sm font-semibold">
-        {axies.map((axisItem, i) => (
+        {axes.map((axisItem, i) => (
           <div
             key={axisItem.name}
             className={`basis-1/4 space-y-2 transition-colors duration-500 ${i === currentIndex ? 'text-secondary' : ''}`}

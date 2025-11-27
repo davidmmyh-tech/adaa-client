@@ -60,9 +60,9 @@ type CertificateQuestionsResponse = {
   is_under_review: boolean;
 
   accomplished: boolean; //return true if organization/user already accomplished the track
-  // no need to return questions/axies if accomplished is true
+  // no need to return questions/axes if accomplished is true
 
-  axies: [
+  axes: [
     {
       id: Id;
       title: string;

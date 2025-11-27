@@ -88,7 +88,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
   });
 
   const axiesQuestions = questions?.axes || [];
-  const axies =
+  const axes =
     questions?.axes.map((axis, i) => ({
       name: ARABIC_NUMBER_NAMES[i],
       title: axis.title
@@ -149,7 +149,7 @@ export default function ShieldQuestionsSection({ onSuccess }: Props) {
     <div className="container">
       <DataWrapper isError={isError} retry={refetch} isLoading={isFetching} LoadingFallback={QuestionsLoading}>
         <div className="space-y-8">
-          <AxisProgress axies={axies} currentIndex={currentAxisIndex} />
+          <AxisProgress axes={axes} currentIndex={currentAxisIndex} />
 
           <div className="relative w-full overflow-hidden">
             {isSubmitting && (

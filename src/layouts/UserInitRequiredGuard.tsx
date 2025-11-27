@@ -15,7 +15,7 @@ export default function UserInitRequiredGuard() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <Logo isLoading className="h-56 w-56" />
+          <Logo isLoading className="h-48 w-48" />
           <p className="text-secondary text-3xl font-bold">جاري التاكد من الهوية . . . </p>
         </motion.div>
       </AnimatePresence>
