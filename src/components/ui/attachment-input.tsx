@@ -37,7 +37,7 @@ export function AttachmentInput({
   onError,
   uploadFn,
   disabled = false,
-  accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png',
+  accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls',
   className = ''
 }: AttachmentInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
