@@ -44,6 +44,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
             {questions.map((axis) => (
               <HrAxisQuestionsForm
                 key={axis.id}
+                axisId={axis.id}
                 questions={axis.questions}
                 answer={answers.find((ans) => ans.question_id === axis.id)}
                 onAnswerChange={handleAnswerChange}

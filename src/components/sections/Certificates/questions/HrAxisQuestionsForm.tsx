@@ -7,13 +7,14 @@ import { useCallback } from 'react';
 import { uploadCertificateAttachment } from '@/services/certificates/certificates-questions';
 
 type Props = {
+  axisId: number;
   questions: CertificateQuestion[];
   answer?: CertificateAnswer;
   onAnswerChange: (questionId: Id, answer: string) => void;
   onFileChange: (questionId: Id, attachment: string) => void;
 };
 
-export default function HrAxisQuestionsForm({ questions, answer, onAnswerChange, onFileChange }: Props) {
+export default function HrAxisQuestionsForm({ questions, answer, onAnswerChange, onFileChange, axisId }: Props) {
   const uploadFn = useCallback(async (file: File) => {
     const response = await uploadCertificateAttachment(file);
     return response.data.data.attachment_url;
@@ -22,7 +23,7 @@ export default function HrAxisQuestionsForm({ questions, answer, onAnswerChange,
   return (
     <form className="w-full shrink-0 space-y-12">
       <ol className="list-decimal space-y-12 ps-6">
-        {questions.map((question, index) => (
+        {questions.map((question) => (
           <li key={question.id} className="flex flex-col items-start justify-between gap-8 md:flex-row">
             <div>
               <p className="font-semibold">{question.question_text}</p>
@@ -43,7 +44,7 @@ export default function HrAxisQuestionsForm({ questions, answer, onAnswerChange,
             {question.attachment_required && (
               <div className="w-72 shrink-0">
                 <AttachmentInput
-                  id={`attachment-${index}`}
+                  id={`attachment-${question.id}-${axisId}`}
                   label="ارفق الشاهد"
                   onFileUpload={(url) => onFileChange(question.id, url)}
                   uploadFn={uploadFn}

@@ -77,7 +77,7 @@ export default function useHrAxisSubmission({ onFinalSuccess }: UseHrAxisFormPar
       removeAllHrAxisAnswers();
       setFlags((prev) => ({ ...prev, completed_hr_certificate: true }));
     },
-    onError: handleError
+    onError: () => setError('حدث خطأ أثناء إرسال الإجابات. يرجى المحاولة مرة لاحقًا.')
   });
 
   const { mutate: proceed, isPending: isProceeding } = useMutation({
