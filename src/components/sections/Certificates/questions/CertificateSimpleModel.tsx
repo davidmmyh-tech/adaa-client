@@ -146,13 +146,13 @@ export default function CertificateSimpleModel({ track, onSuccess, isLast }: Pro
 
           <ErrorMessage error={error} />
         </div>
-      </DataWrapper>
 
-      <div className="flex justify-center">
-        <SubmitButton variant="secondary" className="mx-auto w-32" isLoading={isSubmitting} onClick={() => mutate()}>
-          {isLast ? 'إنهاء' : 'التالي'}
-        </SubmitButton>
-      </div>
+        <div className="flex justify-center">
+          <SubmitButton variant="secondary" className="mx-auto w-32" isLoading={isSubmitting} onClick={() => mutate()}>
+            {isLast ? 'إنهاء' : 'التالي'}
+          </SubmitButton>
+        </div>
+      </DataWrapper>
     </>
   );
 }

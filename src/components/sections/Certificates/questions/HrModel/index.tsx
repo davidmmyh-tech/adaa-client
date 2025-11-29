@@ -4,9 +4,9 @@ import ErrorMessage from '@/components/ui/extend/error-message';
 import SubmitButton from '@/components/ui/submit-button';
 import Logo from '@/components/ui/extend/Logo';
 import { Button } from '@/components/ui/button';
+import useHrAxisSubmission from './useHrAxisSubmission';
 import HrAxisProgress from './HrAxisProgress';
 import HrAxisQuestionsForm from './HrAxisQuestionsForm';
-import useHrAxisSubmission from './useHrAxisSubmission';
 
 type Props = { onSuccess?: () => void; isLast?: boolean };
 
@@ -46,7 +46,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
                 key={axis.id}
                 axisId={axis.id}
                 questions={axis.questions}
-                answer={answers.find((ans) => ans.question_id === axis.id)}
+                answers={answers}
                 onAnswerChange={handleAnswerChange}
                 onFileChange={handleFileChange}
               />
