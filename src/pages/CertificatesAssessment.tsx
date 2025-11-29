@@ -48,7 +48,7 @@ export default function CertificatesAssessmentPage() {
   return (
     <>
       <CertificatesHeroSection
-        title="مرحبًا بكم في جائزة “درع أداء”!"
+        title={`مرحبًا بكم في “شهادات أداء” لعام ${new Date().getFullYear()}`}
         subtitle="للتسجيل:
 لتسجيل جمعيتك في “درع أداء”، يرجى تعبئة النموذج أدناه. نرجو منك التأكد من تقديم معلومات دقيقة وكاملة ليتم تقييم مشاركتك بشكل صحيح."
       />

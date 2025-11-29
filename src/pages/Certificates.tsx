@@ -18,7 +18,7 @@ export default function CertificatesPage() {
   return (
     <div className="space-y-12">
       <CertificatesHeroSection
-        title="احصل على شهادة الأداء المؤسسي لعام 2025"
+        title={`احصل على شهادة الأداء المؤسسي لعام ${new Date().getFullYear()}`}
         subtitle="منصة إلكترونية لقياس وتقييم أداء الجمعيات في ثلاثة مسارات مستقلة، مع إصدار شهادة أداء رقمية معتمدة لكل مسار
           يتم تقييمه."
         isHome

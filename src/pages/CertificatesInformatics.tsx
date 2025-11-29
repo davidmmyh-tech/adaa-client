@@ -56,7 +56,7 @@ export default function CertificatesInformaticsPage() {
   return (
     <div className="space-y-4">
       <CertificatesHeroSection
-        title="الحاصلون على شهادة الأداء المؤسسي لعام 2025"
+        title={`الحاصلون على شهادة الأداء المؤسسي لعام ${new Date().getFullYear()}`}
         subtitle=" نُبارك للجمعيات التي حصلت على شهادات الأداء المؤسسي لهذا العام، والتي أظهرت التزامًا بمعايير التميز التشغيلي،
           والاستراتيجي، وإدارة الموارد البشرية.."
       />
