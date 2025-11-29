@@ -6,7 +6,7 @@ import { CERTIFICATE_CLASSES } from '@/constants/data';
 import { ROUTES } from '@/routes';
 import type { CertificateClass, CertificateTrack } from '@/schemas/types';
 import { deleteCertificateSubmission, downloadTrackData } from '@/services/certificates/certificates-data';
-import type { CERTIFICATE_TRACKSummary } from '@/services/certificates/types';
+import type { CertificateTrackSummary } from '@/services/certificates/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { Download, Trash2 } from 'lucide-react';
@@ -16,7 +16,7 @@ type Props = {
   trackName: CertificateTrack;
   title: string;
   icon: string;
-  summary: CERTIFICATE_TRACKSummary | undefined;
+  summary: CertificateTrackSummary | undefined;
 };
 
 export default function TracksTableRow({ title, icon, trackName, summary }: Props) {
@@ -54,7 +54,7 @@ export default function TracksTableRow({ title, icon, trackName, summary }: Prop
   return (
     <TRow>
       <TCell className="col-span-3 flex justify-start gap-2 ps-10">
-        {summary?.status === 'قيد التقييم' && (
+        {summary?.status === 'قيد المراجعة' && (
           <SubmitButton
             className="-ms-6 h-4 w-4 bg-transparent p-0 hover:bg-transparent"
             onClick={() => deleteSubmission()}
@@ -98,9 +98,9 @@ export default function TracksTableRow({ title, icon, trackName, summary }: Prop
           </UserStateButton>
         )}
 
-        {summary?.status === 'قيد التقييم' && (
+        {summary?.status === 'قيد المراجعة' && (
           <Button className="w-full" variant="outline">
-            ⏳ قيد التقييم
+            ⏳ قيد المراجعة
           </Button>
         )}
       </TCell>

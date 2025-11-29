@@ -1,4 +1,4 @@
-import type { CertificateClass, Id, CertificateTrack, CERTIFICATE_TRACKStatus } from '@/schemas/types';
+import type { CertificateClass, Id, CertificateTrack, CertificateTrackStatus } from '@/schemas/types';
 
 export type CertificateQuestion = {
   id: number;
@@ -80,10 +80,10 @@ export type CertificateOrganizationsResponse = {
   };
 };
 
-export type CERTIFICATE_TRACKSummary = {
+export type CertificateTrackSummary = {
   name_ar: string;
   name_en: string;
-  status: CERTIFICATE_TRACKStatus;
+  status: CertificateTrackStatus;
   progress: {
     answered: number;
     total: number;
@@ -97,7 +97,7 @@ export type CERTIFICATE_TRACKSummary = {
 export type UserSummaryResponse = {
   success: true;
   data: {
-    paths: Record<CertificateTrack, CERTIFICATE_TRACKSummary>;
+    paths: Record<CertificateTrack, CertificateTrackSummary>;
   };
 };
 

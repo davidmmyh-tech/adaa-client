@@ -28,7 +28,7 @@ export default function LoginPage() {
     }
   });
 
-  const submitForm = handleSubmit((form: LoginForm) => mutate(form));
+  const onSubmit = handleSubmit((form: LoginForm) => mutate(form));
 
   useDocumentHead({
     title: 'تسجيل الدخول - أداء',
@@ -37,7 +37,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen gap-4">
-      <div className="mx-auto mt-28 max-w-lg grow space-y-8 px-8">
+      <form className="mx-auto mt-28 max-w-lg grow space-y-8 px-8" onSubmit={onSubmit}>
         <div>
           <h1 className="text-xl font-semibold">مرحبًا بعودتك إلى أداء!</h1>
           <p className="text-muted">برجاء تسجيل الدخول لتتمكن من مباشرة صلاحياتك</p>
@@ -50,7 +50,7 @@ export default function LoginPage() {
 
         <div className="text-center">
           <ErrorMessage error={error} className="flex justify-center text-center" />
-          <SubmitButton className="mt-4" onClick={submitForm} isLoading={isPending}>
+          <SubmitButton className="mt-4" isLoading={isPending}>
             تسجيل الدخول
           </SubmitButton>
         </div>
@@ -67,7 +67,7 @@ export default function LoginPage() {
             انشئ حساب الآن
           </Link>
         </p>
-      </div>
+      </form>
       <img src={authImage} alt="Register Image" className="sticky top-0 hidden h-screen w-1/3 object-cover sm:block" />
     </div>
   );
