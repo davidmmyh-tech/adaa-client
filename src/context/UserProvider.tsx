@@ -3,6 +3,7 @@ import useCurrentUserQuery from '@/hooks/queries/useCurrentUserQuery';
 import type { Flags, Organization, User } from '@/schemas/types';
 import { createContext, useContext, useState, type Dispatch } from 'react';
 import { toast } from 'react-toastify';
+import { getToken } from '../lib/storage';
 
 type Props = {
   children: React.ReactNode;
@@ -40,7 +41,7 @@ export default function UserProvider({ children }: Props) {
       }
     }
   });
-  const isLoading = !verifyQuery.isFetchedAfterMount && verifyQuery.isPending && !user;
+  const isLoading = !verifyQuery.isFetchedAfterMount && verifyQuery.isPending && !user && !!getToken();
 
   return (
     <userContext.Provider value={{ user, setUser, flags, setFlags, organization, setOrganization, isLoading }}>
