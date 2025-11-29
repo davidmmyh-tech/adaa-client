@@ -1,5 +1,5 @@
-import AdaaShieldHeroSection from '@/components/sections/adaa-shield-assessment/AdaaShieldHero';
-import ShildQuestionsSection from '@/components/sections/adaa-shield-assessment/ShieldQuestions';
+import ShieldHeroSection from '@/components/sections/adaa-shield-assessment/ShieldHero';
+import ShieldSubmissionForm from '@/components/sections/adaa-shield-assessment/ShieldSubmissionForm';
 import SuccessScreen from '@/components/ui/extend/SuccessScreen';
 import { useUserState } from '@/context/UserProvider';
 import { useState } from 'react';
@@ -18,7 +18,7 @@ export default function AdaaShieldAssessmentPage() {
 
   return (
     <>
-      <AdaaShieldHeroSection
+      <ShieldHeroSection
         title={`مرحبًا بكم في جائزة “درع أداء”!`}
         description="لتسجيل جمعيتك في “درع أداء”، يرجى تعبئة النموذج أدناه. نرجو منك التأكد من تقديم معلومات دقيقة وكاملة ليتم تقييم مشاركتك بشكل صحيح."
       />
@@ -29,7 +29,7 @@ export default function AdaaShieldAssessmentPage() {
           <p>شكرًا لمشاركتك في جائزة درع أداء. سيتم مراجعة إجاباتك والاتصال بك قريبًا.</p>
         </SuccessScreen>
       ) : (
-        <ShildQuestionsSection
+        <ShieldSubmissionForm
           onSuccess={() => {
             setFlags((prev) => ({ ...prev, completed_shield: true }));
             setSuccess(true);

@@ -1,4 +1,4 @@
-export type Id = string | number;
+export type Id = number;
 export type CertificateClass = 'diamond' | 'gold' | 'silver' | 'bronze';
 export type CertificateTrack = 'strategic' | 'operational' | 'hr';
 export type CertificateTrackStatus = 'لم يبدأ بعد' | 'مكتمل' | 'قيد المراجعة';

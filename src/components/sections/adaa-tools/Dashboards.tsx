@@ -1,6 +1,7 @@
 import Img from '@/components/ui/extend/Img';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
 import DataWrapper from '@/layouts/DataWrapper';
+import type { Id } from '@/schemas/types';
 import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
@@ -55,7 +56,7 @@ type CardProps = {
   title: string;
   description: string;
   image: string;
-  id: number;
+  id: Id;
 };
 
 const DashboardCard = memo(function DashboardCard({ title, description, image, id }: CardProps) {

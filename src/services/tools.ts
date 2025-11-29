@@ -1,7 +1,8 @@
+import type { Id } from '@/schemas/types';
 import api from './api';
 
 export type Tool = {
-  id: number;
+  id: Id;
   headline: string;
   description: string;
   image: string;
@@ -40,7 +41,7 @@ export function getPBTools() {
   return api.get<{ data: ToolsResponse }>('/api/tools');
 }
 
-export async function downloadTool(id: number, type: 'models' | 'dashboards' | 'tools') {
+export async function downloadTool(id: Id, type: 'models' | 'dashboards' | 'tools') {
   const res = await api.get<Blob>(`/api/${type}/${id}/download`, {
     responseType: 'blob'
   });

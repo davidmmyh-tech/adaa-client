@@ -28,34 +28,58 @@ export function removeSessionEmail() {
   return sessionStorage.removeItem('email');
 }
 
-export function setCurrentHrAxisIndex(index: number, userId: Id) {
-  const key = `hrAxisIndex_user_${userId}`;
+// User verification for form data
+export function setCurrentUserId(userId: Id) {
+  localStorage.setItem('currentFormUserId', JSON.stringify(userId));
+}
+
+export function getCurrentUserId(): Id | null {
+  const data = localStorage.getItem('currentFormUserId');
+  return data ? JSON.parse(data) : null;
+}
+
+export function validateUserAndClearIfMismatch(userId: Id) {
+  const storedUserId = getCurrentUserId();
+
+  if (storedUserId !== null && storedUserId !== userId) {
+    // Different user logged in, clear all form data
+    removeAllHrAxisAnswers();
+    removeAllShieldAxisAnswers();
+    localStorage.removeItem('hrAxisIndex');
+    localStorage.removeItem('shieldAxisIndex');
+  }
+
+  // Set current user
+  setCurrentUserId(userId);
+}
+
+export function setCurrentHrAxisIndex(index: number) {
+  const key = 'hrAxisIndex';
   return localStorage.setItem(key, JSON.stringify(index));
 }
 
-export function getCurrentHrAxisIndex(userId: Id): number {
-  const key = `hrAxisIndex_user_${userId}`;
+export function getCurrentHrAxisIndex(): number {
+  const key = 'hrAxisIndex';
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : 0;
 }
 
-export function setHrAxisAnswers(axisIndex: number, answers: CertificateAnswer[], userId: Id) {
-  const key = `hrAxis_${axisIndex}_user_${userId}`;
+export function setHrAxisAnswers(axisIndex: number, answers: CertificateAnswer[]) {
+  const key = `hrAxis_${axisIndex}`;
   return localStorage.setItem(key, JSON.stringify(answers));
 }
 
-export function getHrAxisAnswers(axisIndex: number, userId: Id): CertificateAnswer[] {
-  const key = `hrAxis_${axisIndex}_user_${userId}`;
+export function getHrAxisAnswers(axisIndex: number): CertificateAnswer[] {
+  const key = `hrAxis_${axisIndex}`;
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : [];
 }
 
-export function removeAllHrAxisAnswers(userId: Id) {
+export function removeAllHrAxisAnswers() {
   const keys = Object.keys(localStorage);
-  const prefix = `hrAxis`;
-  const suffix = `_user_${userId}`;
+  const prefix = 'hrAxis';
   keys.forEach((key) => {
-    if (key.startsWith(prefix) && key.endsWith(suffix)) {
+    if (key.startsWith(prefix)) {
       localStorage.removeItem(key);
     }
   });
@@ -63,7 +87,7 @@ export function removeAllHrAxisAnswers(userId: Id) {
 
 export function setLastShieldAxis(
   axis: number,
-  answers: ShieldAnswers = { axis_id: '', questions: [], attachments: [] },
+  answers: ShieldAnswers = { axis_id: 0, questions: [], attachments: [] },
   userId: Id
 ) {
   return localStorage.setItem('lastShieldAxis', JSON.stringify({ index: axis, answers, userId }));
@@ -78,34 +102,33 @@ export function removeLastShieldAxis() {
   return localStorage.removeItem('lastShieldAxis');
 }
 
-export function setCurrentShieldAxisIndex(index: number, userId: Id) {
-  const key = `shieldAxisIndex_user_${userId}`;
+export function setCurrentShieldAxisIndex(index: number) {
+  const key = 'shieldAxisIndex';
   return localStorage.setItem(key, JSON.stringify(index));
 }
 
-export function getCurrentShieldAxisIndex(userId: Id): number {
-  const key = `shieldAxisIndex_user_${userId}`;
+export function getCurrentShieldAxisIndex(): number {
+  const key = 'shieldAxisIndex';
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : 0;
 }
 
-export function setShieldAxisAnswers(axisIndex: number, answers: ShieldAnswers, userId: Id) {
-  const key = `shieldAxis_${axisIndex}_user_${userId}`;
+export function setShieldAxisAnswers(axisIndex: number, answers: ShieldAnswers) {
+  const key = `shieldAxis_${axisIndex}`;
   return localStorage.setItem(key, JSON.stringify(answers));
 }
 
-export function getShieldAxisAnswers(axisIndex: number, userId: Id): ShieldAnswers {
-  const key = `shieldAxis_${axisIndex}_user_${userId}`;
+export function getShieldAxisAnswers(axisIndex: number): ShieldAnswers {
+  const key = `shieldAxis_${axisIndex}`;
   const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : { axis_id: '', questions: [], attachments: [] };
+  return data ? JSON.parse(data) : { axis_id: 0, questions: [], attachments: [] };
 }
 
-export function removeAllShieldAxisAnswers(userId: Id) {
+export function removeAllShieldAxisAnswers() {
   const keys = Object.keys(localStorage);
-  const prefix = `shieldAxis`;
-  const suffix = `_user_${userId}`;
+  const prefix = 'shieldAxis';
   keys.forEach((key) => {
-    if (key.startsWith(prefix) && key.endsWith(suffix)) {
+    if (key.startsWith(prefix)) {
       localStorage.removeItem(key);
     }
   });

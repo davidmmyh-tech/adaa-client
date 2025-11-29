@@ -5,8 +5,8 @@ import SubmitButton from '@/components/ui/submit-button';
 import Logo from '@/components/ui/extend/Logo';
 import { Button } from '@/components/ui/button';
 import HrAxisProgress from './HrAxisProgress';
-import QuestionItem from './QuestionItem';
-import { useHrAxisForm } from './useHrAxisForm';
+import HrAxisQuestionsForm from './HrAxisQuestionsForm';
+import useHrAxisSubmission from './useHrAxisSubmission';
 
 type Props = { onSuccess?: () => void; isLast?: boolean };
 
@@ -26,9 +26,7 @@ export default function HrModel({ onSuccess, isLast }: Props) {
     handleAnswerChange,
     handleFileChange,
     handlePrevious
-  } = useHrAxisForm({
-    onFinalSuccess: onSuccess
-  });
+  } = useHrAxisSubmission({ onFinalSuccess: onSuccess });
 
   return (
     <div className="space-y-8">
@@ -43,21 +41,14 @@ export default function HrModel({ onSuccess, isLast }: Props) {
           )}
 
           <div className="relative flex transition-all duration-500" style={{ right: `-${currentAxisIndex * 100}%` }}>
-            {questions.map((axis, axisIndex) => (
-              <form key={axisIndex} className="w-full shrink-0 space-y-12">
-                <ol className="list-decimal space-y-12 ps-6">
-                  {axis.questions.map((q, index) => (
-                    <QuestionItem
-                      key={q.id}
-                      question={q}
-                      index={index}
-                      answer={answers.find((ans) => ans.question_id === q.id)}
-                      onAnswerChange={handleAnswerChange}
-                      onFileChange={handleFileChange}
-                    />
-                  ))}
-                </ol>
-              </form>
+            {questions.map((axis) => (
+              <HrAxisQuestionsForm
+                key={axis.id}
+                questions={axis.questions}
+                answer={answers.find((ans) => ans.question_id === axis.id)}
+                onAnswerChange={handleAnswerChange}
+                onFileChange={handleFileChange}
+              />
             ))}
           </div>
         </div>

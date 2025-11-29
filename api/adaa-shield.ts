@@ -39,7 +39,7 @@ type AdaaShieldQuestionsResponse = {
       title: string;
       questions: [
         {
-          id: string;
+          id: Id;
           question: string;
 
           //user specific fields if user already did an interaction with question

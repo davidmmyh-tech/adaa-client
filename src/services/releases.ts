@@ -22,7 +22,7 @@ type ReleasesResponse = {
 };
 
 type ReleaseCategory = {
-  id: number;
+  id: Id;
   name: string;
   description: string;
   created_at: string;
@@ -43,14 +43,14 @@ type ReleasesCategoriesResponse = {
 };
 
 type ReleasesItem = {
-  id: number;
+  id: Id;
   title: string;
   file_path: string;
   excel_path: string;
   powerbi_path: string;
   description: string;
   image: string;
-  release_category_id: number;
+  release_category_id: Id;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;

@@ -8,12 +8,12 @@ type CurrentUserResponse = {
   success: boolean;
   message: string;
   user: {
-    id: string;
+    id: Id;
     first_name: string;
     last_name: string;
 
     organization: null | {
-      id: string;
+      id: Id;
       name: string;
       website: string;
       is_registered: boolean;
@@ -43,12 +43,12 @@ type RegisterResponse = {
   success: boolean;
   message: string;
   user: {
-    id: string;
+    id: Id;
     first_name: string;
     last_name: string;
 
     organization: null | {
-      id: string;
+      id: Id;
       name: string;
       website: string;
       is_registered: boolean;
@@ -73,7 +73,7 @@ type RegisterOrganizationResponse = {
   success: boolean;
   message: string;
   organization: {
-    id: string;
+    id: Id;
     name: string;
     website: string;
     is_registered: boolean;
@@ -92,12 +92,12 @@ type LoginResponse = {
   success: boolean;
   token: string;
   user: {
-    id: string;
+    id: Id;
     first_name: string;
     last_name: string;
 
     organization: {
-      id: string;
+      id: Id;
       name: string;
       is_registered: boolean;
       is_approval_pending: boolean;

@@ -14,6 +14,7 @@ type Props = {
 
 const BlogCard = memo(function BlogCard({ title, description, image, id }: Props) {
   const { handlePrefetchBlog } = usePrefetchBlogDetails();
+
   return (
     <div className="flex flex-col gap-6 sm:flex-row" onMouseEnter={() => handlePrefetchBlog(id)}>
       <Link to={ROUTES.BLOG.DETAILS(id)} className="block aspect-square shrink-0 sm:w-40" prefetch="render">

@@ -5,7 +5,7 @@ type ToolsResponse = {
   success: boolean;
   data: [
     {
-      id: string;
+      id: Id;
       title: string;
       description: string;
       image: string;

@@ -27,10 +27,10 @@ import Logo from './components/ui/extend/Logo';
 import OrganizationGuard from './layouts/OrganizationGuard';
 import ReleasesPage from './pages/Releases';
 import { ROUTES, ROUTE_PATHS } from './routes';
+import AdaaShieldAssessmentPage from './pages/AdaaShieldAssessment';
+import CertificatesAssessmentPage from './pages/CertificatesAssessment';
 
 const AdaaPlusPage = lazy(() => import('./pages/AdaaPlus'));
-const AdaaShieldAssessmentPage = lazy(() => import('./pages/AdaaShieldAssessment'));
-const CertificatesAssessmentPage = lazy(() => import('./pages/CertificatesAssessment'));
 const RegisterOrganizationPage = lazy(() => import('./pages/RegisterOrganization'));
 const BlogDetailsPage = lazy(() => import('./pages/BlogDetails'));
 const PodcastDetailsPage = lazy(() => import('./pages/PodcastDetails'));

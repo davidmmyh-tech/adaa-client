@@ -31,7 +31,7 @@ type PodcastDetailsResponse = {
 };
 
 export type NewsItem = {
-  id: number;
+  id: Id;
   title: string;
   content: string;
   publish_date: string;

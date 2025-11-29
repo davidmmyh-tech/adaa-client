@@ -3,7 +3,7 @@ type BlogsResponse = {
   success: boolean;
   blogs: [
     {
-      id: string;
+      id: Id;
       title: string;
       description: string;
       published_date: string;
@@ -16,7 +16,7 @@ type BlogsResponse = {
 type BlogDetailsResponse = {
   success: boolean;
   blog: {
-    id: string;
+    id: Id;
     title: string;
     description: string;
     content: string;

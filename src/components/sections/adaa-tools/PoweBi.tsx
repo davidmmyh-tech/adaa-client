@@ -2,6 +2,7 @@ import { powerBiIcon } from '@/assets/icons';
 import Img from '@/components/ui/extend/Img';
 import UserStateButton from '@/components/ui/extend/UserStateButton';
 import DataWrapper from '@/layouts/DataWrapper';
+import type { Id } from '@/schemas/types';
 import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
@@ -51,11 +52,11 @@ export default function PoweBiSection({ items, isLoading, isError, refetch }: Pr
 }
 
 type CardProps = {
+  id: Id;
   index: number;
   title: string;
   description: string;
   image: string;
-  id: number;
 };
 
 const PowerBiCard = memo(function PowerBiCard({ index, title, description, image, id }: CardProps) {

@@ -9,7 +9,7 @@ type Props = {
   axisIndex: number;
 };
 
-export default function useSubmitAnswers({ onSuccess, axisIndex, onError }: Props) {
+export default function useSubmitShieldAnswers({ onSuccess, axisIndex, onError }: Props) {
   return useMutation({
     mutationKey: ['shield-submit', axisIndex],
     mutationFn: (answers: ShieldAnswers) => submitShieldQuestions(answers),

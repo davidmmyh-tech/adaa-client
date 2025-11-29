@@ -3,7 +3,7 @@ type ReleasesResponse = {
   success: boolean;
   data: [
     {
-      id: string;
+      id: Id;
       title: string;
       short_description: string;
       published_date: string;
@@ -16,7 +16,7 @@ type ReleasesResponse = {
 type ReleaseDetailsResponse = {
   success: boolean;
   data: {
-    id: string;
+    id: Id;
     title: string;
     short_description: string;
     description: string;

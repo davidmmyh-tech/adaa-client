@@ -1,6 +1,6 @@
 import type { LoginForm, RegisterForm, RegisterOrganizationForm } from '@/schemas/validation';
 import api from './api';
-import type { Flags, Organization, User } from '@/schemas/types';
+import type { Flags, Id, Organization, User } from '@/schemas/types';
 
 type CurrentUserResponse = {
   success: boolean;
@@ -14,7 +14,7 @@ type RegisterResponse = {
   success: boolean;
   message: string;
   user: {
-    id: number;
+    id: Id;
     name: string;
     email: string;
     phone: string;
@@ -54,9 +54,9 @@ export type ResetPasswordPayload = {
 export type SubscripeResponse = {
   message: string;
   subscription: {
-    id: number;
-    user_id: number;
-    plan_id: number;
+    id: Id;
+    user_id: Id;
+    plan_id: Id;
     starts_at: string;
     ends_at: string;
     is_active: boolean;

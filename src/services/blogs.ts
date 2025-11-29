@@ -1,4 +1,4 @@
-import type { Id } from 'react-toastify';
+import type { Id } from '@/schemas/types';
 import api from './api';
 
 type BlogsResponse = {
@@ -24,7 +24,7 @@ type BlogsResponse = {
 type BlogDetailsResponse = {
   success: boolean;
   blog: {
-    id: string;
+    id: Id;
     title: string;
     description: string;
     content: string;
@@ -35,7 +35,7 @@ type BlogDetailsResponse = {
 };
 
 type BlogCategory = {
-  id: number;
+  id: Id;
   name: string;
   description: string;
   created_at: string;
@@ -62,8 +62,8 @@ type FindBlogsResponse = {
   page: number;
   limit: number;
   items: {
-    id: number;
-    blogs_category_id: number;
+    id: Id;
+    blogs_category_id: Id;
     title: string;
     description: string;
     content: string;

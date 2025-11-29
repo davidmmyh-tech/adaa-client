@@ -5,7 +5,7 @@ type PodcastsResponse = {
   success: boolean;
   podcasts: [
     {
-      id: string;
+      id: Id;
       title: string;
       short_description: string;
       published_at: string;
@@ -18,7 +18,7 @@ type PodcastsResponse = {
 type PodcastResponse = {
   success: boolean;
   podcast: {
-    id: string;
+    id: Id;
     title: string;
     short_description: string;
     description: string;

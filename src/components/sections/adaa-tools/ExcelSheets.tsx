@@ -4,6 +4,7 @@ import HSplit from '@/components/ui/h-split';
 import SubmitButton from '@/components/ui/submit-button';
 import DataWrapper from '@/layouts/DataWrapper';
 import { cn } from '@/lib/utils';
+import type { Id } from '@/schemas/types';
 import { downloadTool, type Tool } from '@/services/tools';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
@@ -86,7 +87,7 @@ type CardProps = {
   title: string;
   description: string;
   image: string;
-  id: number;
+  id: Id;
 };
 
 const ExcelCard = memo(function ExcelCard({ index, title, description, image, id }: CardProps) {

@@ -106,7 +106,7 @@ export function AttachmentInput({
       ) : (
         <FileInput
           ref={fileInputRef}
-          id={id}
+          id={id.toString()}
           accept={accept}
           onFileChange={handleFileChange}
           disabled={isPending || disabled}

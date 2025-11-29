@@ -1,8 +1,8 @@
 import type { CertificateClass, Id, CertificateTrack, CertificateTrackStatus } from '@/schemas/types';
 
 export type CertificateQuestion = {
-  id: number;
-  certificate_axis_id: number;
+  id: Id;
+  certificate_axis_id: Id;
   certificate_axis_name: string;
   question_text: string;
   options: string[];
@@ -26,7 +26,7 @@ export type UploadCertificateResponse = {
 export type CertificateQuestionsResponse = {
   success: boolean;
   data: {
-    id: number;
+    id: Id;
     name: string;
     description: string;
     path: CertificateTrack;
@@ -57,7 +57,7 @@ export type ChertificatesAnalyticsResponse = {
 };
 
 export type CertificatesOrganization = {
-  organization_id: number;
+  organization_id: Id;
   organization_name: string;
   path: CertificateTrack;
   path_label: string;

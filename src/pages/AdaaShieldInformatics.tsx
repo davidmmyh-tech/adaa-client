@@ -1,4 +1,4 @@
-import AdaaShieldHeroSection from '@/components/sections/adaa-shield-assessment/AdaaShieldHero';
+import AdaaShieldHeroSection from '@/components/sections/adaa-shield-assessment/ShieldHero';
 import AdaaShieldAnalytics from '@/components/sections/adaa-shield-info/AdaaShieldAnalytics';
 import AdaaShieldOrgsTable from '@/components/sections/adaa-shield-info/AdaaShieldOrgsTable';
 import Dropdown from '@/components/ui/extend/Dropdown';

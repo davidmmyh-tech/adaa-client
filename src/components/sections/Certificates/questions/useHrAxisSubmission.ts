@@ -8,7 +8,8 @@ import {
   setCurrentHrAxisIndex,
   getHrAxisAnswers,
   setHrAxisAnswers,
-  removeAllHrAxisAnswers
+  removeAllHrAxisAnswers,
+  validateUserAndClearIfMismatch
 } from '@/lib/storage';
 import {
   submitHrAxis,
@@ -23,11 +24,11 @@ type UseHrAxisFormParams = {
   onFinalSuccess?: () => void;
 };
 
-export function useHrAxisForm({ onFinalSuccess }: UseHrAxisFormParams) {
+export default function useHrAxisSubmission({ onFinalSuccess }: UseHrAxisFormParams) {
   const { setFlags, user } = useUserState();
   const [error, setError] = useState<string | null>(null);
   const [answers, setAnswers] = useState<CertificateAnswer[]>([]);
-  const [currentAxisIndex, setCurrentAxisIndex] = useState(() => getCurrentHrAxisIndex(user?.id || 0));
+  const [currentAxisIndex, setCurrentAxisIndex] = useState(() => getCurrentHrAxisIndex());
   const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ['certificate-hr-model-questions'],
     queryFn: () => certificateQuestions('hr')
@@ -40,11 +41,18 @@ export function useHrAxisForm({ onFinalSuccess }: UseHrAxisFormParams) {
       title: ARABIC_NUMBER_NAMES[i]
     })) || [];
 
+  // Validate user and clear data if mismatch
+  useEffect(() => {
+    if (user?.id) {
+      validateUserAndClearIfMismatch(user.id);
+    }
+  }, [user?.id]);
+
   // Load answers when axis changes
   useEffect(() => {
-    const savedAnswers = getHrAxisAnswers(currentAxisIndex, user?.id || 0);
+    const savedAnswers = getHrAxisAnswers(currentAxisIndex);
     setAnswers(savedAnswers);
-  }, [currentAxisIndex, user?.id]);
+  }, [currentAxisIndex]);
 
   const handleError = useCallback((err: unknown) => {
     if (isAxiosError(err)) {
@@ -55,21 +63,18 @@ export function useHrAxisForm({ onFinalSuccess }: UseHrAxisFormParams) {
     } else setError('حدث خطأ أثناء إرسال الإجابات. يرجى المحاولة مرة أخرى.');
   }, []);
 
-  const navigateToAxis = useCallback(
-    (targetIndex: number) => {
-      setCurrentAxisIndex(targetIndex);
-      setCurrentHrAxisIndex(targetIndex, user?.id || 0);
-      setError(null);
-      window.scrollTo({ top: 250, behavior: 'smooth' });
-    },
-    [user?.id]
-  );
+  const navigateToAxis = useCallback((targetIndex: number) => {
+    setCurrentAxisIndex(targetIndex);
+    setCurrentHrAxisIndex(targetIndex);
+    setError(null);
+    window.scrollTo({ top: 250, behavior: 'smooth' });
+  }, []);
 
   const { mutate: submit, isPending: isSubmitting } = useMutation({
     mutationFn: () => submitCertificateQuestions('hr', answers),
     onSuccess: () => {
       onFinalSuccess?.();
-      removeAllHrAxisAnswers(user?.id || 0);
+      removeAllHrAxisAnswers();
       setFlags((prev) => ({ ...prev, completed_hr_certificate: true }));
     },
     onError: handleError
@@ -78,7 +83,7 @@ export function useHrAxisForm({ onFinalSuccess }: UseHrAxisFormParams) {
   const { mutate: proceed, isPending: isProceeding } = useMutation({
     mutationFn: () => submitHrAxis(answers),
     onSuccess: () => {
-      setHrAxisAnswers(currentAxisIndex, answers, user?.id || 0);
+      setHrAxisAnswers(currentAxisIndex, answers);
       if (currentAxisIndex < axes.length - 1) navigateToAxis(currentAxisIndex + 1);
       else submit();
     },
@@ -99,11 +104,11 @@ export function useHrAxisForm({ onFinalSuccess }: UseHrAxisFormParams) {
           updatedAnswers = [...prevAnswers, { question_id: questionId, answer: '', attachment: null, ...updates }];
         }
 
-        setHrAxisAnswers(currentAxisIndex, updatedAnswers, user?.id || 0);
+        setHrAxisAnswers(currentAxisIndex, updatedAnswers);
         return updatedAnswers;
       });
     },
-    [currentAxisIndex, user?.id]
+    [currentAxisIndex]
   );
 
   const handleAnswerChange = useCallback(
@@ -117,9 +122,9 @@ export function useHrAxisForm({ onFinalSuccess }: UseHrAxisFormParams) {
   );
 
   const handlePrevious = useCallback(() => {
-    setHrAxisAnswers(currentAxisIndex, answers, user?.id || 0);
+    setHrAxisAnswers(currentAxisIndex, answers);
     navigateToAxis(currentAxisIndex - 1);
-  }, [currentAxisIndex, answers, user?.id, navigateToAxis]);
+  }, [currentAxisIndex, answers, navigateToAxis]);
 
   const handleSubmit = useCallback(() => {
     if (!data?.data.data[currentAxisIndex]) return;

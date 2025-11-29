@@ -11,7 +11,7 @@ export default function BlogDetailsPage() {
   const { id = '' } = useParams<{ id: string }>();
   const { data, isFetching, refetch, isError } = useQuery({
     queryKey: [BLOG_DETAILS_QUERY_KEY, id],
-    queryFn: () => getBlogDetails(id),
+    queryFn: () => getBlogDetails(Number(id)),
     throwOnError: true
   });
   const blog = data?.data.blog;

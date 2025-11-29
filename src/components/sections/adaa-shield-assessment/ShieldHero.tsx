@@ -3,7 +3,7 @@ type Props = {
   description: string;
 };
 
-export default function AdaaShieldHeroSection({ title, description }: Props) {
+export default function ShieldHeroSection({ title, description }: Props) {
   return (
     <header className="cup-hero-background mb-12 flex h-[550px] items-center justify-center">
       <div className="container flex flex-col items-center space-y-12 px-4 text-center text-white">
