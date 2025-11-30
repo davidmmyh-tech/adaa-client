@@ -72,7 +72,22 @@ export function setHrAxisAnswers(axisIndex: number, answers: CertificateAnswer[]
 export function getHrAxisAnswers(axisIndex: number): CertificateAnswer[] {
   const key = `hrAxis_${axisIndex}`;
   const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : [];
+  if (!data) return [];
+
+  const answers: CertificateAnswer[] = JSON.parse(data);
+  // Filter out empty answers (no answer text or empty attachment)
+  const validAnswers = answers.filter((answer) => answer.answer?.trim());
+
+  // Update storage with cleaned data
+  if (validAnswers.length !== answers.length) {
+    if (validAnswers.length > 0) {
+      localStorage.setItem(key, JSON.stringify(validAnswers));
+    } else {
+      localStorage.removeItem(key);
+    }
+  }
+
+  return validAnswers;
 }
 
 export function removeAllHrAxisAnswers() {
